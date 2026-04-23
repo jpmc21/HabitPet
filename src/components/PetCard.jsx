@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-// Fake data — will be replaced with real API data later
+// just using fake data for now until the backend is ready
 const fakePet = {
   level: 1,
   hunger: 70,
@@ -10,7 +10,7 @@ const fakePet = {
 
 const fakePoints = 50
 
-// Different pet emoji based on level
+// the pet looks different depending on what level it is
 const PET_EMOJI = {
   1: '🥚',
   2: '🐣',
@@ -20,75 +20,88 @@ const PET_EMOJI = {
 }
 
 export default function PetCard() {
+
+  // keeping track of pet stats, points, and any message to show the user
   const [pet, setPet] = useState(fakePet)
   const [points, setPoints] = useState(fakePoints)
   const [message, setMessage] = useState('')
 
-  // Feed button handler
+  // this runs when the user clicks the feed button
+  // costs 5 points, adds 30 hunger
   const handleFeed = () => {
     if (points < 5) {
       setMessage('Not enough points!')
       return
     }
+    // subtract points and increase hunger
+    // Math.min makes sure hunger never goes above 100
     setPoints(points - 5)
     setPet({ ...pet, hunger: Math.min(100, pet.hunger + 30) })
-    setMessage('Fed successfully! 🍖')
+    setMessage('Fed! 🍖')
+
+    // clear the message after 2 seconds
     setTimeout(() => setMessage(''), 2000)
   }
 
-  // Click pet to interact
+  // this runs when the user clicks on the pet
+  // just sets mood to happy for now
   const handleInteract = () => {
     setPet({ ...pet, mood: 'happy' })
     setMessage('Your pet is happy! 💖')
     setTimeout(() => setMessage(''), 2000)
   }
 
+  // cap the level at 5 so we don't go out of bounds on PET_EMOJI
   const emoji = PET_EMOJI[Math.min(pet.level, 5)] || '🥚'
 
   return (
     <div style={styles.container}>
 
-      {/* Pet emoji — click to interact */}
-      <div
-        style={styles.petEmoji}
-        onClick={handleInteract}
-      >
+      {/* clicking the pet triggers the interact function */}
+      <div style={styles.petEmoji} onClick={handleInteract}>
         {emoji}
       </div>
 
-      {/* Feedback message */}
+      {/* only show the message if there is one */}
       {message && <p style={styles.message}>{message}</p>}
 
-      {/* Level display */}
+      {/* basic info */}
       <p style={styles.label}>Level {pet.level}</p>
 
-      {/* Hunger bar */}
+      {/* hunger bar — orange color */}
       <div style={styles.barRow}>
         <span style={styles.barLabel}>Hunger</span>
         <div style={styles.barBg}>
-          <div style={{ ...styles.barFill, width: `${pet.hunger}%`, background: '#f4a261' }} />
+          <div style={{
+            ...styles.barFill,
+            width: `${pet.hunger}%`,
+            background: '#f4a261'
+          }} />
         </div>
         <span style={styles.barNum}>{pet.hunger}/100</span>
       </div>
 
-      {/* EXP bar */}
+      {/* exp bar — green color */}
       <div style={styles.barRow}>
         <span style={styles.barLabel}>EXP</span>
         <div style={styles.barBg}>
-          <div style={{ ...styles.barFill, width: `${pet.exp}%`, background: '#57cc99' }} />
+          <div style={{
+            ...styles.barFill,
+            width: `${pet.exp}%`,
+            background: '#57cc99'
+          }} />
         </div>
         <span style={styles.barNum}>{pet.exp}/100</span>
       </div>
 
-      {/* Mood display */}
+      {/* show a different emoji depending on mood */}
       <p style={styles.label}>
         Mood: {pet.mood === 'happy' ? '😊' : pet.mood === 'neutral' ? '😐' : '😢'}
       </p>
 
-      {/* Points display */}
       <p style={styles.label}>Points: {points}</p>
 
-      {/* Feed button */}
+      {/* feed button */}
       <button style={styles.button} onClick={handleFeed}>
         Feed (5 pts)
       </button>
@@ -97,6 +110,7 @@ export default function PetCard() {
   )
 }
 
+// all the styles in one place at the bottom
 const styles = {
   container: {
     display: 'flex',
