@@ -5,9 +5,8 @@ const MAIN_CLUSTER = "habitpet"
 
 class MongoAdapter extends ClientInterface {
     async StartConnection() {
-        this._client = new MongoClient(process.env.MONGODB)
-
         try {
+            this._client = new MongoClient(process.env.MONGOD)
             await this._client.connect();
             console.log("Connected to MongoDB");
 
@@ -15,9 +14,9 @@ class MongoAdapter extends ClientInterface {
             console.log(`Connected to cluster ${MAIN_CLUSTER}`);
 
             return this._cluster;
-        } catch {
+        } catch(e) {
             console.error(`Failed to connect to MongoDB, Cluster ${MAIN_CLUSTER}`)
-            return null;
+            throw e;
         }
     }
 
