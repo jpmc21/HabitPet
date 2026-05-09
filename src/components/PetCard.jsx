@@ -16,7 +16,7 @@ import background from '../assets/background.png'
 // fake data until backend is ready
 // change level and mood here to test different images
 const fakePet = {
-  level: 0,        // 0 = egg, 1 = baby, 2 = teen, 3 = adult
+  level: 2,        // 0 = egg, 1 = baby, 2 = teen, 3 = adult
   fullness: 70,    // 0 to 100
   mood: 'neutral', // 'neutral', 'happy', or 'sad'
   exp: 0,          // 0 to 100
@@ -82,8 +82,19 @@ export default function PetCard() {
 
     // after 1 minute, go back to neutral mood
     setTimeout(() => {
-      setPet(prev => ({ ...prev, mood: 'neutral' }))
+      setPet(prev => {
+        let newMood
+        if (prev.fullness > 60) {
+          newMood = 'happy'
+        } else if (prev.fullness > 30) {
+          newMood = 'neutral'
+        } else {
+          newMood = 'sad'
+        }
+        return { ...prev, mood: newMood }
+      })
     }, 60000)
+    
   }
 
   // runs when user clicks on the pet image
@@ -196,13 +207,21 @@ const styles = {
     backgroundPosition: 'center',
     backgroundAttachment: 'fixed',
   },
-  petImg: {
-    width: '220px',
-    height: '220px',
-    objectFit: 'contain',
-    cursor: 'pointer',
+  petContainer: {
+    width: '150px',
+    height: '150px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: '12px',
   },
+  petImg: {
+    width: '150px',
+    height: '150px',
+    objectFit: 'contain',
+    cursor: 'pointer',
+  },
+
   message: {
     color: '#333333',
     fontWeight: '500',
