@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-import PetCard from './components/PetCard'
-
-function App() {
-  return (
-    <div>
-      <PetCard />
-=======
 import logo from './logo.svg';
 import PetCard from './components/PetCard';
 import './App.css';
@@ -30,7 +22,6 @@ function App() {
         <Habits />
         <PetCard />
       </header>
->>>>>>> 98cf3f0 (Move habits component into src and update app imports)
     </div>
   )
 }
