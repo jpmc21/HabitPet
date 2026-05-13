@@ -3,10 +3,10 @@ const router = express.Router();
 const Habit = require("../models/Habit").model; // Adjust path as needed
 
 // Middleware to verify user authentication (assuming you have auth middleware)
-const { authenticateUser } = require("../middleware/auth");
+// const { authenticateUser } = require("../middleware/auth");
 
 // Apply authentication to all habit routes
-router.use(authenticateUser);
+// router.use(authenticateUser);
 
 router.post("/", async (req, res) => {
     try {
