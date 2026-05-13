@@ -17,9 +17,9 @@ router.post("/register", async (req, res) => {
       password
     });
     
-        const savedUser = await newUser.save();
+    const savedUser = await newUser.save();
 
-    const newPet = new Pet({
+    const newPet = new Pet.model({
       userId: savedUser._id,
       name: `${username}'s Egg`, // Default name they can change later
     });
