@@ -138,4 +138,42 @@ router.get("/", async (req, res) => {
     }
 });
 
+// update habit
+router.put("/:id", async (req, res) => {
+    try {
+        const { title, description, frequency, reward } = req.body;
+        
+        const habit = await Habit.findOne({
+            _id: req.params.id,
+            userId: req.user.id
+        });
+        
+        if (!habit) {
+            return res.status(404).json({ error: "Habit not found" });
+        }
+        
+        // Update fields
+        if (title) habit.title = title;
+        if (description !== undefined) habit.description = description;
+        if (frequency) habit.frequency = frequency;
+        if (reward) habit.reward = reward;
+        
+        await habit.save();
+        
+        res.json({
+            success: true,
+            message: "Habit updated successfully",
+            data: habit
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Failed to update habit" });
+    }
+});
+
+
+
+
+
+
 module.exports = router;
