@@ -14,7 +14,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Route Traffic Directors
 // (This tells the server: "If a request starts with /api/auth, go look inside the auth.js file!")
-//app.use("/api/auth", require("./routes/auth"));
+app.use("/api/auth", require("./routes/auth"));
 app.use("/api/habits", require("./routes/habits"));
 //app.use("/api/pets", require("./routes/pet")); 
 //app.use("/api/leaderboard", require("./routes/leaderboard"));
