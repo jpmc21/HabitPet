@@ -40,3 +40,35 @@ router.post("/", async (req, res) => {
     }
 });
 
+
+
+// delete an  a habit 
+router.delete("/:id", async (req, res) => {
+    try {
+        const habit = await Habit.findOneAndDelete({
+            _id: req.params.id,
+            userId: req.user.id
+        });
+        
+        if (!habit) {
+            return res.status(404).json({ error: "Habit not found" });
+        }
+        
+        res.json({
+            success: true,
+            message: "Habit deleted successfully"
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Failed to delete habit" });
+    }
+});
+
+s
+
+
+
+
+
+
+module.exports = router;
