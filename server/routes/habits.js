@@ -64,7 +64,80 @@ router.delete("/:id", async (req, res) => {
     }
 });
 
-s
+
+// get a single habit 
+router.get("/:id", async (req, res) => {
+    try {
+        const habit = await Habit.findOne({
+            _id: req.params.id,
+            userId: req.user.id
+        });
+        
+        if (!habit) {
+            return res.status(404).json({ error: "Habit not found" });
+        }
+        
+        const habitObj = habit.toObject();
+        habitObj.isCompletedToday = checkIfCompletedToday(habit);
+        
+        res.json({
+            success: true,
+            data: habitObj
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Failed to fetch habit" });
+    }
+});
+
+
+
+//get all habits 
+router.get("/", async (req, res) => {
+    try {
+        const { frequency, status, sortBy = "-startedAt" } = req.query;
+        
+        let query = { userId: req.user.id };
+        
+        // Filter by frequency
+        if (frequency) {
+            query.frequency = frequency;
+        }
+        
+        // Filter by status (completed today or not)
+        if (status === "completed") {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            query.lastCompletedAt = { $gte: today };
+        } else if (status === "pending") {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            query.$or = [
+                { lastCompletedAt: { $lt: today } },
+                { lastCompletedAt: null }
+            ];
+        }
+        
+        const habits = await Habit.find(query).sort(sortBy);
+        
+        // Add computed field for today's completion status
+        const habitsWithStatus = habits.map(habit => {
+            const habitObj = habit.toObject();
+            habitObj.isCompletedToday = checkIfCompletedToday(habit);
+            return habitObj;
+        });
+        
+        res.json({
+            success: true,
+            count: habitsWithStatus.length,
+            data: habitsWithStatus
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Failed to fetch habits" });
+    }
+});
+
 
 
 
