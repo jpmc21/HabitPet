@@ -1,7 +1,14 @@
 const jwt = require('jsonwebtoken');
+const User = require("../models/User");
 
 // checks if the user is logged in
 const auth = (req, res, next) => {
+  console.log(req.path);
+  const publicRoutes = ["/api/auth/login", "/api/auth/register"];
+
+  if (publicRoutes.includes(req.path)) {
+    return next();
+  }
 
   // split(' ') cuts it into ['Bearer', 'xxxxx'] and we grab index 1
   const authHeader = req.headers.authorization;
@@ -19,6 +26,7 @@ const auth = (req, res, next) => {
 
     // save userId so the next route can use it
     req.userId = decoded.userId;
+    req.user = User.findById(decoded.userId);
 
     next();
 

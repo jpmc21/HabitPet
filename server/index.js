@@ -5,6 +5,7 @@ require("dotenv").config();
 const app = express();
 
 // Middleware
+app.use(require("./middleware/auth"));
 app.use(express.json()); // Allows us to read JSON data from the frontend
 
 // Database Connection
