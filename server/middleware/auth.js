@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const User = require("../models/User");
 
 // checks if the user is logged in
 const auth = (req, res, next) => {
@@ -25,6 +26,7 @@ const auth = (req, res, next) => {
 
     // save userId so the next route can use it
     req.userId = decoded.userId;
+    req.user = User.findById(decoded.userId);
 
     next();
 
