@@ -11,6 +11,7 @@ const Habit = require("../models/Habit").model; // Adjust path as needed
 router.post("/", async (req, res) => {
     try {
         const { title, description, frequency, reward } = req.body;
+        req.user = {id: "test"};
         
         // Validation
         if (!title) {
@@ -76,7 +77,7 @@ router.get("/:id", async (req, res) => {
         if (!habit) {
             return res.status(404).json({ error: "Habit not found" });
         }
-        
+
         const habitObj = habit.toObject();
         habitObj.isCompletedToday = checkIfCompletedToday(habit);
         
@@ -119,6 +120,8 @@ router.get("/", async (req, res) => {
         }
         
         const habits = await Habit.find(query).sort(sortBy);
+
+        const checkIfCompletedToday = (habit) => true;
         
         // Add computed field for today's completion status
         const habitsWithStatus = habits.map(habit => {

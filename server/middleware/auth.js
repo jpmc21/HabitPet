@@ -2,6 +2,12 @@ const jwt = require('jsonwebtoken');
 
 // checks if the user is logged in
 const auth = (req, res, next) => {
+  console.log(req.path);
+  const publicRoutes = ["/api/auth/login", "/api/auth/register"];
+
+  if (publicRoutes.includes(req.path)) {
+    return next();
+  }
 
   // split(' ') cuts it into ['Bearer', 'xxxxx'] and we grab index 1
   const authHeader = req.headers.authorization;
