@@ -1,30 +1,27 @@
 import { useState } from "react"
 
 export function useHabits(){
-const [habits, setHabits] = useState([]);
-    const [input, setInput] = useState("");
+    const [habits, setHabits] = useState([]);
 
     function deleteHabit(index) {
-        setHabits((prev) => prev.filter((habits, i) => i !== index));
+        setHabits((prev) => prev.filter((habit, i) => i !== index));
     }
 
-    function editHabit(index) {
-        const newText = prompt("Edit habit:", habits[index].text);
+    function editHabit(index, newText) {
 
-        if (newText === null || newText.trim() === "") return;
+        if (newText.trim() === "") return;
 
         setHabits((prev) => 
             prev.map((habit, i) => 
                 i === index ? { ...habit, text: newText.trim() } : habit ));
     }
 
-    function addHabit() {
-    if (input.trim() === "") return;
+    function addHabit(text) {
+    if (text.trim() === "") return;
 
     setHabits((prev) =>
-        [...prev, { text: input.trim(), completed: false }]);
+        [...prev, { text: text.trim(), completed: false }]);
 
-    setInput("");
     }
 
     function toggleHabit(index) {
@@ -35,9 +32,6 @@ const [habits, setHabits] = useState([]);
 
     return{
         habits,
-        setHabits,
-        input,
-        setInput,
         deleteHabit,
         editHabit,
         addHabit,

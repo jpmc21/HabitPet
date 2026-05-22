@@ -1,29 +1,72 @@
 import { useState } from "react"
 import { useHabits } from "../hooks/useHabits";
+import HabitModal from "./HabitModal";
 
 
 export default function Habits() {
     const {
         habits,
-        input,
-        setInput,
         addHabit,
         deleteHabit,
         editHabit,
         toggleHabit,
         } = useHabits();
+
+    const[isModalOpen, setIsModalOpen] =useState(false);
+    const[modalText, setModalText] = useState("");
+    const [modalMode, setModalMode] = useState("add");
+    const [editingIndex, setEditingIndex] = useState(null);
+
+    const openAddModal = () => {
+        setModalMode("add");
+        setModalText("");
+        setEditingIndex(null);
+        setIsModalOpen(true);
+    }
+
+   const openEditModal = (index) => {
+        setModalMode("edit");
+        setModalText(habits[index].text);
+        setEditingIndex(index);
+        setIsModalOpen(true);
+    }
+
+    const closeModal = () => {
+        setModalText("");
+        setEditingIndex(null);
+        setIsModalOpen(false);
+    }
+
+    const handleSaveHabit = () => {
+    if (modalText.trim() === "") return;
+
+    if (modalMode === "add") {
+    addHabit(modalText);
+    } else {
+    editHabit(editingIndex, modalText);
+    }
+
+    closeModal();
+    }
+
     return (
     <div>
         <h1>My Habits</h1>
-        <input
-            type="text"
-            placeholder="Enter a habit"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-        />
-        <button onClick={addHabit}>
+        
+        <button onClick={openAddModal}>
             Add Habit
         </button>
+
+        {isModalOpen && (
+        <HabitModal
+            mode={modalMode}
+            text={modalText}
+            setText={setModalText}
+            onSave={handleSaveHabit}
+            onCancel={closeModal}
+        />
+      )}
+
         <ul style={styles.habitList}>
             {habits.map((habit, index) => (
             <li style={styles.habitItem} key={index}>
@@ -33,7 +76,7 @@ export default function Habits() {
                     onChange={() => toggleHabit(index)}
                 />
                 <span
-                    onClick={() => editHabit(index)}
+                    onClick={() => openEditModal(index)}
                     style={styles.habitText}
                 >
                     {habit.text}
