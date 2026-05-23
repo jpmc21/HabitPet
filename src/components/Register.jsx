@@ -22,7 +22,7 @@ export default function Register({ onRegister, switchToLogin }) {
     try {
       // post the new account to the backend
       // used AI, prompt: "how to post with axios in react"
-      await axios.post('http://localhost:3001/api/auth/register', {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/register`, {
         username: username,
         password: password,
       })
