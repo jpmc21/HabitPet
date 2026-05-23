@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
-
+import background from '../assets/background.png'
+import teenHappy from '../assets/teen_happy.png'
 // login page
 // user types username and password here
 export default function Login({ onLogin, switchToRegister }) {
@@ -51,7 +52,8 @@ export default function Login({ onLogin, switchToRegister }) {
   // used AI to help with this layout/style part
   return (
     <div style={styles.container}>
-      <h2 style={styles.title}>HabitPet 🐱</h2>
+      <img src={teenHappy} alt="habitpet" style={{ width: '100px', marginBottom: '8px' }} />
+      <h2 style={styles.title}>HabitPet</h2>
       <h3 style={styles.subtitle}>Login</h3>
 
       <form onSubmit={handleSubmit} style={styles.form}>
@@ -97,6 +99,10 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: '100vh',
+    backgroundImage: 'url(' + background + ')',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundAttachment: 'fixed',
   },
 
   title: {
