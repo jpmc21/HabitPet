@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import { API_URL } from '../globals'
 import axios from 'axios'
 import background from '../assets/background.png'
 import teenHappy from '../assets/teen_happy.png'
+
 // login page
 // user types username and password here
 export default function Login({ onLogin, switchToRegister }) {
@@ -18,7 +20,7 @@ export default function Login({ onLogin, switchToRegister }) {
 
     try {
       // send username and password to backend
-      const res = await axios.post('http://localhost:3001/api/auth/login', {
+      const res = await axios.post(`${API_URL}/api/auth/login`, {
         username: username,
         password: password,
       })
