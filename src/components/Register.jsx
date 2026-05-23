@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import axios from 'axios'
+import { API_URL } from '../globals'
 
 // register page
 // user can make a new account here
@@ -22,7 +23,7 @@ export default function Register({ onRegister, switchToLogin }) {
     try {
       // post the new account to the backend
       // used AI, prompt: "how to post with axios in react"
-      await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/register`, {
+      await axios.post(`${API_URL}/api/auth/register`, {
         username: username,
         password: password,
       })
