@@ -51,7 +51,7 @@ router.post("/", async (req, res) => {
 
 
 
-// delete an  a habit 
+// delete a habit 
 router.delete("/:id", async (req, res) => {
     try {
         const habit = await Habit.findOneAndDelete({
@@ -179,6 +179,8 @@ router.put("/:id", async (req, res) => {
     }
 });
 
+
+
 function checkIfCompletedToday(habit) {
     if (!habit.lastCompletedAt) return false;
     
@@ -190,6 +192,7 @@ function checkIfCompletedToday(habit) {
     
     return lastCompleted.getTime() === today.getTime();
 }
+
 
 module.exports = router;
 
