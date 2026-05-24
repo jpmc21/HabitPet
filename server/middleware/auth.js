@@ -3,7 +3,6 @@ const User = require("../models/User");
 
 // checks if the user is logged in
 const auth = (req, res, next) => {
-  console.log(req.path);
   const publicRoutes = ["/api/auth/login", "/api/auth/register"];
 
   if (publicRoutes.includes(req.path)) {
@@ -26,6 +25,8 @@ const auth = (req, res, next) => {
 
     // save userId so the next route can use it
     req.userId = decoded.userId;
+
+    // TODO: Currently async, but could be sync if we just store userId in token and not do a DB lookup here
     req.user = User.findById(decoded.userId);
 
     next();
