@@ -10,11 +10,11 @@ const UserSchema = new mongoose.Schema({
 
   pet: {
     fullness: { type: Number, default: 100 },
-    mood:     { type: String, default: 'neutral' },
-    level:    { type: Number, default: 0 },
-    exp:      { type: Number, default: 0 },
+    mood: { type: String, default: 'neutral' },
+    level: { type: Number, default: 0 },
+    exp: { type: Number, default: 0 },
     // used AI, prompt: "how to store current time as default in mongoose"
-    lastFed:  { type: Date, default: Date.now }
+    lastFed: { type: Date, default: Date.now }
   },
 
 });
