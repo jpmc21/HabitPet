@@ -82,39 +82,39 @@ export default function Habits() {
                     {habit.text}
                 </span>
 
-                <button
-                    onClick={() => deleteHabit(index)}
-                    style={styles.deleteButton}
-                >
-                DLT
-                </button>
-            </li> 
-        ))}
-        </ul>
-    </div>
+                        <button
+                            onClick={() => deleteHabit(index)}
+                            style={styles.deleteButton}
+                        >
+                            DLT
+                        </button>
+                    </li>
+                ))}
+            </ul>
+        </div>
     )
 }
 
 const styles = {
-  habitList: {
-    listStyle: "none",
-    paddingLeft: 0,
-  },
+    habitList: {
+        listStyle: "none",
+        paddingLeft: 0,
+    },
 
-  habitItem: {
-    display: "flex",
-    alignItems: "center",
-    gap: "12px",
-    marginBottom: "10px",
-  },
+    habitItem: {
+        display: "flex",
+        alignItems: "center",
+        gap: "12px",
+        marginBottom: "10px",
+    },
 
-  habitText: {
-    minWidth: "150px",
-    textAlign: "left",
-    cursor: "pointer",
-  },
+    habitText: {
+        minWidth: "150px",
+        textAlign: "left",
+        cursor: "pointer",
+    },
 
-  deleteButton: {
-    marginLeft: "20px",
-  },
+    deleteButton: {
+        marginLeft: "20px",
+    },
 };

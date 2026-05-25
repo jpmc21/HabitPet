@@ -6,7 +6,6 @@ import Register from './components/Register'
 import './App.css'
 
 function App() {
-
   // check if user was already logged in before
   // used AI, prompt: "how to get item from localStorage in react"
   const [token, setToken] = useState(localStorage.getItem('token'))
@@ -37,14 +36,14 @@ function App() {
       return (
         <Register
           onRegister={handleRegister}
-          switchToLogin={function() { setPage('login') }}
+          switchToLogin={function () { setPage('login') }}
         />
       )
     }
     return (
       <Login
         onLogin={handleLogin}
-        switchToRegister={function() { setPage('register') }}
+        switchToRegister={function () { setPage('register') }}
       />
     )
   }

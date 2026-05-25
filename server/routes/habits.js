@@ -53,51 +53,51 @@ router.post("/", async (req, res) => {
 
 // delete a habit 
 router.delete("/:id", async (req, res) => {
-    try {
-        const habit = await Habit.findOneAndDelete({
-            _id: req.params.id,
-            userId: req.user.id
-        });
-        
-        if (!habit) {
-            return res.status(404).json({ error: "Habit not found" });
-        }
-        
-        res.json({
-            success: true,
-            message: "Habit deleted successfully"
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Failed to delete habit" });
+  try {
+    const habit = await Habit.findOneAndDelete({
+      _id: req.params.id,
+      userId: req.user.id
+    });
+
+    if (!habit) {
+      return res.status(404).json({ error: "Habit not found" });
     }
+
+    res.json({
+      success: true,
+      message: "Habit deleted successfully"
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to delete habit" });
+  }
 });
 
 
 
 // get a single habit 
 router.get("/:id", async (req, res) => {
-    try {
-        const habit = await Habit.findOne({
-            _id: req.params.id,
-            userId: req.user.id
-        });
-        
-        if (!habit) {
-            return res.status(404).json({ error: "Habit not found" });
-        }
+  try {
+    const habit = await Habit.findOne({
+      _id: req.params.id,
+      userId: req.user.id
+    });
 
-        const habitObj = habit.toObject();
-        habitObj.isCompletedToday = checkIfCompletedToday(habit);
-        
-        res.json({
-            success: true,
-            data: habitObj
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Failed to fetch habit" });
+    if (!habit) {
+      return res.status(404).json({ error: "Habit not found" });
     }
+
+    const habitObj = habit.toObject();
+    habitObj.isCompletedToday = checkIfCompletedToday(habit);
+
+    res.json({
+      success: true,
+      data: habitObj
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch habit" });
+  }
 });
 
 
@@ -148,49 +148,49 @@ router.get("/", async (req, res) => {
 
 // update habit
 router.put("/:id", async (req, res) => {
-    try {
-        const { title, description, frequency, reward } = req.body;
-        
-        const habit = await Habit.findOne({
-            _id: req.params.id,
-            userId: req.user.id
-        });
-        
-        if (!habit) {
-            return res.status(404).json({ error: "Habit not found" });
-        }
-        
-        // Update fields
-        if (title) habit.title = title;
-        if (description !== undefined) habit.description = description;
-        if (frequency) habit.frequency = frequency;
-        if (reward) habit.reward = reward;
-        
-        await habit.save();
-        
-        res.json({
-            success: true,
-            message: "Habit updated successfully",
-            data: habit
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Failed to update habit" });
+  try {
+    const { title, description, frequency, reward } = req.body;
+
+    const habit = await Habit.findOne({
+      _id: req.params.id,
+      userId: req.user.id
+    });
+
+    if (!habit) {
+      return res.status(404).json({ error: "Habit not found" });
     }
+
+    // Update fields
+    if (title) habit.title = title;
+    if (description !== undefined) habit.description = description;
+    if (frequency) habit.frequency = frequency;
+    if (reward) habit.reward = reward;
+
+    await habit.save();
+
+    res.json({
+      success: true,
+      message: "Habit updated successfully",
+      data: habit
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to update habit" });
+  }
 });
 
 
 
 function checkIfCompletedToday(habit) {
-    if (!habit.lastCompletedAt) return false;
-    
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    const lastCompleted = new Date(habit.lastCompletedAt);
-    lastCompleted.setHours(0, 0, 0, 0);
-    
-    return lastCompleted.getTime() === today.getTime();
+  if (!habit.lastCompletedAt) return false;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const lastCompleted = new Date(habit.lastCompletedAt);
+  lastCompleted.setHours(0, 0, 0, 0);
+
+  return lastCompleted.getTime() === today.getTime();
 }
 
 

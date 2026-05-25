@@ -94,7 +94,7 @@ export default function PetCard() {
         return { ...prev, mood: newMood }
       })
     }, 60000)
-    
+
   }
 
   // runs when user clicks on the pet image
