@@ -4,6 +4,7 @@ const router = express.Router();
 // used AI to figure out how to import these
 const User = require('../models/User');
 const auth = require('../middleware/auth');
+router.use(auth); 
 
 // GET /api/pet - get the pet info when user logged in
 router.get('/', auth, async (req, res) => {
