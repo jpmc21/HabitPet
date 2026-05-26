@@ -3,11 +3,8 @@ const express = require("express");
 const router = express.Router();
 const Habit = require("../models/Habit").model; // Adjust path as needed
 
-// Middleware to verify user authentication (assuming you have auth middleware)
-// const { authenticateUser } = require("../middleware/auth");
-
-// Apply authentication to all habit routes
-// router.use(authenticateUser);
+const auth = require('../middleware/auth'); 
+router.use(auth); 
 
 
 // POST /api/habits - create a new habit
@@ -56,7 +53,7 @@ router.delete("/:id", async (req, res) => {
   try {
     const habit = await Habit.findOneAndDelete({
       _id: req.params.id,
-      userId: req.user.id
+      userId: req.userId
     });
 
     if (!habit) {
@@ -80,7 +77,7 @@ router.get("/:id", async (req, res) => {
   try {
     const habit = await Habit.findOne({
       _id: req.params.id,
-      userId: req.user.id
+      userId: req.userId
     });
 
     if (!habit) {
@@ -153,7 +150,7 @@ router.put("/:id", async (req, res) => {
 
     const habit = await Habit.findOne({
       _id: req.params.id,
-      userId: req.user.id
+      userId: req.userId
     });
 
     if (!habit) {
@@ -179,6 +176,56 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// POST /api/habits/:id/complete - mark a habit as completed today
+router.post("/:id/complete", async (req, res) => {
+  try {
+    const habit = await Habit.findOne({
+      _id: req.params.id,
+      userId: req.userId
+    });
+
+    if (!habit) {
+      return res.status(404).json({ error: "Habit not found" });
+    }
+
+    // Block double-completion
+    if (checkIfCompletedToday(habit)) {
+      return res.status(400).json({ error: "Habit already completed today" });
+    }
+
+    const now = new Date();
+
+    // Check if streak should continue or reset
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    yesterday.setHours(0, 0, 0, 0);
+
+    const lastCompleted = habit.lastCompletedAt ? new Date(habit.lastCompletedAt) : null;
+    if (lastCompleted) lastCompleted.setHours(0, 0, 0, 0);
+
+    const streakContinues = lastCompleted && lastCompleted.getTime() === yesterday.getTime();
+
+    habit.streak = streakContinues ? habit.streak + 1 : 1;
+    habit.lastCompletedAt = now;
+    habit.exp += habit.reward;
+
+    await habit.save();
+
+    res.json({
+      success: true,
+      message: "Habit completed!",
+      data: {
+        streak: habit.streak,
+        exp: habit.exp,
+        reward: habit.reward
+      }
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to complete habit" });
+  }
+});
 
 
 function checkIfCompletedToday(habit) {
