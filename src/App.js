@@ -4,6 +4,8 @@ import Habits from './components/Habits'
 import Login from './components/Login'
 import Register from './components/Register'
 import { useState, useEffect } from 'react'
+import InfoBar from './components/InfoBar'
+import { API_URL } from './globals'
 
 import './App.css'
 
@@ -44,7 +46,7 @@ async function verifyToken() {
     return;
   }
 try {
-  await axios.get('http://localhost:5000/api/auth/verify', {
+  await axios.get(`${API_URL}/api/auth/verify`, {
     headers: {Authorization: `Bearer ${token}`}
   })
   setIsValidating(false)
@@ -107,9 +109,10 @@ verifyToken()
     )
   }
 
-  // logged in, show main app
+// logged in, show main app
   return (
     <div className="App">
+      <InfoBar token={token} />
       <header className="App-header">
         <button onClick={handleLogout}>Logout</button>
         <Habits />
