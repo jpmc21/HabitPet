@@ -17,23 +17,23 @@ function App() {
 
   const [isvalidating, setIsValidating] = useState(true)
 
-useEffect(() => {
-  if (!token) {
-    return;
-  }
-  const securityGaurd = setInterval(() => {
-  const currentStorageToken = localStorage.getItem('token');
-  if (currentStorageToken !== token) {
-    console.log("Token not the same anymroe, booting to login...");
-    setToken(null);
-    localStorage.removeItem('token');
-    setPage('login');
-  }
-}, 1000);
-return() =>{ 
-  clearInterval(securityGaurd);
-};
-}, [token]);
+// useEffect(() => {
+//   if (!token) {
+//     return;
+//   }
+//   const securityGaurd = setInterval(() => {
+//   const currentStorageToken = localStorage.getItem('token');
+//   if (currentStorageToken !== token) {
+//     console.log("Token not the same anymroe, booting to login...");
+//     setToken(null);
+//     localStorage.removeItem('token');
+//     setPage('login');
+//   }
+// }, 1000);
+// return() =>{ 
+//   clearInterval(securityGaurd);
+// };
+// }, [token]);
 
 useEffect(() => {
 async function verifyToken() {
