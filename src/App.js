@@ -18,10 +18,30 @@ function App() {
   const [isvalidating, setIsValidating] = useState(true)
 
 useEffect(() => {
-async function verifyToken() {
   if (!token) {
-    setIsValidating(false)
-    return
+    return;
+  }
+  const securityGaurd = setInterval(() => {
+  const currentStorageToken = localStorage.getItem('token');
+  if (currentStorageToken !== token) {
+    console.log("Token not the same anymroe, booting to login...");
+    setToken(null);
+    localStorage.removeItem('token');
+    setPage('login');
+  }
+}, 1000);
+return() =>{ 
+  clearInterval(securityGaurd);
+};
+}, [token]);
+
+useEffect(() => {
+async function verifyToken() {
+  const savedtoken = localStorage.getItem('token');
+  if (!savedtoken) {
+    setPage('login');
+    setIsValidating(false);
+    return;
   }
 try {
   await axios.get('http://localhost:5000/api/auth/verify', {
@@ -31,11 +51,12 @@ try {
 
 
 } catch (error) {
-  console.error("Token is invalid or expired. Logging out...")
-  localStorage.removeItem('token')
-  setToken(null)
-  setIsValidating(false)
-}
+  console.error("Invalid token on load");
+  localStorage.removeItem('token');
+  setToken(null);
+  setPage('login');
+  setIsValidating(false);
+  }
 }
 verifyToken()
 }, [token])
