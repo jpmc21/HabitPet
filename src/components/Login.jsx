@@ -3,6 +3,7 @@ import { API_URL } from '../globals'
 import axios from 'axios'
 import background from '../assets/background.png'
 import teenHappy from '../assets/teen_happy.png'
+import styles from "./Login.module.css" 
 
 // login page
 // user types username and password here
@@ -53,14 +54,14 @@ export default function Login({ onLogin, switchToRegister }) {
   }
   // used AI to help with this layout/style part
   return (
-    <div style={styles.container}>
+    <div className={styles.container} style={{ backgroundImage: `url(${background})` }}  >
       <img src={teenHappy} alt="habitpet" style={{ width: '100px', marginBottom: '8px' }} />
-      <h2 style={styles.title}>HabitPet</h2>
-      <h3 style={styles.subtitle}>Login</h3>
+      <h2 className={styles.title}>HabitPet</h2>
+      <h3 className={styles.subtitle}>Login</h3>
 
-      <form onSubmit={handleSubmit} style={styles.form}>
+      <form onSubmit={handleSubmit} className={styles.form}>
         <input
-          style={styles.input}
+          className={styles.input}
           placeholder="Username"
           value={username}
           onChange={handleUsernameChange}
@@ -68,7 +69,7 @@ export default function Login({ onLogin, switchToRegister }) {
         />
 
         <input
-          style={styles.input}
+          className={styles.input}
           type="password"
           placeholder="Password"
           value={password}
@@ -77,86 +78,19 @@ export default function Login({ onLogin, switchToRegister }) {
         />
 
         {/* only show error when there is one */}
-        {error !== '' && <p style={styles.error}>{error}</p>}
+        {error !== '' && <p className={styles.error}>{error}</p>}
 
-        <button style={styles.button} type="submit">
+        <button className={styles.button} type="submit">
           Login
         </button>
       </form>
 
-      <p style={styles.switchText}>
+      <p className={styles.switchText}>
         No account?{' '}
-        <span style={styles.link} onClick={switchToRegister}>
+        <span className={styles.link} onClick={switchToRegister}>
           Register here
         </span>
       </p>
     </div>
   )
-}
-
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: '100vh',
-    backgroundImage: 'url(' + background + ')',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundAttachment: 'fixed',
-  },
-
-  title: {
-    fontSize: '32px',
-    marginBottom: '8px',
-  },
-
-  subtitle: {
-    fontSize: '20px',
-    marginBottom: '24px',
-    color: '#666',
-  },
-
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '12px',
-    width: '300px',
-  },
-
-  input: {
-    padding: '10px',
-    fontSize: '16px',
-    borderRadius: '8px',
-    border: '1px solid #ccc',
-  },
-
-  error: {
-    color: 'red',
-    fontSize: '14px',
-    margin: '0',
-  },
-
-  button: {
-    padding: '10px',
-    fontSize: '16px',
-    borderRadius: '8px',
-    border: 'none',
-    background: '#f4a261',
-    color: 'white',
-    cursor: 'pointer',
-  },
-
-  switchText: {
-    marginTop: '16px',
-    fontSize: '14px',
-    color: '#666',
-  },
-
-  link: {
-    color: '#f4a261',
-    cursor: 'pointer',
-    textDecoration: 'underline',
-  },
 }
