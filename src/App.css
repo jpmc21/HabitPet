@@ -14,14 +14,74 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #fcefdd;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
+  color: #3b3028;
+}
+
+.App-header h1 {
+  color: #4a382c;
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  margin-bottom: 34px;
+  padding: 10px 28px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 4px 14px rgba(90, 60, 30, 0.08);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+}
+
+/* logout button */
+.App-header > button {
+  margin-top: 8px;
+  padding: 7px 16px;
+  border: none;
+  border-radius: 999px;
+  background-color: #ffffff;
+  color: #5a4030;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(90, 60, 30, 0.12);
+}
+
+.App-header > button:hover {
+  background-color: #ffe4d1;
+}
+
+/* input for adding habit */
+.App-header input {
+  padding: 11px 16px;
+  width: 280px;
+  border: 2px solid #e6b98f;
+  border-radius: 999px 0 0 999px;
+  font-size: 18px;
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.95);
+  color: #3b3028;
+}
+
+/* add habit button */
+.App-header input + button {
+  padding: 11px 20px;
+  border: 2px solid #e6b98f;
+  border-left: none;
+  border-radius: 0 999px 999px 0;
+  background-color: #f4a261;
   color: white;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.App-header input + button:hover {
+  background-color: #ee9350;
 }
 
 .App-link {
