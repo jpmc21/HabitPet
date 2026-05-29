@@ -4,7 +4,8 @@ import Habits from './components/Habits'
 import Login from './components/Login'
 import Register from './components/Register'
 import { useState, useEffect } from 'react'
-import { API_URL } from './globals';
+import InfoBar from './components/InfoBar'
+import { API_URL } from './globals'
 
 import './App.css'
 
@@ -111,6 +112,7 @@ function App() {
   // logged in, show main app
   return (
     <div className="App">
+      <InfoBar token={token} />
       <header className="App-header">
         <button onClick={handleLogout}>Logout</button>
         <Habits />
