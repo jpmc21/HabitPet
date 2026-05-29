@@ -1,4 +1,5 @@
 import { useState } from "react"
+import styles from "./Habits.module.css" 
 
 
 export default function Habits() {
@@ -45,9 +46,9 @@ export default function Habits() {
             <button onClick={addHabit}>
                 Add Habit
             </button>
-            <ul style={styles.habitList}>
+            <ul className={styles.habitList}>
                 {habits.map((habit, index) => (
-                    <li style={styles.habitItem} key={index}>
+                    <li className={styles.habitItem} key={index}>
                         <input
                             type="checkbox"
                             checked={habit.completed}
@@ -55,14 +56,14 @@ export default function Habits() {
                         />
                         <span
                             onClick={() => editHabit(index)}
-                            style={styles.habitText}
+                            className={styles.habitText}
                         >
                             {habit.text}
                         </span>
 
                         <button
                             onClick={() => deleteHabit(index)}
-                            style={styles.deleteButton}
+                            className={styles.deleteButton}
                         >
                             DLT
                         </button>
@@ -72,27 +73,3 @@ export default function Habits() {
         </div>
     )
 }
-
-const styles = {
-    habitList: {
-        listStyle: "none",
-        paddingLeft: 0,
-    },
-
-    habitItem: {
-        display: "flex",
-        alignItems: "center",
-        gap: "12px",
-        marginBottom: "10px",
-    },
-
-    habitText: {
-        minWidth: "150px",
-        textAlign: "left",
-        cursor: "pointer",
-    },
-
-    deleteButton: {
-        marginLeft: "20px",
-    },
-};
