@@ -3,7 +3,6 @@ const router = express.Router();
 const User = require("../models/User");
 const Pet = require("../models/Pets");
 const jwt = require("jsonwebtoken")
-const auth = require('../middleware/auth');
 
 router.post("/register", async (req, res) => {
   try {
@@ -57,7 +56,7 @@ router.post("/login", async (req, res) => {
   res.json({ token })
 })
 // added this to help with checking if the token is valid in out app.js
-router.get('/verify', auth, async (req, res) => {
+router.get('/verify', async (req, res) => {
   try {
     // If the token passes the middleware, it's valid!
     res.json({ success: true, message: "Token is valid!" });
