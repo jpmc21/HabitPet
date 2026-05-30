@@ -8,7 +8,8 @@ export default function HabitModal({
     return (
     <div style={styles.modalOverlay}>
       <div style={styles.modal}>
-        <h2>{mode === "edit" ? "Edit Habit" : "Add Habit"}</h2>
+         <h2 style={styles.modalHeader}>
+         {mode === "edit" ? "Edit Habit" : "Add Habit"}</h2>
 
         <input
           type="text"
@@ -57,4 +58,8 @@ const styles = {
     display: "flex",
     gap: "10px",
   },
+
+  modalHeader: {
+  color: "black",
+},
 };
