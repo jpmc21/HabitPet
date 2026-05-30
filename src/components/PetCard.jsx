@@ -12,6 +12,7 @@ import adult_neutral from '../assets/adult_neutral.png'
 import adult_happy from '../assets/adult_happy.png'
 import adult_sad from '../assets/adult_sad.png'
 import background from '../assets/background.png'
+import styles from "./PetCard.module.css" 
 
 // fake data until backend is ready
 // change level and mood here to test different images
@@ -130,143 +131,60 @@ export default function PetCard() {
   const petImage = getPetImage(pet.level, pet.mood)
 
   return (
-    <div style={styles.container}>
+    <div
+      className={styles.container}
+      style={{ backgroundImage: `url(${background})` }}
+    >
 
       {/* the pet image — clicking it triggers handleInteract */}
       <img
         src={petImage}
         alt="pet"
-        style={styles.petImg}
+        className={styles.petImg}
         onClick={handleInteract}
       />
 
-      {/* only shows up if message is not empty */}
-      {message && <p style={styles.message}>{message}</p>}
+     <p className={styles.message}>{message || '\u00A0'}</p>
 
-      {/* level display */}
-      <p style={styles.label}>Level {pet.level}</p>
+      <p className={styles.label}>Level {pet.level}</p>
 
       {/* fullness bar */}
-      <div style={styles.barRow}>
-        <span style={styles.barLabel}>Fullness</span>
-        <div style={styles.barBg}>
-          {/* width is a percentage based on fullness value */}
-          {/* color changes based on fullnessColor variable above */}
+      <div className={styles.barRow}>
+        <span className={styles.barLabel}>Fullness</span>
+        <div className={styles.barBg}>
           <div style={{
             width: pet.fullness + '%',
             height: '100%',
-            background: fullnessColor,
+            background: fullnessColor,  
             borderRadius: '6px',
             transition: 'width 0.3s',
           }} />
         </div>
-        <span style={styles.barNum}>{pet.fullness}/100</span>
+        <span className={styles.barNum}>{pet.fullness}/100</span>
       </div>
 
-      {/* exp bar — always green for now */}
-      <div style={styles.barRow}>
-        <span style={styles.barLabel}>EXP</span>
-        <div style={styles.barBg}>
+      {/* exp bar */}
+      <div className={styles.barRow}>
+        <span className={styles.barLabel}>EXP</span>
+        <div className={styles.barBg}>
           <div style={{
-            width: pet.exp + '%',
+            width: pet.exp + '%',  
             height: '100%',
             background: '#57cc99',
             borderRadius: '6px',
             transition: 'width 0.3s',
           }} />
         </div>
-        <span style={styles.barNum}>{pet.exp}/100</span>
+        <span className={styles.barNum}>{pet.exp}/100</span>
       </div>
 
-      {/* mood display */}
-      <p style={styles.label}>Mood: {pet.mood}</p>
+      <p className={styles.label}>Mood: {pet.mood}</p>
+      <p className={styles.label}>Points: {points}</p>
 
-      {/* points display */}
-      <p style={styles.label}>Points: {points}</p>
-
-      {/* feed button */}
-      <button style={styles.button} onClick={handleFeed}>
+      <button className={styles.button} onClick={handleFeed}>
         Feed (5 pts)
       </button>
 
     </div>
   )
-}
-
-// all styles are here at the bottom
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: '24px',
-    minHeight: '100vh',
-    width: '100%',
-    backgroundImage: 'url(' + background + ')',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundAttachment: 'fixed',
-  },
-  petContainer: {
-    width: '150px',
-    height: '150px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: '12px',
-  },
-  petImg: {
-    width: '150px',
-    height: '150px',
-    objectFit: 'contain',
-    cursor: 'pointer',
-  },
-
-  message: {
-    color: '#333333',
-    fontWeight: '500',
-    marginBottom: '8px',
-    fontSize: '18px',
-  },
-  label: {
-    fontSize: '20px',
-    margin: '6px 0',
-    color: '#333333',
-  },
-  barRow: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    width: '100%',
-    maxWidth: '360px',
-    margin: '6px 0',
-  },
-  barLabel: {
-    width: '70px',
-    fontSize: '18px',
-    color: '#333333',
-  },
-  barBg: {
-    flex: 1,
-    height: '18px',
-    background: '#aaaaaa',   // dark gray so its easy to see
-    borderRadius: '6px',
-    overflow: 'hidden',
-  },
-  barNum: {
-    fontSize: '16px',
-    width: '60px',
-    textAlign: 'right',
-    color: '#333333',
-  },
-  button: {
-    marginTop: '16px',
-    padding: '10px 24px',
-    fontSize: '15px',
-    cursor: 'pointer',
-    borderRadius: '8px',
-    border: 'none',
-    background: '#f4a261',
-    color: 'white',
-  },
 }
