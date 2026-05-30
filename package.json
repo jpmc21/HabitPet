@@ -18,7 +18,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "node ./scripts/checkenv.js && react-scripts start",
+    "start": "node ./scripts/checkenv.js && node ./scripts/genport.js && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
