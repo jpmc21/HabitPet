@@ -1,36 +1,112 @@
-import { useState } from "react"
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 export default function Habits() {
-    const [habits, setHabits] = useState([]);
     const [input, setInput] = useState("");
+    const [habits, setHabits] = useState([]);
 
-    function deleteHabit(index) {
-        setHabits((prev) => prev.filter((habit, i) => i !== index));
+    useEffect(() => {
+        async function fetchHabits() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) return;
+
+                const response = await axios.get("http://localhost:5000/api/habits", {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                
+                if (response.data.success) {
+                    setHabits(response.data.data);
+                }
+            } catch (error) {
+                console.error("Error fetching habits:", error);
+            }   
+        }
+
+        fetchHabits(); 
+    }, []);
+
+    async function deleteHabit(index) {
+        const habitToDelete = habits[index];
+        try {
+            const token = localStorage.getItem('token');
+            await axios.delete(`http://localhost:5000/api/habits/${habitToDelete._id}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            
+            setHabits((prev) => prev.filter((habit, i) => i !== index));
+        } catch (error) {
+            console.error("Error deleting habit:", error);
+            alert("Failed to delete habit. Please try again.");
+        }
     }
 
-    function editHabit(index) {
-        const newText = prompt("Edit habit:", habits[index].text);
+    async function editHabit(index) {
+        const habitToEdit = habits[index];
+        const newText = prompt("Edit habit:", habitToEdit.title);
 
         if (newText === null || newText.trim() === "") return;
 
-        setHabits((prev) =>
-            prev.map((habit, i) =>
-                i === index ? { ...habit, text: newText.trim() } : habit));
+        try {
+            const token = localStorage.getItem('token');
+            
+            await axios.put(`http://localhost:5000/api/habits/${habitToEdit._id}`, 
+                { title: newText.trim() }, 
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            
+            setHabits((prev) => 
+                prev.map((habit, i) => 
+                    i === index ? { ...habit, title: newText.trim() } : habit
+                )
+            );
+        } catch (error) {
+            console.error("Error editing habit:", error);
+            alert("Failed to edit habit. Please try again.");
+        }
     }
 
-    function addHabit() {
+    async function addHabit() {
         if (input.trim() === "") return;
-
-        setHabits((prev) =>
-            [...prev, { text: input.trim(), completed: false }]);
-
-        setInput("");
+        
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.post("http://localhost:5000/api/habits", 
+                { title: input.trim() }, 
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            
+            setHabits((prev) => [...prev, response.data.data]);
+            setInput("");
+        } catch (error) {
+            console.error("Error adding habit:", error);
+            alert("Failed to add habit. Please try again.");
+        }
     }
 
-    function toggleHabit(index) {
-        setHabits((prev) =>
-            prev.map((habit, i) =>
-                i === index ? { ...habit, completed: !habit.completed } : habit));
+    async function toggleHabit(index) {
+        const habitToToggle = habits[index];
+        
+        if (habitToToggle.completed || habitToToggle.isCompletedToday) {
+            return; 
+        }
+
+        try {
+            const token = localStorage.getItem('token');
+            await axios.post(`http://localhost:5000/api/habits/${habitToToggle._id}/complete`, 
+                {}, 
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            
+            setHabits((prev) =>
+                prev.map((habit, i) =>
+                    i === index ? { ...habit, completed: true, isCompletedToday: true } : habit
+                )
+            );
+        } catch (error) {
+            console.error("Error toggling habit:", error);
+            alert("Failed to complete habit. Please try again.");
+        }
     }
 
     return (
@@ -56,20 +132,20 @@ export default function Habits() {
                     <li style={styles.habitItem} key={index}>
                         <button
                             onClick={() => toggleHabit(index)}
-                            style={habit.completed ? styles.doneButton : styles.checkButton}
+                            style={(habit.completed || habit.isCompletedToday) ? styles.doneButton : styles.checkButton}
                         >
-                            {habit.completed ? "Done" : "Check"}
+                            {(habit.completed || habit.isCompletedToday) ? "Done" : "Check"}
                         </button>
 
                         <span
                             onClick={() => editHabit(index)}
                             style={{
                                 ...styles.habitText,
-                                textDecoration: habit.completed ? "line-through" : "none",
-                                opacity: habit.completed ? 0.6 : 1
+                                textDecoration: (habit.completed || habit.isCompletedToday) ? "line-through" : "none",
+                                opacity: (habit.completed || habit.isCompletedToday) ? 0.6 : 1
                             }}
                         >
-                            {habit.text}
+                            {habit.title}
                         </span>
 
                         <button
@@ -82,7 +158,7 @@ export default function Habits() {
                 ))}
             </ul>
         </div>
-    )
+    );
 }
 
 const styles = {
@@ -92,12 +168,10 @@ const styles = {
         flexDirection: "column",
         alignItems: "center",
     },
-
     addBox: {
         display: "flex",
         marginBottom: "25px",
     },
-
     input: {
         width: "280px",
         padding: "11px 16px",
@@ -108,7 +182,6 @@ const styles = {
         background: "rgba(255, 255, 255, 0.95)",
         color: "#3b3028",
     },
-
     addButton: {
         padding: "11px 20px",
         border: "2px solid #e6b98f",
@@ -120,14 +193,12 @@ const styles = {
         fontWeight: "700",
         cursor: "pointer",
     },
-
     habitList: {
         listStyle: "none",
         paddingLeft: 0,
         width: "520px",
         maxWidth: "90%",
     },
-
     habitItem: {
         display: "flex",
         alignItems: "center",
@@ -138,7 +209,6 @@ const styles = {
         background: "rgba(255, 255, 255, 0.55)",
         boxShadow: "0 3px 10px rgba(90, 60, 30, 0.08)",
     },
-
     habitText: {
         flex: 1,
         textAlign: "center",
@@ -146,7 +216,6 @@ const styles = {
         color: "#3b3028",
         cursor: "pointer",
     },
-
     checkButton: {
         padding: "8px 14px",
         border: "none",
@@ -158,8 +227,6 @@ const styles = {
         cursor: "pointer",
         boxShadow: "0 2px 8px rgba(90, 60, 30, 0.10)",
     },
-
-   
     doneButton: {
         padding: "8px 14px",
         border: "none",
@@ -171,7 +238,6 @@ const styles = {
         cursor: "pointer",
         boxShadow: "0 2px 8px rgba(90, 60, 30, 0.10)",
     },
-
     deleteButton: {
         padding: "8px 14px",
         border: "none",
