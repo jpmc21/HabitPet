@@ -3,6 +3,7 @@ import PetCard from './components/PetCard'
 import Habits from './components/Habits'
 import Login from './components/Login'
 import Register from './components/Register'
+import Stats from './components/Stats'
 import { useState, useEffect } from 'react'
 import { API_URL } from './globals';
 
@@ -115,6 +116,7 @@ function App() {
         <button onClick={handleLogout}>Logout</button>
         <Habits />
         <PetCard />
+        <Stats />
       </header>
     </div>
   )

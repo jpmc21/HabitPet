@@ -2,6 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const Habit = require("../models/Habit").model; // Adjust path as needed
+const User = require('../models/User');
 
 const auth = require('../middleware/auth'); 
 router.use(auth); 
@@ -216,7 +217,6 @@ router.post("/:id/complete", async (req, res) => {
       message: "Habit completed!",
       data: {
         streak: habit.streak,
-        exp: habit.exp,
         reward: habit.reward
       }
     });
