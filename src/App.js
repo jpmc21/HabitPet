@@ -4,6 +4,7 @@ import Habits from './components/Habits'
 import Login from './components/Login'
 import Register from './components/Register'
 import { useState, useEffect } from 'react'
+import { API_URL } from './globals';
 
 import './App.css'
 
@@ -17,49 +18,49 @@ function App() {
 
   const [isvalidating, setIsValidating] = useState(true)
 
-// useEffect(() => {
-//   if (!token) {
-//     return;
-//   }
-//   const securityGaurd = setInterval(() => {
-//   const currentStorageToken = localStorage.getItem('token');
-//   if (currentStorageToken !== token) {
-//     console.log("Token not the same anymroe, booting to login...");
-//     setToken(null);
-//     localStorage.removeItem('token');
-//     setPage('login');
-//   }
-// }, 1000);
-// return() =>{ 
-//   clearInterval(securityGaurd);
-// };
-// }, [token]);
+  // useEffect(() => {
+  //   if (!token) {
+  //     return;
+  //   }
+  //   const securityGaurd = setInterval(() => {
+  //   const currentStorageToken = localStorage.getItem('token');
+  //   if (currentStorageToken !== token) {
+  //     console.log("Token not the same anymroe, booting to login...");
+  //     setToken(null);
+  //     localStorage.removeItem('token');
+  //     setPage('login');
+  //   }
+  // }, 1000);
+  // return() =>{ 
+  //   clearInterval(securityGaurd);
+  // };
+  // }, [token]);
 
-useEffect(() => {
-async function verifyToken() {
-  const savedtoken = localStorage.getItem('token');
-  if (!savedtoken) {
-    setPage('login');
-    setIsValidating(false);
-    return;
-  }
-try {
-  await axios.get('http://localhost:5000/api/auth/verify', {
-    headers: {Authorization: `Bearer ${token}`}
-  })
-  setIsValidating(false)
+  useEffect(() => {
+    async function verifyToken() {
+      const savedtoken = localStorage.getItem('token');
+      if (!savedtoken) {
+        setPage('login');
+        setIsValidating(false);
+        return;
+      }
+      try {
+        await axios.get(`${API_URL}/api/auth/verify`, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        setIsValidating(false)
 
 
-} catch (error) {
-  console.error("Invalid token on load");
-  localStorage.removeItem('token');
-  setToken(null);
-  setPage('login');
-  setIsValidating(false);
-  }
-}
-verifyToken()
-}, [token])
+      } catch (error) {
+        console.error("Invalid token on load");
+        localStorage.removeItem('token');
+        setToken(null);
+        setPage('login');
+        setIsValidating(false);
+      }
+    }
+    verifyToken()
+  }, [token])
 
 
   function handleLogin(newToken) {
@@ -80,14 +81,14 @@ verifyToken()
   }
 
   if (isvalidating) {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <h2>Loading Habit...</h2>
-      </header>
-    </div>
-  )
-}
+    return (
+      <div className="App">
+        <header className="App-header">
+          <h2>Loading Habit...</h2>
+        </header>
+      </div>
+    )
+  }
 
   // not logged in yet, show login or register
   if (!token) {
