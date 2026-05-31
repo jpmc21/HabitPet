@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { API_URL } from "../globals";
 
 export function useHabits() {
     const [habits, setHabits] = useState([]);
@@ -10,29 +11,29 @@ export function useHabits() {
                 const token = localStorage.getItem('token');
                 if (!token) return;
 
-                const response = await axios.get("http://localhost:5000/api/habits", {
+                const response = await axios.get(`${API_URL}/api/habits`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
-                
+
                 if (response.data.success) {
                     setHabits(response.data.data);
                 }
             } catch (error) {
                 console.error("Error fetching habits:", error);
-            }   
+            }
         }
 
-        fetchHabits(); 
+        fetchHabits();
     }, []);
 
     async function deleteHabit(index) {
         const habitToDelete = habits[index];
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`http://localhost:5000/api/habits/${habitToDelete._id}`, {
+            await axios.delete(`${API_URL}/api/habits/${habitToDelete._id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            
+
             setHabits((prev) => prev.filter((habit, i) => i !== index));
         } catch (error) {
             console.error("Error deleting habit:", error);
@@ -47,14 +48,14 @@ export function useHabits() {
 
         try {
             const token = localStorage.getItem('token');
-            
-            await axios.put(`http://localhost:5000/api/habits/${habitToEdit._id}`, 
-                { title: newText.trim() }, 
+
+            await axios.put(`${API_URL}/api/habits/${habitToEdit._id}`,
+                { title: newText.trim() },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
-            
-            setHabits((prev) => 
-                prev.map((habit, i) => 
+
+            setHabits((prev) =>
+                prev.map((habit, i) =>
                     i === index ? { ...habit, title: newText.trim() } : habit
                 )
             );
@@ -66,14 +67,14 @@ export function useHabits() {
 
     async function addHabit(text) {
         if (text.trim() === "") return;
-        
+
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post("http://localhost:5000/api/habits", 
-                { title: text.trim() }, 
+            const response = await axios.post(`${API_URL}/api/habits`,
+                { title: text.trim() },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
-            
+
             setHabits((prev) => [...prev, response.data.data]);
         } catch (error) {
             console.error("Error adding habit:", error);
@@ -83,18 +84,18 @@ export function useHabits() {
 
     async function toggleHabit(index) {
         const habitToToggle = habits[index];
-        
+
         if (habitToToggle.completed || habitToToggle.isCompletedToday) {
-            return; 
+            return;
         }
 
         try {
             const token = localStorage.getItem('token');
-            await axios.post(`http://localhost:5000/api/habits/${habitToToggle._id}/complete`, 
-                {}, 
+            await axios.post(`${API_URL}/api/habits/${habitToToggle._id}/complete`,
+                {},
                 { headers: { Authorization: `Bearer ${token}` } }
             );
-            
+
             setHabits((prev) =>
                 prev.map((habit, i) =>
                     i === index ? { ...habit, completed: true, isCompletedToday: true } : habit
