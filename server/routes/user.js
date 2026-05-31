@@ -1,0 +1,44 @@
+const express = require("express");
+const router = express.Router();
+
+const User = require("../models/User");
+const Habit = require("../models/Habit").model;
+const auth = require("../middleware/auth");
+
+// need login for this
+router.use(auth);
+
+// this one gets the info for the top bar
+router.get("/profile", async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "user not found" });
+    }
+
+    // find best streak from habits
+    const habits = await Habit.find({ userId: req.userId });
+
+    let bestStreak = 0;
+    for (let i = 0; i < habits.length; i++) {
+      if (habits[i].streak > bestStreak) {
+        bestStreak = habits[i].streak;
+      }
+    }
+
+    res.json({
+      success: true,
+      username: user.username,
+      points: user.points,
+      petLevel: user.pet.level,
+      bestStreak: bestStreak
+    });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "server error" });
+  }
+});
+
+module.exports = router;
