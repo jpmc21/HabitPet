@@ -69,17 +69,17 @@ export default function Habits() {
 
         <ul style={styles.habitList}>
             {habits.map((habit, index) => (
-            <li style={styles.habitItem} key={index}>
+            <li style={styles.habitItem} key={habit.id}>
                 <input
                     type="checkbox"
-                    checked={habit.completed}
+                    checked={habit.isCompletedToday || false}
                     onChange={() => toggleHabit(index)}
                 />
                 <span
                     onClick={() => openEditModal(index)}
                     style={styles.habitText}
                 >
-                    {habit.text}
+                    {habit.title}
                 </span>
 
                         <button
