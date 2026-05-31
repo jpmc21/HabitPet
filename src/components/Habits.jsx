@@ -26,7 +26,7 @@ export default function Habits() {
 
    const openEditModal = (index) => {
         setModalMode("edit");
-        setModalText(habits[index].text);
+        setModalText(habits[index].title);
         setEditingIndex(index);
         setIsModalOpen(true);
     }
