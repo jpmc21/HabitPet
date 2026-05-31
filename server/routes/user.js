@@ -3,10 +3,6 @@ const router = express.Router();
 
 const User = require("../models/User");
 const Habit = require("../models/Habit").model;
-const auth = require("../middleware/auth");
-
-// need login for this
-router.use(auth);
 
 // this one gets the info for the top bar
 router.get("/profile", async (req, res) => {
