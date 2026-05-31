@@ -1,41 +1,116 @@
-import { useState } from "react"
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-export function useHabits(){
+export function useHabits() {
     const [habits, setHabits] = useState([]);
 
-    function deleteHabit(index) {
-        setHabits((prev) => prev.filter((habit, i) => i !== index));
+    useEffect(() => {
+        async function fetchHabits() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) return;
+
+                const response = await axios.get("http://localhost:5000/api/habits", {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                
+                if (response.data.success) {
+                    setHabits(response.data.data);
+                }
+            } catch (error) {
+                console.error("Error fetching habits:", error);
+            }   
+        }
+
+        fetchHabits(); 
+    }, []);
+
+    async function deleteHabit(index) {
+        const habitToDelete = habits[index];
+        try {
+            const token = localStorage.getItem('token');
+            await axios.delete(`http://localhost:5000/api/habits/${habitToDelete._id}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            
+            setHabits((prev) => prev.filter((habit, i) => i !== index));
+        } catch (error) {
+            console.error("Error deleting habit:", error);
+            alert("Failed to delete habit. Please try again.");
+        }
     }
 
-    function editHabit(index, newText) {
+    async function editHabit(index, newText) {
+        const habitToEdit = habits[index];
 
-        if (newText.trim() === "") return;
+        if (!newText || newText.trim() === "") return;
 
-        setHabits((prev) => 
-            prev.map((habit, i) => 
-                i === index ? { ...habit, text: newText.trim() } : habit ));
+        try {
+            const token = localStorage.getItem('token');
+            
+            await axios.put(`http://localhost:5000/api/habits/${habitToEdit._id}`, 
+                { title: newText.trim() }, 
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            
+            setHabits((prev) => 
+                prev.map((habit, i) => 
+                    i === index ? { ...habit, title: newText.trim() } : habit
+                )
+            );
+        } catch (error) {
+            console.error("Error editing habit:", error);
+            alert("Failed to edit habit. Please try again.");
+        }
     }
 
-    function addHabit(text) {
-    if (text.trim() === "") return;
-
-    setHabits((prev) =>
-        [...prev, { text: text.trim(), completed: false }]);
-
+    async function addHabit(text) {
+        if (text.trim() === "") return;
+        
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.post("http://localhost:5000/api/habits", 
+                { title: text.trim() }, 
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            
+            setHabits((prev) => [...prev, response.data.data]);
+        } catch (error) {
+            console.error("Error adding habit:", error);
+            alert("Failed to add habit. Please try again.");
+        }
     }
 
-    function toggleHabit(index) {
-        setHabits((prev) =>
-            prev.map((habit, i) =>
-                i === index ? { ...habit, completed: !habit.completed } : habit ));
+    async function toggleHabit(index) {
+        const habitToToggle = habits[index];
+        
+        if (habitToToggle.completed || habitToToggle.isCompletedToday) {
+            return; 
+        }
+
+        try {
+            const token = localStorage.getItem('token');
+            await axios.post(`http://localhost:5000/api/habits/${habitToToggle._id}/complete`, 
+                {}, 
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            
+            setHabits((prev) =>
+                prev.map((habit, i) =>
+                    i === index ? { ...habit, completed: true, isCompletedToday: true } : habit
+                )
+            );
+        } catch (error) {
+            console.error("Error toggling habit:", error);
+            alert("Failed to complete habit. Please try again.");
+        }
     }
 
-    return{
+    return {
         habits,
         deleteHabit,
         editHabit,
         addHabit,
         toggleHabit
-    }
-    
+    };
 }
