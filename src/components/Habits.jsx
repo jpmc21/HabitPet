@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useHabits } from "../hooks/useHabits";
 import HabitModal from "./HabitModal";
+import styles from "./Habits.module.css";
 
 export default function Habits() {
     const {
@@ -52,7 +53,7 @@ export default function Habits() {
         <div>
             <h1>My Habits</h1>
 
-            <button onClick={openAddModal}>
+            <button className={styles.addButton} onClick={openAddModal}>
                 Add Habit
             </button>
 
@@ -66,9 +67,9 @@ export default function Habits() {
                 />
             )}
 
-            <ul style={styles.habitList}>
+            <ul className={styles.habitList}>
                 {habits.map((habit, index) => (
-                    <li style={styles.habitItem} key={index}>
+                    <li className={styles.habitItem} key={index}>
                         <input
                             type="checkbox"
                             checked={habit.isCompletedToday || false}
@@ -76,14 +77,14 @@ export default function Habits() {
                         />
                         <span
                             onClick={() => openEditModal(index)}
-                            style={styles.habitText}
+                            className={styles.habitText}
                         >
                             {habit.title}
                         </span>
 
                         <button
                             onClick={() => deleteHabit(index)}
-                            style={styles.deleteButton}
+                            className={styles.deleteButton}
                         >
                             Delete
                         </button>
@@ -93,102 +94,3 @@ export default function Habits() {
         </div>
     )
 }
-
-const styles = {
-    container: {
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-    },
-
-    addBox: {
-        display: "flex",
-        marginBottom: "25px",
-    },
-
-    input: {
-        width: "280px",
-        padding: "11px 16px",
-        border: "2px solid #e6b98f",
-        borderRadius: "999px 0 0 999px",
-        fontSize: "18px",
-        outline: "none",
-        background: "rgba(255, 255, 255, 0.95)",
-        color: "#3b3028",
-    },
-
-    addButton: {
-        padding: "11px 20px",
-        border: "2px solid #e6b98f",
-        borderLeft: "none",
-        borderRadius: "0 999px 999px 0",
-        background: "#f4a261",
-        color: "white",
-        fontSize: "18px",
-        fontWeight: "700",
-        cursor: "pointer",
-    },
-
-    habitList: {
-        listStyle: "none",
-        paddingLeft: 0,
-        width: "520px",
-        maxWidth: "90%",
-    },
-
-    habitItem: {
-        display: "flex",
-        alignItems: "center",
-        gap: "14px",
-        marginBottom: "12px",
-        padding: "12px 16px",
-        borderRadius: "20px",
-        background: "rgba(255, 255, 255, 0.55)",
-        boxShadow: "0 3px 10px rgba(90, 60, 30, 0.08)",
-    },
-
-    habitText: {
-        flex: 1,
-        textAlign: "center",
-        fontSize: "22px",
-        color: "#3b3028",
-        cursor: "pointer",
-    },
-
-    checkButton: {
-        padding: "8px 14px",
-        border: "none",
-        borderRadius: "999px",
-        background: "#ffffff",
-        color: "#8a4f32",
-        fontSize: "14px",
-        fontWeight: "700",
-        cursor: "pointer",
-        boxShadow: "0 2px 8px rgba(90, 60, 30, 0.10)",
-    },
-
-
-    doneButton: {
-        padding: "8px 14px",
-        border: "none",
-        borderRadius: "999px",
-        background: "#f4a261",
-        color: "white",
-        fontSize: "14px",
-        fontWeight: "700",
-        cursor: "pointer",
-        boxShadow: "0 2px 8px rgba(90, 60, 30, 0.10)",
-    },
-
-    deleteButton: {
-        padding: "8px 14px",
-        border: "none",
-        borderRadius: "999px",
-        background: "#ffe4d1",
-        color: "#8a4f32",
-        fontSize: "14px",
-        fontWeight: "700",
-        cursor: "pointer",
-    },
-};
