@@ -25,7 +25,7 @@ export default function Habits() {
 
     const openEditModal = (index) => {
         setModalMode("edit");
-        setModalText(habits[index].text);
+        setModalText(habits[index].title);
         setEditingIndex(index);
         setIsModalOpen(true);
     }
@@ -71,14 +71,14 @@ export default function Habits() {
                     <li style={styles.habitItem} key={index}>
                         <input
                             type="checkbox"
-                            checked={habit.completed}
+                            checked={habit.isCompletedToday || false}
                             onChange={() => toggleHabit(index)}
                         />
                         <span
                             onClick={() => openEditModal(index)}
                             style={styles.habitText}
                         >
-                            {habit.text}
+                            {habit.title}
                         </span>
 
                         <button
