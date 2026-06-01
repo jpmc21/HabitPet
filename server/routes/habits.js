@@ -1,10 +1,6 @@
-
 const express = require("express");
 const router = express.Router();
 const Habit = require("../models/Habit").model; // Adjust path as needed
-
-const auth = require('../middleware/auth'); 
-router.use(auth); 
 
 
 // POST /api/habits - create a new habit

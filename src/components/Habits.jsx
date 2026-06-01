@@ -69,7 +69,7 @@ export default function Habits() {
 
             <ul className={styles.habitList}>
                 {habits.map((habit, index) => (
-                    <li className={styles.habitItem} key={index}>
+                    <li className={styles.habitItem} key={habit.id || index}>
                         <input
                             type="checkbox"
                             checked={habit.isCompletedToday || false}

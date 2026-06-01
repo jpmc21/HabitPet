@@ -3,11 +3,9 @@ const router = express.Router();
 
 // used AI to figure out how to import these
 const User = require('../models/User');
-const auth = require('../middleware/auth');
-router.use(auth); 
 
 // GET /api/pet - get the pet info when user logged in
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     // use AI, prompt: "how mongoose find by id and only get certain fields"
     const user = await User.findById(req.userId).select('pet points username');
@@ -19,7 +17,7 @@ router.get('/', auth, async (req, res) => {
 });
 
 // POST /api/pet/feed - costs 15 points, adds 30 fullness
-router.post('/feed', auth, async (req, res) => {
+router.post('/feed', async (req, res) => {
   try {
     const user = await User.findById(req.userId);
 
@@ -56,7 +54,7 @@ router.post('/feed', auth, async (req, res) => {
 
 // POST /api/pet/interact - user clicks the pet, mood goes happy
 // the 1 min timer back to neutral is handled on the frontend
-router.post('/interact', auth, async (req, res) => {
+router.post('/interact', async (req, res) => {
   try {
     const user = await User.findById(req.userId);
 
