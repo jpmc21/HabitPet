@@ -77,7 +77,7 @@ export default function Habits() {
                         />
                         <span
                             onClick={() => openEditModal(index)}
-                            className={styles.habitText}
+                            className={`${styles.habitText} ${habit.isCompletedToday ? styles.completed : ""}`}
                         >
                             {habit.title}
                         </span>
