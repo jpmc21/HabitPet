@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react"
 import { API_URL } from "../globals"
-import styles from "./Habits.module.css" 
+import styles from "./InfoBar.module.css"
 
 export default function InfoBar({ token }) {
   const [userInfo, setUserInfo] = useState(null)
 
-  // get the user info for the top bar
   useEffect(() => {
     async function getUserInfo() {
       try {
@@ -20,7 +19,6 @@ export default function InfoBar({ token }) {
         if (data.success) {
           setUserInfo(data)
         }
-
       } catch (err) {
         console.log("info bar not working", err)
       }
@@ -31,13 +29,12 @@ export default function InfoBar({ token }) {
 
   if (!userInfo) {
     return (
-      <div style={styles.bar}>
+      <div className={styles.bar}>
         Loading info...
       </div>
     )
   }
 
-  // pet level number looks weird so I use words here
   let petName = "New pet"
 
   if (userInfo.petLevel === 1) {
@@ -72,4 +69,3 @@ export default function InfoBar({ token }) {
     </div>
   )
 }
-

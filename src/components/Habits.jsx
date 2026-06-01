@@ -1,8 +1,7 @@
 import { useState } from "react"
 import { useHabits } from "../hooks/useHabits";
 import HabitModal from "./HabitModal";
-import styles from "./Habits.module.css" 
-
+import styles from "./Habits.module.css";
 
 export default function Habits() {
     const {
@@ -11,10 +10,10 @@ export default function Habits() {
         deleteHabit,
         editHabit,
         toggleHabit,
-        } = useHabits();
+    } = useHabits();
 
-    const[isModalOpen, setIsModalOpen] =useState(false);
-    const[modalText, setModalText] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalText, setModalText] = useState("");
     const [modalMode, setModalMode] = useState("add");
     const [editingIndex, setEditingIndex] = useState(null);
 
@@ -25,7 +24,7 @@ export default function Habits() {
         setIsModalOpen(true);
     }
 
-   const openEditModal = (index) => {
+    const openEditModal = (index) => {
         setModalMode("edit");
         setModalText(habits[index].title);
         setEditingIndex(index);
@@ -39,55 +38,55 @@ export default function Habits() {
     }
 
     const handleSaveHabit = () => {
-    if (modalText.trim() === "") return;
+        if (modalText.trim() === "") return;
 
-    if (modalMode === "add") {
-    addHabit(modalText);
-    } else {
-    editHabit(editingIndex, modalText);
-    }
+        if (modalMode === "add") {
+            addHabit(modalText);
+        } else {
+            editHabit(editingIndex, modalText);
+        }
 
-    closeModal();
+        closeModal();
     }
 
     return (
-    <div>
-        <h1>My Habits</h1>
-        
-        <button onClick={openAddModal}>
-            Add Habit
-        </button>
+        <div>
+            <h1>My Habits</h1>
 
-        {isModalOpen && (
-        <HabitModal
-            mode={modalMode}
-            text={modalText}
-            setText={setModalText}
-            onSave={handleSaveHabit}
-            onCancel={closeModal}
-        />
-      )}
+            <button className={styles.addButton} onClick={openAddModal}>
+                Add Habit
+            </button>
 
-        <ul className={styles.habitList}>
-            {habits.map((habit, index) => (
-            <li className={styles.habitItem} key={habit.id}>
-                <input
-                    type="checkbox"
-                    checked={habit.isCompletedToday || false}
-                    onChange={() => toggleHabit(index)}
+            {isModalOpen && (
+                <HabitModal
+                    mode={modalMode}
+                    text={modalText}
+                    setText={setModalText}
+                    onSave={handleSaveHabit}
+                    onCancel={closeModal}
                 />
-                <span
-                    onClick={() => openEditModal(index)}
-                    className={styles.habitText}
-                >
-                    {habit.title}
-                </span>
+            )}
+
+            <ul className={styles.habitList}>
+                {habits.map((habit, index) => (
+                    <li className={styles.habitItem} key={habit.id || index}>
+                        <input
+                            type="checkbox"
+                            checked={habit.isCompletedToday || false}
+                            onChange={() => toggleHabit(index)}
+                        />
+                        <span
+                            onClick={() => openEditModal(index)}
+                            className={styles.habitText}
+                        >
+                            {habit.title}
+                        </span>
 
                         <button
                             onClick={() => deleteHabit(index)}
                             className={styles.deleteButton}
                         >
-                            DLT
+                            Delete
                         </button>
                     </li>
                 ))}
@@ -95,4 +94,3 @@ export default function Habits() {
         </div>
     )
 }
-
