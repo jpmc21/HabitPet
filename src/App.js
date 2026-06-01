@@ -6,6 +6,8 @@ import Register from './components/Register'
 import { useState, useEffect } from 'react'
 import InfoBar from './components/InfoBar'
 import { API_URL } from './globals'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './App.css'
 
@@ -80,37 +82,37 @@ function App() {
     setToken(null)
     setPage('login')
   }
+let view;
 
   if (isvalidating) {
-    return (
+    view =(
       <div className="App">
         <header className="App-header">
           <h2>Loading Habit...</h2>
         </header>
       </div>
-    )
-  }
+    );
+ 
 
   // not logged in yet, show login or register
-  if (!token) {
+    }else if (!token) {
     if (page === 'register') {
-      return (
+      view = (
         <Register
           onRegister={handleRegister}
           switchToLogin={function () { setPage('login') }}
         />
-      )
-    }
-    return (
+      );
+    }else { view = (
       <Login
         onLogin={handleLogin}
         switchToRegister={function () { setPage('register') }}
       />
-    )
-  }
+    );
+  }  
 
   // logged in, show main app
-  return (
+}else { view = (
     <div className="App">
       <InfoBar token={token} />
       <header className="App-header">
@@ -119,7 +121,15 @@ function App() {
         <PetCard />
       </header>
     </div>
-  )
+  );
 }
 
-export default App
+return (
+  <>  
+  <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" />
+  {view}
+  </>
+);
+}
+
+export default App;
