@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useHabits } from "../hooks/useHabits";
 import HabitModal from "./HabitModal";
+import styles from "./Habits.module.css" 
 
 
 export default function Habits() {
@@ -67,9 +68,9 @@ export default function Habits() {
         />
       )}
 
-        <ul style={styles.habitList}>
+        <ul className={styles.habitList}>
             {habits.map((habit, index) => (
-            <li style={styles.habitItem} key={habit.id}>
+            <li className={styles.habitItem} key={habit.id}>
                 <input
                     type="checkbox"
                     checked={habit.isCompletedToday || false}
@@ -77,14 +78,14 @@ export default function Habits() {
                 />
                 <span
                     onClick={() => openEditModal(index)}
-                    style={styles.habitText}
+                    className={styles.habitText}
                 >
                     {habit.title}
                 </span>
 
                         <button
                             onClick={() => deleteHabit(index)}
-                            style={styles.deleteButton}
+                            className={styles.deleteButton}
                         >
                             DLT
                         </button>
@@ -95,26 +96,3 @@ export default function Habits() {
     )
 }
 
-const styles = {
-    habitList: {
-        listStyle: "none",
-        paddingLeft: 0,
-    },
-
-    habitItem: {
-        display: "flex",
-        alignItems: "center",
-        gap: "12px",
-        marginBottom: "10px",
-    },
-
-    habitText: {
-        minWidth: "150px",
-        textAlign: "left",
-        cursor: "pointer",
-    },
-
-    deleteButton: {
-        marginLeft: "20px",
-    },
-};
