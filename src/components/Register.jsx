@@ -4,21 +4,23 @@ import { API_URL } from '../globals'
 import styles from "./Register.module.css" 
 import { toast } from 'react-toastify';
 
+
 // register page
 // user can make a new account here
 export default function Register({ onRegister, switchToLogin }) {
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  //const [error, setError] = useState('')
+  const [error, setError] = useState('')
 
   async function handleSubmit(e) {
     e.preventDefault()
-  //  setError('')
+       setError('')
 
     // dont let them use a super short password
     if (password.length < 6) {
-      toast.error('Password must be at least 6 characters')
+      toast.error('Password must be at least 6 characters');
+      setError('Password must be at least 6 characters');
       return
     }
 
@@ -38,9 +40,11 @@ export default function Register({ onRegister, switchToLogin }) {
       // if backend sent an error message, show it
       // otherwise show a generic one
       if (err.response && err.response.data && err.response.data.message) {
-        toast.error(err.response.data.message)
+     //   toast.error(err.response.data.message)
+        setError(err.response.data.message);
       } else {
-        toast.error('Something went wrong, try again')
+     //   toast.error('Something went wrong, try again')
+        setError('Something went wrong, try again');
       }
     }
   }
@@ -75,7 +79,7 @@ export default function Register({ onRegister, switchToLogin }) {
           required
         />
 
-
+        {error !== '' && <p className={styles.error}>{error}</p>}
         <button className={styles.button} type="submit">
           Create Account
         </button>

@@ -11,12 +11,12 @@ import { toast } from 'react-toastify';
 export default function Login({ onLogin, switchToRegister }) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  //const [error, setError] = useState('')
+  const [error, setError] = useState('')
 
   async function handleSubmit(e) {
     // stop page refresh
     e.preventDefault()
-
+    setError('')
     try {
       // send username and password to backend
       const res = await axios.post(`${API_URL}/api/auth/login`, {
@@ -36,9 +36,11 @@ toast.success("Logged in successfully!");
     } catch (err) {
       // show backend error if backend sends one
       if (err.response && err.response.data && err.response.data.message) {
-        toast.error(err.response.data.message);
+       // toast.error(err.response.data.message);
+        setError(err.response.data.message);
       } else {
-        toast.error('Something went wrong, try again');
+       // toast.error('Something went wrong, try again');
+        setError('Something went wrong, try again');
       }
     }
   }
@@ -74,7 +76,7 @@ toast.success("Logged in successfully!");
           onChange={handlePasswordChange}
           required
         />
-
+          {error !== '' && <p className={styles.error}>{error}</p>}
         <button className={styles.button} type="submit">
           Login
         </button>
