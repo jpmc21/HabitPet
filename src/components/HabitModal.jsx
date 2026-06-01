@@ -1,15 +1,15 @@
 export default function HabitModal({
-    mode,
-    text,
-    setText,
-    onSave,
-    onCancel
+  mode,
+  text,
+  setText,
+  onSave,
+  onCancel
 }) {
-    return (
+  return (
     <div style={styles.modalOverlay}>
       <div style={styles.modal}>
-         <h2 style={styles.modalHeader}>
-         {mode === "edit" ? "Edit Habit" : "Add Habit"}</h2>
+        <h2 style={styles.modalHeader}>
+          {mode === "edit" ? "Edit Habit" : "Add Habit"}</h2>
 
         <input
           type="text"
@@ -19,11 +19,11 @@ export default function HabitModal({
         />
 
         <div style={styles.buttonRow}>
-          <button onClick={onSave}>
+          <button data-testid="habit-modal-save-btn" onClick={onSave}>
             Save
           </button>
 
-          <button onClick={onCancel}>
+          <button data-testid="habit-modal-cancel-btn" onClick={onCancel}>
             Cancel
           </button>
         </div>
@@ -60,6 +60,6 @@ const styles = {
   },
 
   modalHeader: {
-  color: "black",
-},
+    color: "black",
+  },
 };

@@ -3,7 +3,7 @@ import { API_URL } from '../globals'
 import axios from 'axios'
 import background from '../assets/background.png'
 import teenHappy from '../assets/teen_happy.png'
-import styles from "./Login.module.css" 
+import styles from "./Login.module.css"
 
 // login page
 // user types username and password here
@@ -65,6 +65,7 @@ export default function Login({ onLogin, switchToRegister }) {
           placeholder="Username"
           value={username}
           onChange={handleUsernameChange}
+          data-testid="username-input"
           required
         />
 
@@ -74,20 +75,21 @@ export default function Login({ onLogin, switchToRegister }) {
           placeholder="Password"
           value={password}
           onChange={handlePasswordChange}
+          data-testid="password-input"
           required
         />
 
         {/* only show error when there is one */}
         {error !== '' && <p className={styles.error}>{error}</p>}
 
-        <button className={styles.button} type="submit">
+        <button className={styles.button} type="submit" data-testid="login-btn">
           Login
         </button>
       </form>
 
       <p className={styles.switchText}>
         No account?{' '}
-        <span className={styles.link} onClick={switchToRegister}>
+        <span className={styles.link} onClick={switchToRegister} data-testid="register-link">
           Register here
         </span>
       </p>

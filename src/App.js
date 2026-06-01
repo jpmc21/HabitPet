@@ -114,7 +114,9 @@ function App() {
     <div className="App">
       <InfoBar token={token} />
       <header className="App-header">
-        <button onClick={handleLogout}>Logout</button>
+        <button data-testid="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
         <Habits />
         <PetCard />
       </header>
