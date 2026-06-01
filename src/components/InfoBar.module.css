@@ -1,0 +1,24 @@
+.bar {
+    width: 100%;
+    padding: 14px 12px;
+    background: linear-gradient(90deg, #fde7c8, #fcefdd);
+    color: #3b3028;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    font-size: 16px;
+    border-bottom: 1px solid #f3c89f;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.88);
+    padding: 8px 14px;
+    border-radius: 18px;
+    box-shadow: 0 3px 10px rgba(90, 60, 30, 0.10);
+}
