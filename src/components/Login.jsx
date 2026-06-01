@@ -4,20 +4,18 @@ import axios from 'axios'
 import background from '../assets/background.png'
 import teenHappy from '../assets/teen_happy.png'
 import styles from "./Login.module.css" 
+import { toast } from 'react-toastify';
 
 // login page
 // user types username and password here
 export default function Login({ onLogin, switchToRegister }) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
+  //const [error, setError] = useState('')
 
   async function handleSubmit(e) {
     // stop page refresh
     e.preventDefault()
-
-    // clear old error
-    setError('')
 
     try {
       // send username and password to backend
@@ -32,15 +30,15 @@ export default function Login({ onLogin, switchToRegister }) {
       // used AI to understand localStorage here
       // save token in browser
       localStorage.setItem('token', token)
-
+toast.success("Logged in successfully!");
       // send the token back to App.js
       onLogin(token)
     } catch (err) {
       // show backend error if backend sends one
       if (err.response && err.response.data && err.response.data.message) {
-        setError(err.response.data.message)
+        toast.error(err.response.data.message);
       } else {
-        setError('Something went wrong, try again')
+        toast.error('Something went wrong, try again');
       }
     }
   }
@@ -76,9 +74,6 @@ export default function Login({ onLogin, switchToRegister }) {
           onChange={handlePasswordChange}
           required
         />
-
-        {/* only show error when there is one */}
-        {error !== '' && <p className={styles.error}>{error}</p>}
 
         <button className={styles.button} type="submit">
           Login
