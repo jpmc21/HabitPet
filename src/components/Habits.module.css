@@ -57,3 +57,8 @@
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(90, 60, 30, 0.10);
 }
+.completed {
+    text-decoration: line-through;
+    opacity: 0.6;
+    color: #9a7b64;
+}
