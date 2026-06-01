@@ -41,11 +41,12 @@ const styles = {
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: "rgba(0,0,0,0.65)",
+        backgroundColor: "rgba(0, 0, 0, 0.65)",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         zIndex: 1000,
+        padding: "0 40px",
     },
 
     modal: {
@@ -55,21 +56,30 @@ const styles = {
         display: "flex",
         flexDirection: "column",
         gap: "22px",
+        width: "650px",  
         minWidth: "420px",
-        boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
+        boxShadow: "0 8px 24px rgba(0, 0, 0, 0.18)",
+        zIndex: 1001,
+        
     },
 
     modalHeader: {
-        fontSize: "28px",
+        color: "black",
+        fontSize: "42px",
         textAlign: "center",
         margin: 0,
     },
 
     input: {
-        padding: "12px 18px",
+        width: "100%",
+        boxSizing: "border-box",
+        padding: "14px 20px",
         border: "2px solid #e6b98f",
         borderRadius: "999px",
-        fontSize: "18px",
+        fontSize: "20px",
+        outline: "none",
+        textAlign: "center",
+        
     },
 
     buttonRow: {
@@ -79,22 +89,26 @@ const styles = {
     },
 
     saveButton: {
-        padding: "10px 20px",
+        padding: "9px 18px",
         border: "none",
         borderRadius: "999px",
         background: "#f4a261",
         color: "white",
+        fontSize: "16px",
         fontWeight: "700",
         cursor: "pointer",
     },
 
     cancelButton: {
-        padding: "10px 20px",
+        padding: "9px 18px",
         border: "none",
         borderRadius: "999px",
-        background: "#fff",
+        background: "#ffffff",
         color: "#8a4f32",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+        fontSize: "16px",
+        fontWeight: "700",
         cursor: "pointer",
+        boxShadow: "0 2px 8px rgba(90, 60, 30, 0.10)",
     },
+    
 };
