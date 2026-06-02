@@ -24,8 +24,11 @@ export default function InfoBar({ token, hasOutdatedData, setHasOutdatedData }) 
         console.log("info bar not working", err)
       }
     }
-    getUserInfo()
-    setHasOutdatedData(false)
+
+    if (hasOutdatedData) {
+      getUserInfo()
+      setHasOutdatedData(false)
+    }
   }, [token, hasOutdatedData, setHasOutdatedData])
 
 

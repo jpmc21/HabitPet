@@ -21,7 +21,7 @@ function App() {
   const [page, setPage] = useState('login')
   const [tab, setTab] = useState('pet')
   const [isvalidating, setIsValidating] = useState(true)
-  const [hasOutdatedData, setHasOutdatedData] = useState(false)
+  const [hasOutdatedData, setHasOutdatedData] = useState(true)
 
   const dataChanged = () => {
     setHasOutdatedData(true);
@@ -87,6 +87,7 @@ function App() {
     localStorage.removeItem('token')
     setToken(null)
     setPage('login')
+    setHasOutdatedData(true)
   }
   let view;
 
