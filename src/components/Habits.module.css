@@ -1,21 +1,67 @@
 .habitList {
     list-style: none;
     padding-left: 0;
+    width: 520px;
+    max-width: 90%;
 }
 
 .habitItem {
-    display: flex;
+    display: grid;
+    grid-template-columns: 32px 1fr auto;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 10px;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 12px 16px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 3px 10px rgba(90, 60, 30, 0.08);
 }
 
+.habitItem input[type="checkbox"] {
+    margin: 0;
+    padding: 0;
+    justify-self: center;
+}
 .habitText {
-    min-width: 150px;
-    text-align: left;
+    min-width: 0;
+    font-size: 22px;
+    color: #3b3028;
     cursor: pointer;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.addButton {
+    padding: 11px 20px;
+    border: 2px solid #e6b98f;
+    border-radius: 999px;
+    background: #f4a261;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 25px;
 }
 
 .deleteButton {
-    margin-left: 20px;
+    justify-self: end;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #8a4f32;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(90, 60, 30, 0.10);
+}
+.completed {
+    text-decoration: line-through;
+    opacity: 0.6;
+    color: #9a7b64;
 }

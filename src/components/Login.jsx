@@ -4,6 +4,7 @@ import axios from 'axios'
 import background from '../assets/background.png'
 import teenHappy from '../assets/teen_happy.png'
 import styles from "./Login.module.css"
+import { toast } from 'react-toastify';
 
 // login page
 // user types username and password here
@@ -15,10 +16,7 @@ export default function Login({ onLogin, switchToRegister }) {
   async function handleSubmit(e) {
     // stop page refresh
     e.preventDefault()
-
-    // clear old error
     setError('')
-
     try {
       // send username and password to backend
       const res = await axios.post(`${API_URL}/api/auth/login`, {
@@ -32,15 +30,17 @@ export default function Login({ onLogin, switchToRegister }) {
       // used AI to understand localStorage here
       // save token in browser
       localStorage.setItem('token', token)
-
+      toast.success("Logged in successfully!");
       // send the token back to App.js
       onLogin(token)
     } catch (err) {
       // show backend error if backend sends one
       if (err.response && err.response.data && err.response.data.message) {
-        setError(err.response.data.message)
+        // toast.error(err.response.data.message);
+        setError(err.response.data.message);
       } else {
-        setError('Something went wrong, try again')
+        // toast.error('Something went wrong, try again');
+        setError('Something went wrong, try again');
       }
     }
   }

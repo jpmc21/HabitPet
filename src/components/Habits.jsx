@@ -1,8 +1,7 @@
 import { useState } from "react"
 import { useHabits } from "../hooks/useHabits";
 import HabitModal from "./HabitModal";
-import styles from "./Habits.module.css"
-
+import styles from "./Habits.module.css";
 
 export default function Habits() {
     const {
@@ -54,7 +53,7 @@ export default function Habits() {
         <div>
             <h1>My Habits</h1>
 
-            <button onClick={openAddModal}>
+            <button className={styles.addButton} onClick={openAddModal}>
                 Add Habit
             </button>
 
@@ -70,7 +69,7 @@ export default function Habits() {
 
             <ul className={styles.habitList}>
                 {habits.map((habit, index) => (
-                    <li className={styles.habitItem} key={habit.id}>
+                    <li className={styles.habitItem} key={habit.id || index}>
                         <input
                             data-testid={`checkbox-${index}-input`}
                             type="checkbox"
@@ -80,7 +79,7 @@ export default function Habits() {
                         <span
                             data-testid={`habit-text-${index}`}
                             onClick={() => openEditModal(index)}
-                            className={styles.habitText}
+                            className={`${styles.habitText} ${habit.isCompletedToday ? styles.completed : ""}`}
                         >
                             {habit.title}
                         </span>
@@ -90,7 +89,7 @@ export default function Habits() {
                             onClick={() => deleteHabit(index)}
                             className={styles.deleteButton}
                         >
-                            DLT
+                            Delete
                         </button>
                     </li>
                 ))}
@@ -98,4 +97,3 @@ export default function Habits() {
         </div>
     )
 }
-

@@ -2,6 +2,8 @@ import { useState } from 'react'
 import axios from 'axios'
 import { API_URL } from '../globals'
 import styles from "./Register.module.css"
+import { toast } from 'react-toastify';
+
 
 // register page
 // user can make a new account here
@@ -17,7 +19,8 @@ export default function Register({ onRegister, switchToLogin }) {
 
     // dont let them use a super short password
     if (password.length < 6) {
-      setError('Password must be at least 6 characters')
+      toast.error('Password must be at least 6 characters');
+      setError('Password must be at least 6 characters');
       return
     }
 
@@ -28,6 +31,7 @@ export default function Register({ onRegister, switchToLogin }) {
         username: username,
         password: password,
       })
+      toast.success("Account created successfully! Please log in.");
 
       // if it worked, go back to login page
       onRegister()
@@ -36,9 +40,11 @@ export default function Register({ onRegister, switchToLogin }) {
       // if backend sent an error message, show it
       // otherwise show a generic one
       if (err.response && err.response.data && err.response.data.message) {
-        setError(err.response.data.message)
+        //   toast.error(err.response.data.message)
+        setError(err.response.data.message);
       } else {
-        setError('Something went wrong, try again')
+        //   toast.error('Something went wrong, try again')
+        setError('Something went wrong, try again');
       }
     }
   }
@@ -75,8 +81,7 @@ export default function Register({ onRegister, switchToLogin }) {
           required
         />
 
-        <p className={styles.error}>{error || '\u00A0'}</p>
-
+        {error !== '' && <p className={styles.error}>{error}</p>}
         <button className={styles.button} data-testid="register-btn" type="submit">
           Create Account
         </button>
