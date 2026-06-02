@@ -83,20 +83,20 @@ function App() {
     setToken(null)
     setPage('login')
   }
-let view;
+  let view;
 
   if (isvalidating) {
-    view =(
+    view = (
       <div className="App">
         <header className="App-header">
           <h2>Loading Habit...</h2>
         </header>
       </div>
     );
- 
 
-  // not logged in yet, show login or register
-    }else if (!token) {
+
+    // not logged in yet, show login or register
+  } else if (!token) {
     if (page === 'register') {
       view = (
         <Register
@@ -104,48 +104,50 @@ let view;
           switchToLogin={function () { setPage('login') }}
         />
       );
-    }else { view = (
-      <Login
-        onLogin={handleLogin}
-        switchToRegister={function () { setPage('register') }}
-      />
-    );
-  }  
+    } else {
+      view = (
+        <Login
+          onLogin={handleLogin}
+          switchToRegister={function () { setPage('register') }}
+        />
+      );
+    }
 
-  // logged in, show main app
-}else { view = (
-    <div className="App">
-      <InfoBar token={token} />
-      <header className="App-header">
-        <div className="tabs">
-        <button onClick={() => setTab('habits')} className={tab === 'habits' ? 'tabActive' : 'tab'}>Habits</button>
-        <button onClick={() => setTab('pet')}   className={tab === 'pet'    ? 'tabActive' : 'tab'}>Pet</button>
-        <button onClick={() => setTab('stats')}  className={tab === 'stats'  ? 'tabActive' : 'tab'}>Stats</button>
+    // logged in, show main app
+  } else {
+    view = (
+      <div className="App" data-testid="app-container">
+        <InfoBar token={token} />
+        <header className="App-header">
+          <div className="tabs">
+            <button onClick={() => setTab('habits')} className={tab === 'habits' ? 'tabActive' : 'tab'}>Habits</button>
+            <button onClick={() => setTab('pet')} className={tab === 'pet' ? 'tabActive' : 'tab'}>Pet</button>
+            <button onClick={() => setTab('stats')} className={tab === 'stats' ? 'tabActive' : 'tab'}>Stats</button>
+          </div>
+
+
+          {tab === 'pet' && <PetCard token={token} />}
+          {tab === 'habits' && <Habits token={token} />}
+          {tab === 'stats' && <Stats token={token} />}
+
+
+
+          <button data-testid="logout-btn" onClick={handleLogout}>
+            Logout
+          </button>
+
+        </header>
+
       </div>
-        
-        
-      {tab === 'pet'    && <PetCard token={token} />}
-      {tab === 'habits' && <Habits token={token} />}
-      {tab === 'stats'  && <Stats token={token} />}
+    );
+  }
 
-
-
-        <button data-testid="logout-btn" onClick={handleLogout}>
-          Logout
-        </button>
-
-      </header>
-      
-    </div>
+  return (
+    <>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" limit={3} />
+      {view}
+    </>
   );
-}
-
-return (
-  <>  
-  <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" limit={3}/>
-  {view}
-  </>
-);
 }
 
 export default App;
