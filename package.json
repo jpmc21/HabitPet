@@ -21,7 +21,7 @@
   "scripts": {
     "start": "node ./scripts/checkenv.js && node ./scripts/genport.js && react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "npx playwright test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
