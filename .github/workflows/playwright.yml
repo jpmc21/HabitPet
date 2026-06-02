@@ -8,6 +8,8 @@ env:
   API_URL: http://localhost:3000/api
   SERVER_PORT: 5000
   PORT: 3000
+  MONGO_URI: ${ secrets.MONGO_URI }
+  JWT_SECRET: ${ secrets.JWT_SECRET }
 jobs:
   test:
     timeout-minutes: 60
