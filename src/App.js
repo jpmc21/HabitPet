@@ -3,6 +3,7 @@ import PetCard from './components/PetCard'
 import Habits from './components/Habits'
 import Login from './components/Login'
 import Register from './components/Register'
+import Stats from './components/Stats'
 import { useState, useEffect } from 'react'
 import InfoBar from './components/InfoBar'
 import { API_URL } from './globals'
@@ -125,7 +126,7 @@ let view;
         
       {tab === 'pet'    && <PetCard token={token} />}
       {tab === 'habits' && <Habits token={token} />}
-      {tab === 'stats'  && <div>tbd</div>}
+      {tab === 'stats'  && <Stats token={token} />}
 
 <button onClick={handleLogout}>Logout</button>
       </header>
