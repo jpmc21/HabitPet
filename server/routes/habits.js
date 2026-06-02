@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Habit = require("../models/Habit").model; // Adjust path as needed
+const User = require("../models/User");
 
 
 // POST /api/habits - create a new habit
@@ -180,6 +181,8 @@ router.post("/:id/complete", async (req, res) => {
       userId: req.userId
     });
 
+    const user = await User.findById(req.userId);
+
     if (!habit) {
       return res.status(404).json({ error: "Habit not found" });
     }
@@ -205,6 +208,9 @@ router.post("/:id/complete", async (req, res) => {
     habit.lastCompletedAt = now;
     habit.exp += habit.reward;
 
+    user.points += habit.reward;
+
+    await user.save();
     await habit.save();
 
     res.json({
