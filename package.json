@@ -23,7 +23,10 @@
     "start": "node ./scripts/checkenv.js && node ./scripts/genport.js && react-scripts start",
     "build": "react-scripts build",
     "test": "npx playwright test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "frontend": "npm run start",
+    "backend": "node ./server/index.js",
+    "dev:all": "concurrently \"npm run backend\" \"npm run frontend\""
   },
   "eslintConfig": {
     "extends": [
@@ -45,6 +48,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0",
-    "@types/node": "^25.9.1"
+    "@types/node": "^25.9.1",
+    "concurrently": "^10.0.1"
   }
 }
