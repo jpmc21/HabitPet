@@ -71,12 +71,14 @@ export default function Habits({ dataChanged }) {
             <ul className={styles.habitList}>
                 {habits.map((habit, index) => (
                     <li className={styles.habitItem} key={habit.id || index}>
-                        <input
-                            data-testid={`checkbox-${index}-input`}
-                            type="checkbox"
-                            checked={habit.isCompletedToday || false}
-                            onChange={() => toggleHabit(index)}
-                        />
+                        <button
+                            data-testid={`toggle-btn-${index}`}
+                            onClick={() => toggleHabit(index)}
+                            className={habit.isCompletedToday ? styles.undoBtn : styles.doneBtn}
+                        >
+                            {habit.isCompletedToday ? "Undo" : "Done"}
+                        </button>
+                    
                         <span
                             data-testid={`habit-text-${index}`}
                             onClick={() => openEditModal(index)}
