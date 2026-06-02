@@ -21,6 +21,11 @@ function App() {
   const [page, setPage] = useState('login')
   const [tab, setTab] = useState('pet')
   const [isvalidating, setIsValidating] = useState(true)
+  const [hasOutdatedData, setHasOutdatedData] = useState(false)
+
+  const dataChanged = () => {
+    setHasOutdatedData(true);
+  }
 
   // useEffect(() => {
   //   if (!token) {
@@ -117,7 +122,7 @@ function App() {
   } else {
     view = (
       <div className="App" data-testid="app-container">
-        <InfoBar token={token} />
+        <InfoBar token={token} hasOutdatedData={hasOutdatedData} setHasOutdatedData={setHasOutdatedData} />
         <header className="App-header">
           <div className="tabs">
             <button onClick={() => setTab('habits')} className={tab === 'habits' ? 'tabActive' : 'tab'}>Habits</button>
@@ -126,9 +131,9 @@ function App() {
           </div>
 
 
-          {tab === 'pet' && <PetCard token={token} />}
-          {tab === 'habits' && <Habits token={token} />}
-          {tab === 'stats' && <Stats token={token} />}
+          {tab === 'pet' && <PetCard token={token} dataChanged={dataChanged} />}
+          {tab === 'habits' && <Habits token={token} dataChanged={dataChanged} />}
+          {tab === 'stats' && <Stats token={token} dataChanged={dataChanged} />}
 
 
 

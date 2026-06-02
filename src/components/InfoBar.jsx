@@ -2,8 +2,9 @@ import { useState, useEffect } from "react"
 import { API_URL } from "../globals"
 import styles from "./InfoBar.module.css"
 
-export default function InfoBar({ token }) {
+export default function InfoBar({ token, hasOutdatedData, setHasOutdatedData }) {
   const [userInfo, setUserInfo] = useState(null)
+
 
   useEffect(() => {
     async function getUserInfo() {
@@ -23,9 +24,10 @@ export default function InfoBar({ token }) {
         console.log("info bar not working", err)
       }
     }
-
     getUserInfo()
-  }, [token])
+    setHasOutdatedData(false)
+  }, [token, hasOutdatedData, setHasOutdatedData])
+
 
   if (!userInfo) {
     return (
