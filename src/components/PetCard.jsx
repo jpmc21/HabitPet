@@ -12,7 +12,7 @@ import adult_neutral from '../assets/adult_neutral.png'
 import adult_happy from '../assets/adult_happy.png'
 import adult_sad from '../assets/adult_sad.png'
 import background from '../assets/background.png'
-import styles from "./PetCard.module.css" 
+import styles from "./PetCard.module.css"
 
 // fake data until backend is ready
 // change level and mood here to test different images
@@ -144,7 +144,7 @@ export default function PetCard() {
         onClick={handleInteract}
       />
 
-     <p className={styles.message}>{message || '\u00A0'}</p>
+      <p className={styles.message}>{message || '\u00A0'}</p>
 
       <p className={styles.label}>Level {pet.level}</p>
 
@@ -155,7 +155,7 @@ export default function PetCard() {
           <div style={{
             width: pet.fullness + '%',
             height: '100%',
-            background: fullnessColor,  
+            background: fullnessColor,
             borderRadius: '6px',
             transition: 'width 0.3s',
           }} />
@@ -168,7 +168,7 @@ export default function PetCard() {
         <span className={styles.barLabel}>EXP</span>
         <div className={styles.barBg}>
           <div style={{
-            width: pet.exp + '%',  
+            width: pet.exp + '%',
             height: '100%',
             background: '#57cc99',
             borderRadius: '6px',
@@ -181,7 +181,7 @@ export default function PetCard() {
       <p className={styles.label}>Mood: {pet.mood}</p>
       <p className={styles.label}>Points: {points}</p>
 
-      <button className={styles.button} onClick={handleFeed}>
+      <button className={styles.button} data-testid="feed-btn" onClick={handleFeed}>
         Feed (5 pts)
       </button>
 

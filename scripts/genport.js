@@ -7,11 +7,11 @@ const assert = require("assert");
 const path = require("path");
 
 require("dotenv").config();
-const { PORT } = process.env;
+const { SERVER_PORT } = process.env;
 
-assert(PORT, "PORT environment variable is not defined");
+assert(SERVER_PORT, "PORT environment variable is not defined");
 const parent = path.dirname(__dirname);
 const port = path.join(path.join(parent, "src"), "port.js");
 
-console.log(`Generating ${port} with PORT=${PORT}`);
-fs.writeFileSync(port, `export const PORT = ${PORT};`);
+console.log(`Generating ${port} with PORT=${SERVER_PORT}`);
+fs.writeFileSync(port, `export const PORT = ${SERVER_PORT};`);

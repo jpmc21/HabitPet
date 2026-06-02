@@ -23,7 +23,7 @@ app.use("/api/user", require("./routes/user"));
 //app.use("/api/leaderboard", require("./routes/leaderboard"));
 
 // Start the Server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.SERVER_PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

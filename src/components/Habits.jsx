@@ -71,11 +71,13 @@ export default function Habits() {
                 {habits.map((habit, index) => (
                     <li className={styles.habitItem} key={habit.id || index}>
                         <input
+                            data-testid={`checkbox-${index}-input`}
                             type="checkbox"
                             checked={habit.isCompletedToday || false}
                             onChange={() => toggleHabit(index)}
                         />
                         <span
+                            data-testid={`habit-text-${index}`}
                             onClick={() => openEditModal(index)}
                             className={`${styles.habitText} ${habit.isCompletedToday ? styles.completed : ""}`}
                         >
@@ -83,6 +85,7 @@ export default function Habits() {
                         </span>
 
                         <button
+                            data-testid={`delete-btn-${index}`}
                             onClick={() => deleteHabit(index)}
                             className={styles.deleteButton}
                         >

@@ -128,7 +128,12 @@ let view;
       {tab === 'habits' && <Habits token={token} />}
       {tab === 'stats'  && <Stats token={token} />}
 
-<button onClick={handleLogout}>Logout</button>
+
+
+        <button data-testid="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
+
       </header>
       
     </div>

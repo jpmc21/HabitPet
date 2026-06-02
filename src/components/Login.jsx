@@ -3,7 +3,7 @@ import { API_URL } from '../globals'
 import axios from 'axios'
 import background from '../assets/background.png'
 import teenHappy from '../assets/teen_happy.png'
-import styles from "./Login.module.css" 
+import styles from "./Login.module.css"
 import { toast } from 'react-toastify';
 
 // login page
@@ -30,16 +30,16 @@ export default function Login({ onLogin, switchToRegister }) {
       // used AI to understand localStorage here
       // save token in browser
       localStorage.setItem('token', token)
-toast.success("Logged in successfully!");
+      toast.success("Logged in successfully!");
       // send the token back to App.js
       onLogin(token)
     } catch (err) {
       // show backend error if backend sends one
       if (err.response && err.response.data && err.response.data.message) {
-       // toast.error(err.response.data.message);
+        // toast.error(err.response.data.message);
         setError(err.response.data.message);
       } else {
-       // toast.error('Something went wrong, try again');
+        // toast.error('Something went wrong, try again');
         setError('Something went wrong, try again');
       }
     }
@@ -65,6 +65,7 @@ toast.success("Logged in successfully!");
           placeholder="Username"
           value={username}
           onChange={handleUsernameChange}
+          data-testid="username-input"
           required
         />
 
@@ -74,17 +75,21 @@ toast.success("Logged in successfully!");
           placeholder="Password"
           value={password}
           onChange={handlePasswordChange}
+          data-testid="password-input"
           required
         />
-          {error !== '' && <p className={styles.error}>{error}</p>}
-        <button className={styles.button} type="submit">
+
+        {/* only show error when there is one */}
+        {error !== '' && <p className={styles.error}>{error}</p>}
+
+        <button className={styles.button} type="submit" data-testid="login-btn">
           Login
         </button>
       </form>
 
       <p className={styles.switchText}>
         No account?{' '}
-        <span className={styles.link} onClick={switchToRegister}>
+        <span className={styles.link} onClick={switchToRegister} data-testid="register-link">
           Register here
         </span>
       </p>
