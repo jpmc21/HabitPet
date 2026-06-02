@@ -19,6 +19,10 @@ mongoose.connect(process.env.MONGO_URI)
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/habits", require("./routes/habits"));
 app.use("/api/user", require("./routes/user"));
+
+if (process.env.NODE_ENV === "test") {
+  app.use("/api/testing", require("./routes/testing"));
+}
 //app.use("/api/pets", require("./routes/pet")); 
 //app.use("/api/leaderboard", require("./routes/leaderboard"));
 
