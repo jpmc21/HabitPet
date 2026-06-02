@@ -40,8 +40,6 @@ export default function HabitModal({
         Cancel
       </button>
     </div>
-      </div >
-    </div >
   );
 }
 
