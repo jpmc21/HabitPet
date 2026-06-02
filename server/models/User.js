@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema({
     // used AI, prompt: "how to store current time as default in mongoose"
     lastFed: { type: Date, default: Date.now }
   },
-
+  lastModifiedAt: { type: Date, required: true, default: Date.now },
 });
 
 const User = mongoose.model("User", UserSchema);

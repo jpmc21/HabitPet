@@ -5,6 +5,7 @@ import styles from "./Stats.module.css"
 import background from '../assets/background.png'
 
 
+
 export default function Stats({token}){
       const [userInfo, setUserInfo] = useState(null)
       const [habitStats, setHabitStats] = useState(null)
@@ -72,9 +73,9 @@ export default function Stats({token}){
 
 
 
-
 return (
-    <>
+<<<<<<< HEAD
+     <div className={styles.container} style={{ backgroundImage: `url(${background})` }}>
      <h1>Your Statistics</h1>
     <div>
     <h2> overview</h2>
@@ -110,6 +111,6 @@ return (
     <div>
        {/*here will be how many times youve completed your task in that veiws time frame*/} 
     </div>
-    </>
+     </div>
   )
 }

@@ -2,15 +2,16 @@ import { useState } from "react"
 import { useHabits } from "../hooks/useHabits";
 import HabitModal from "./HabitModal";
 import styles from "./Habits.module.css";
+import background from '../assets/background.png'
 
-export default function Habits() {
+export default function Habits({ dataChanged }) {
     const {
         habits,
         addHabit,
         deleteHabit,
         editHabit,
         toggleHabit,
-    } = useHabits();
+    } = useHabits(dataChanged);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalText, setModalText] = useState("");
@@ -50,7 +51,7 @@ export default function Habits() {
     }
 
     return (
-        <div>
+        <div className={styles.container} style={{ backgroundImage: `url(${background})` }}>
             <h1>My Habits</h1>
 
             <button className={styles.addButton} onClick={openAddModal}>

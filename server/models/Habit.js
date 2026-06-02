@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const HabitSchema = new mongoose.Schema({
+    lastModifiedAt: { type: Date, required: true, default: Date.now },
     startedAt: { type: Date, required: true, default: Date.now },
     finishedAt: { type: Date },
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
