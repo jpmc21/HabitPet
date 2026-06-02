@@ -1,6 +1,11 @@
 # Habit Pet
 
 ## Running
+To run the full stack:
+```bash
+npm run dev:all
+```
+
 To run the frontend:
 ```bash
 npm start
