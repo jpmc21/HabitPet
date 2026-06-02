@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const PetSchema = new mongoose.Schema({
+    lastModifiedAt: { type: Date, required: true, default: Date.now },
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     createdAt: { type: Date, default: Date.now },
     name: { type: String, required: true },
