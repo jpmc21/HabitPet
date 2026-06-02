@@ -190,7 +190,7 @@ router.post("/:id/complete", async (req, res) => {
     }
 
     const now = new Date();
-
+    habit.completions.push(now);
     // Check if streak should continue or reset
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);

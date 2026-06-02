@@ -95,6 +95,7 @@ return (
     </div>
     {/* here is where it is for individual habit where it toggles between week month and year to show how many times youve completed it  */}
         <h3> individual stat</h3>
+        
  <div >
         <button className={view ==='week' ? styles.toggleActive : styles.toggleBtn}
             onClick={() => setView('week')}
@@ -106,6 +107,9 @@ return (
             onClick={() => setView('year')}
         >Year</button>
 </div>
+    <div>
+       {/*here will be how many times youve completed your task in that veiws time frame*/} 
+    </div>
     </>
   )
 }

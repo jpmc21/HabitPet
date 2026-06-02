@@ -13,7 +13,8 @@ const HabitSchema = new mongoose.Schema({
     lastCompletedAt: { type: Date, default: null },                                         // ie. call mom once a week
     description: { type: String, required: false, trim: true, maxLength: 500 },
     reward: { type: Number, default: 10 },
-    exp: { type: Number, default: 0 }
+    exp: { type: Number, default: 0 },
+    completions: [{ type: Date }]  //track full history of completions for statpage
 });
 
 
