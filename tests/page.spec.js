@@ -43,12 +43,12 @@ const TEST_PASSWORD = 'testpassword';
 
 test.describe('Authentication', () => {
   test.afterEach(async ({ request }) => {
-    console.log(process.env.API_URI);
     const response = await request.delete(`${process.env.API_URI}api/testing/cleanup-user`, {
       data: { username: TEST_USERNAME }
     });
 
     expect(response.status()).not.toBe(500);
+    expect(response.status()).not.toBe(501);
   });
   test('can register a new account', async ({ page }) => {
     await page.goto('/');
