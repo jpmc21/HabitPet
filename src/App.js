@@ -18,7 +18,7 @@ function App() {
 
   // tracks which page to show when not logged in
   const [page, setPage] = useState('login')
-
+  const [tab, setTab] = useState('pet')
   const [isvalidating, setIsValidating] = useState(true)
 
   // useEffect(() => {
@@ -116,10 +116,20 @@ let view;
     <div className="App">
       <InfoBar token={token} />
       <header className="App-header">
-        <button onClick={handleLogout}>Logout</button>
-        <Habits />
-        <PetCard />
+        <div className="tabs">
+        <button onClick={() => setTab('habits')} className={tab === 'habits' ? 'tabActive' : 'tab'}>Habits</button>
+        <button onClick={() => setTab('pet')}   className={tab === 'pet'    ? 'tabActive' : 'tab'}>Pet</button>
+        <button onClick={() => setTab('stats')}  className={tab === 'stats'  ? 'tabActive' : 'tab'}>Stats</button>
+      </div>
+        
+        
+      {tab === 'pet'    && <PetCard token={token} />}
+      {tab === 'habits' && <Habits token={token} />}
+      {tab === 'stats'  && <div>tbd</div>}
+
+<button onClick={handleLogout}>Logout</button>
       </header>
+      
     </div>
   );
 }
