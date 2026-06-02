@@ -4,6 +4,10 @@ on:
     branches: main
   pull_request:
     branches: '*'
+env:
+  API_URL: http://localhost:3000/api
+  SERVER_PORT: 5000
+  PORT: 3000
 jobs:
   test:
     timeout-minutes: 60
