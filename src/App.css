@@ -88,6 +88,33 @@
   color: #61dafb;
 }
 
+.tabs {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.tab {
+  padding: 8px 24px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 2px solid #f4a261;
+  background: white;
+  color: #f4a261;
+  cursor: pointer;
+}
+
+.tabActive {
+  padding: 8px 24px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 2px solid #f4a261;
+  background: #f4a261;
+  color: white;
+  cursor: pointer;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
