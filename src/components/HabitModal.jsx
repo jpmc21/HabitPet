@@ -21,24 +21,18 @@ export default function HabitModal({
         />
 
         <div style={styles.buttonRow}>
-          <button style={styles.saveButton} onClick={onSave}>
-            Save
-          </button>
           <div style={styles.buttonRow}>
-            <button data-testid="habit-modal-save-btn" onClick={onSave}>
+            <button style={styles.saveButton} data-testid="habit-modal-save-btn" onClick={onSave}>
               Save
             </button>
 
-            <button style={styles.cancelButton} onClick={onCancel}>
+            <button style={styles.cancelButton} data-testid="habit-modal-cancel-btn" onClick={onCancel}>
               Cancel
             </button>
           </div>
         </div>
       </div>
       );
-      <button data-testid="habit-modal-cancel-btn" onClick={onCancel}>
-        Cancel
-      </button>
     </div>
   );
 }
