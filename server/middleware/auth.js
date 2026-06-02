@@ -5,6 +5,10 @@ const User = require("../models/User");
 const auth = (req, res, next) => {
   const publicRoutes = ["/api/auth/login", "/api/auth/register"];
 
+  if (process.env.NODE_ENV === "test") {
+    publicRoutes.push("/api/testing/cleanup-user");
+  }
+
   if (publicRoutes.includes(req.path)) {
     return next();
   }

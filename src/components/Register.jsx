@@ -58,7 +58,7 @@ export default function Register({ onRegister, switchToLogin }) {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-testid="register-container">
       <h2 className={styles.title}>HabitPet 🐱</h2>
       <h3 className={styles.subtitle}>Create Account</h3>
 
@@ -81,7 +81,9 @@ export default function Register({ onRegister, switchToLogin }) {
           required
         />
 
-        {error !== '' && <p className={styles.error}>{error}</p>}
+        {error !== '' && <p className={styles.error} data-testid="register-error">
+          {error}
+        </p>}
         <button className={styles.button} data-testid="register-btn" type="submit">
           Create Account
         </button>
