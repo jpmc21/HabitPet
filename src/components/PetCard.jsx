@@ -50,7 +50,7 @@ function getPetImage(level, mood) {
   return adult_neutral
 }
 
-export default function PetCard() {
+export default function PetCard({ dataChanged }) {
 
   // values that can change and will update the screen when they do
   const [pet, setPet] = useState(fakePet)

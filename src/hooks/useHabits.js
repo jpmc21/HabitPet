@@ -3,7 +3,7 @@ import axios from "axios";
 import { API_URL } from "../globals";
 import { toast } from "react-toastify";
 
-export function useHabits() {
+export function useHabits(dataChanged) {
     const [habits, setHabits] = useState([]);
 
     useEffect(() => {
@@ -18,6 +18,7 @@ export function useHabits() {
 
                 if (response.data.success) {
                     setHabits(response.data.data);
+                    dataChanged();
                 }
             } catch (error) {
                 console.error("Error fetching habits:", error);
@@ -36,6 +37,7 @@ export function useHabits() {
             });
 
             setHabits((prev) => prev.filter((habit, i) => i !== index));
+            dataChanged();
         } catch (error) {
             console.error("Error deleting habit:", error);
             toast.error("Failed to delete habit. Please try again.");
@@ -60,6 +62,7 @@ export function useHabits() {
                     i === index ? { ...habit, title: newText.trim() } : habit
                 )
             );
+            dataChanged();
         } catch (error) {
             console.error("Error editing habit:", error);
             toast.error("Failed to edit habit. Please try again.");
@@ -77,6 +80,7 @@ export function useHabits() {
             );
 
             setHabits((prev) => [...prev, response.data.data]);
+            dataChanged();
         } catch (error) {
             console.error("Error adding habit:", error);
             toast.error("Failed to add habit. Please try again.");
@@ -102,6 +106,7 @@ export function useHabits() {
                     i === index ? { ...habit, completed: true, isCompletedToday: true } : habit
                 )
             );
+            dataChanged();
         } catch (error) {
             console.error("Error toggling habit:", error);
             toast.error("Failed to complete habit. Please try again.");
