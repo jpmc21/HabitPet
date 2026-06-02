@@ -26,7 +26,8 @@
     "eject": "react-scripts eject",
     "frontend": "npm run start",
     "backend": "node ./server/index.js",
-    "dev:all": "concurrently \"npm run backend\" \"npm run frontend\""
+    "check": "node ./scripts/checkenv.js && node ./scripts/genport.js",
+    "dev:all": "npm run check && concurrently \"npm run backend\" \"npm run frontend\""
   },
   "eslintConfig": {
     "extends": [
