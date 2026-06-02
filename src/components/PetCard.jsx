@@ -40,8 +40,8 @@ function getPetImage(level, mood) {
 export default function PetCard({ dataChanged, token }) {
 
   // values that can change and will update the screen when they do
-  const [pet, setPet] = useState(fakePet)
-  const [points, setPoints] = useState(fakePoints)
+  const [pet, setPet] = useState(null)
+  const [points, setPoints] = useState(0)
   const [message, setMessage] = useState('')
 
   useEffect(() => {
@@ -72,6 +72,7 @@ export default function PetCard({ dataChanged, token }) {
       });
       setPet(response.data.pet);
       setPoints(response.data.points);
+      dataChanged();
 
       setMessage('Fed! 🍖');
       toast.success('Your pet is happy! 💖');
@@ -145,7 +146,7 @@ export default function PetCard({ dataChanged, token }) {
       </div>
 
       <p className={styles.label}>Mood: {pet.mood}</p>
-      <p className={styles.label}>Points: {points}</p>
+      {/* <p className={styles.label}>Points: {points}</p> */}
 
       {/* Updated to reflect the 15 point cost from the backend */}
       <button className={styles.button} onClick={handleFeed}>
