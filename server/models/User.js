@@ -9,12 +9,9 @@ const UserSchema = new mongoose.Schema({
   points: { type: Number, default: 0 },
 
   pet: {
-    fullness: { type: Number, default: 100 },
-    mood: { type: String, default: 'neutral' },
-    level: { type: Number, default: 0 },
-    exp: { type: Number, default: 0 },
-    // used AI, prompt: "how to store current time as default in mongoose"
-    lastFed: { type: Date, default: Date.now }
+    fullness:    { type: Number, default: 100 },
+    exp:         { type: Number, default: 0 },
+    lastDecayAt: { type: Date, default: Date.now }
   },
   lastModifiedAt: { type: Date, required: true, default: Date.now },
 });

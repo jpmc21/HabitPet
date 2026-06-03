@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const Habit = require("../models/Habit").model; // Adjust path as needed
 const User = require("../models/User");
-
+// added petUtils for decay
+const { applyDecay } = require('../utils/petUtils');
 
 // POST /api/habits - create a new habit
 router.post("/", async (req, res) => {
@@ -209,6 +210,13 @@ router.post("/:id/complete", async (req, res) => {
     habit.exp += habit.reward;
 
     user.points += habit.reward;
+    // give pet EXP when habit is completed
+    // added this - connects habit system to pet system
+    user.pet.exp += 15;
+
+    // update decay time so fullness is tracked
+    user.pet.fullness = applyDecay(user.pet.fullness, user.pet.lastDecayAt);
+    user.pet.lastDecayAt = new Date();
 
     await user.save();
     await habit.save();
@@ -266,6 +274,9 @@ router.post("/:id/undo", async (req, res) => {
     habit.streak = Math.max(0, habit.streak - 1);
     habit.exp = Math.max(0, habit.exp - habit.reward);
     user.points = Math.max(0, user.points - habit.reward);
+    // rollback pet EXP when habit is undone
+    // added this - mirrors the complete logic
+    user.pet.exp = Math.max(0, user.pet.exp - 15);
 
     await habit.save();
     await user.save();
