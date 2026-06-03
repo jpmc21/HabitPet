@@ -13,38 +13,50 @@ export default function Habits({ dataChanged }) {
         toggleHabit,
     } = useHabits(dataChanged);
 
+    const emptyHabit = {
+        title: "",
+        description: "",
+        frequency: "daily"
+    };
+
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalText, setModalText] = useState("");
+    const [modalHabit, setModalHabit] = useState(emptyHabit);
     const [modalMode, setModalMode] = useState("add");
     const [editingIndex, setEditingIndex] = useState(null);
 
     const openAddModal = () => {
         setModalMode("add");
-        setModalText("");
+        setModalHabit(emptyHabit);
         setEditingIndex(null);
         setIsModalOpen(true);
     }
 
     const openEditModal = (index) => {
         setModalMode("edit");
-        setModalText(habits[index].title);
+       
+        setModalHabit({
+            title: habits[index].title || "",
+            description: habits[index].description || "",
+            frequency: habits[index].frequency || "daily",
+        });
+
         setEditingIndex(index);
         setIsModalOpen(true);
     }
 
     const closeModal = () => {
-        setModalText("");
+        setModalHabit(emptyHabit);
         setEditingIndex(null);
         setIsModalOpen(false);
     }
 
     const handleSaveHabit = () => {
-        if (modalText.trim() === "") return;
+        if (modalHabit.title.trim() === "") return;
 
         if (modalMode === "add") {
-            addHabit(modalText);
+            addHabit(modalHabit);
         } else {
-            editHabit(editingIndex, modalText);
+            editHabit(editingIndex, modalHabit);
         }
 
         closeModal();
@@ -61,8 +73,8 @@ export default function Habits({ dataChanged }) {
             {isModalOpen && (
                 <HabitModal
                     mode={modalMode}
-                    text={modalText}
-                    setText={setModalText}
+                    habit={modalHabit}
+                    setHabit={setModalHabit}
                     onSave={handleSaveHabit}
                     onCancel={closeModal}
                 />

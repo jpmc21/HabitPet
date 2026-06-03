@@ -44,22 +44,28 @@ export function useHabits(dataChanged) {
         }
     }
 
-    async function editHabit(index, newText) {
+    async function editHabit(index, updatedHabit) {
         const habitToEdit = habits[index];
 
-        if (!newText || newText.trim() === "") return;
+        if (!updatedHabit.title || updatedHabit.title.trim() === "") return;
+        
+        const habitToSend = {
+            title: updatedHabit.title.trim(),
+            description: updatedHabit.description?.trim() || "",
+            frequency: updatedHabit.frequency || "daily"
+        };
 
         try {
             const token = localStorage.getItem('token');
 
             await axios.put(`${API_URL}/api/habits/${habitToEdit._id}`,
-                { title: newText.trim() },
+                habitToSend,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
             setHabits((prev) =>
                 prev.map((habit, i) =>
-                    i === index ? { ...habit, title: newText.trim() } : habit
+                    i === index ? { ...habit, ...habitToSend } : habit
                 )
             );
             dataChanged();
@@ -69,13 +75,19 @@ export function useHabits(dataChanged) {
         }
     }
 
-    async function addHabit(text) {
-        if (text.trim() === "") return;
+    async function addHabit(newHabit) {
+        if (!newHabit.title || newHabit.title.trim() === "") return;
+
+        const habitToSend = {
+            title: newHabit.title.trim(),
+            description: newHabit.description?.trim() || "",
+            frequency: newHabit.frequency || "daily"
+        };
 
         try {
             const token = localStorage.getItem('token');
             const response = await axios.post(`${API_URL}/api/habits`,
-                { title: text.trim() },
+                habitToSend,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 

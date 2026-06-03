@@ -1,10 +1,19 @@
 export default function HabitModal({
   mode,
-  text,
+  habit,
+  setHabit,
   setText,
   onSave,
-  onCancel
+  onCancel,
+
 }) {
+  function updateHabitField(field, value) {
+    setHabit((prev) => ({
+      ...prev,
+      [field]: value
+    }));
+  }
+
   return (
     <div style={styles.modalOverlay}>
       <div style={styles.modal}>
@@ -16,9 +25,27 @@ export default function HabitModal({
           style={styles.input}
           type="text"
           placeholder="Enter a habit"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
+          value={habit.title}
+          onChange={(e) => updateHabitField("title", e.target.value)}
         />
+
+        <textarea
+          style={styles.textarea}
+          placeholder="Enter Description"
+          value={habit.description}
+          onChange={(e) => updateHabitField("description", e.target.value)}
+        />
+
+        <select
+          style={styles.select}
+          value={habit.frequency}
+          onChange={(e) => updateHabitField("frequency", e.target.value)}
+        >
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
+
+        </select>  
 
         <div style={styles.buttonRow}>
           <div style={styles.buttonRow}>
@@ -32,7 +59,7 @@ export default function HabitModal({
           </div>
         </div>
       </div>
-      );
+      ;
     </div>
   );
 }
