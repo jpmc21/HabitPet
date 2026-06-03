@@ -23,6 +23,7 @@ export default function Habits({ dataChanged }) {
     const [modalHabit, setModalHabit] = useState(emptyHabit);
     const [modalMode, setModalMode] = useState("add");
     const [editingIndex, setEditingIndex] = useState(null);
+    const [openDescription, setOpenDescription] = useState(null);
 
     const openAddModal = () => {
         setModalMode("add");
@@ -62,6 +63,12 @@ export default function Habits({ dataChanged }) {
         closeModal();
     }
 
+    const toggleDescription = (index) => {
+    setOpenDescription((prevIndex) =>
+        prevIndex === index ? null : index
+    );
+};
+
     return (
         <div className={styles.container} style={{ backgroundImage: `url(${background})` }}>
             <h1>My Habits</h1>
@@ -82,7 +89,15 @@ export default function Habits({ dataChanged }) {
 
             <ul className={styles.habitList}>
                 {habits.map((habit, index) => (
-                    <li className={styles.habitItem} key={habit.id || index}>
+                    <li className={styles.habitItem} key={habit._id || index}>
+                        <button
+                            type="button"
+                            onClick={() => toggleDescription(index)}
+                            className={styles.descriptionToggle}
+                        >
+                            {openDescription === index ? "Hide" : "Details"}
+                        </button>
+
                         <button
                             data-testid={`toggle-btn-${index}`}
                             onClick={() => toggleHabit(index)}
@@ -106,6 +121,11 @@ export default function Habits({ dataChanged }) {
                         >
                             Delete
                         </button>
+                        {openDescription === index && (
+                            <div className={styles.habitDescription}>
+                            {habit.description || "No description added."}
+                            </div>
+                        )}
                     </li>
                 ))}
             </ul>
