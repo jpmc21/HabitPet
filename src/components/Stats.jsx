@@ -95,6 +95,17 @@ useEffect(() => {
     )
   }
 
+let mostCompleted = null
+let leastCompleted = null
+
+if (habits.length > 0) {
+  const sorted = [...habits].sort((a, b) => 
+    (b.completions?.length || 0) - (a.completions?.length || 0)
+  )
+  mostCompleted = sorted[0]
+  leastCompleted = sorted[sorted.length - 1]
+}
+
 return (
 
      <div className={styles.container} style={{ backgroundImage: `url(${background})` }}>
@@ -110,10 +121,10 @@ return (
         <span>Points: {userInfo.points}</span>
       </div>
       <div className={styles.item}>
-        <span>most completed task: {userInfo.bestStreak} days</span>
+        <span>most completed task: {mostCompleted ? mostCompleted.title : 'N/a'} </span>
       </div>
     <div className={styles.item}>
-        <span>least completed task: {userInfo.bestStreak} </span>
+        <span>least completed task: {leastCompleted ? leastCompleted.title : 'N/a'} </span>
       </div>
     </div>
     {/* here is where it is for individual habit where it toggles between week month and year to show how many times youve completed it  */}
@@ -146,8 +157,7 @@ return (
         key={h._id}
         className={styles.dropdownItem}
         onClick={() => { setSelectedHabit(h); setSearch('') }}
-      >
-        {h.title}
+      >{h.title}
       </li>
     ))}
   </ul>
@@ -158,7 +168,7 @@ return (
   <div>
     <h3>{habitStats.title}</h3>
     <p>Started: {new Date(habitStats.startedAt).toLocaleDateString()}</p>
-    <p>Total completions: {habitStats.alltime}</p>
+    <p>Total completions: {habitStats.totalCompletions}</p>
     <p>Current streak: {habitStats.currentStreak} days</p>
     <p>
       Completions this {view}:{' '}
