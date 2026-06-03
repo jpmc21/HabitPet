@@ -9,6 +9,8 @@ const POINTS_ASSIGNMENT = {
   "monthly": 100,
 };
 
+// needed this for the decay stuff
+const { applyDecay } = require('../utils/petUtils')
 
 // POST /api/habits - create a new habit
 router.post("/", async (req, res) => {
@@ -179,6 +181,53 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+router.get("/:id/stats", async (req, res) => {
+  try {
+    const habit = await Habit.findOne({
+      _id: req.params.id,
+      userId: req.userId
+    });
+
+    if (!habit) return res.status(404).json({ error: "Habit not found" });
+
+    const now = new Date();
+
+    // week: last 7 days
+    const weekAgo = new Date(now);
+    weekAgo.setDate(now.getDate() - 7);
+
+    // month: last 30 days
+    const monthAgo = new Date(now);
+    monthAgo.setDate(now.getDate() - 30);
+
+    // year: last 365 days
+    const yearAgo = new Date(now);
+    yearAgo.setFullYear(now.getFullYear() - 1);
+
+    const completionsInWeek  = habit.completions.filter(d => new Date(d) >= weekAgo).length;
+    const completionsInMonth = habit.completions.filter(d => new Date(d) >= monthAgo).length;
+    const completionsInYear  = habit.completions.filter(d => new Date(d) >= yearAgo).length;
+
+    res.json({
+      success: true,
+      data: {
+        title: habit.title,
+        startedAt: habit.startedAt,
+        totalCompletions: habit.completions.length,
+        currentStreak: habit.streak,
+        week:  completionsInWeek,
+        month: completionsInMonth,
+        year:  completionsInYear,
+        alltime: habit.completions.length
+      }
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch habit stats" });
+  }
+});
+
 // POST /api/habits/:id/complete - mark a habit as completed today
 router.post("/:id/complete", async (req, res) => {
   try {
@@ -199,7 +248,7 @@ router.post("/:id/complete", async (req, res) => {
     }
 
     const now = new Date();
-
+    habit.completions.push(now);
     // Check if streak should continue or reset
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
@@ -215,6 +264,9 @@ router.post("/:id/complete", async (req, res) => {
     habit.exp += habit.reward;
 
     user.points += habit.reward;
+
+    // pet gets exp when u complete a habit
+    user.pet.exp += 15;
 
     await user.save();
     await habit.save();
@@ -261,7 +313,6 @@ router.post("/:id/undo", async (req, res) => {
     if (!habit) {
       return res.status(404).json({ error: "Habit not found" });
     }
-
     // cant undo if not completed today
     if (!checkIfCompletedToday(habit)) {
       return res.status(400).json({ error: "not completed today" });
@@ -272,7 +323,9 @@ router.post("/:id/undo", async (req, res) => {
     habit.streak = Math.max(0, habit.streak - 1);
     habit.exp = Math.max(0, habit.exp - habit.reward);
     user.points = Math.max(0, user.points - habit.reward);
-
+    // take away exp if u undo the habit
+user.pet.exp = Math.max(0, user.pet.exp - 15);
+if (user.pet.exp < 0) user.pet.exp = 0;
     await habit.save();
     await user.save();
 
