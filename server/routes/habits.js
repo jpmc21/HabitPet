@@ -3,6 +3,12 @@ const router = express.Router();
 const Habit = require("../models/Habit").model; // Adjust path as needed
 const User = require("../models/User");
 
+const POINTS_ASSIGNMENT = {
+  "daily": 10,
+  "weekly": 70,
+  "monthly": 100,
+};
+
 // needed this for the decay stuff
 const { applyDecay } = require('../utils/petUtils')
 
@@ -17,8 +23,7 @@ router.post("/", async (req, res) => {
     }
 
     // reward must be 10, 15, or 20 — simple, medium, hard
-    const validRewards = [10, 15, 20];
-    const pointValue = validRewards.includes(reward) ? reward : 10;
+    const pointValue = POINTS_ASSIGNMENT[frequency] || reward || 10;
 
     const habit = new Habit({
       title,
@@ -159,9 +164,10 @@ router.put("/:id", async (req, res) => {
     // Update fields
     if (title) habit.title = title;
     if (description !== undefined) habit.description = description;
-    if (frequency) habit.frequency = frequency;
-    if (reward) habit.reward = reward;
-
+    if (frequency !== undefined){ 
+      habit.frequency = frequency;
+      habit.reward = POINTS_ASSIGNMENT[frequency] || 10;
+    }
     await habit.save();
 
     res.json({
