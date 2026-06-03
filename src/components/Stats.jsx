@@ -20,10 +20,6 @@ export default function Stats({token}){
  const headers = { Authorization: `Bearer ${token}` }
 
 
-
-
-
-
   useEffect(() => {
     async function getUserInfo() {
       try {
@@ -46,13 +42,33 @@ export default function Stats({token}){
     getUserInfo()
   }, [token])
 
-   if (!userInfo) {
-    return (
-      <div className={styles.bar}>
-        Loading statistics...
-      </div>
-    )
+useEffect(() => {
+  async function fetchHabits() {
+    try {
+      const res = await axios.get(`${API_URL}/api/habits`, { headers })
+      setHabits(res.data.data || [])
+    } catch (err) {
+      setError('Failed to load habits')
+    } finally {
+      setLoading(false)
+    }
   }
+  fetchHabits()
+}, [])
+
+// fetch stats for selected habit
+useEffect(() => {
+  if (!selectedHabit) return
+  async function fetchHabitStats() {
+    try {
+      const res = await axios.get(`${API_URL}/api/habits/${selectedHabit._id}/stats`, { headers })
+      setHabitStats(res.data.data)
+    } catch (err) {
+      setError('Failed to load habit stats')
+    }
+  }
+  fetchHabitStats()
+}, [selectedHabit])
 
  async function handleHabitSelect(habit) {
     setSelectedHabit(habit)
@@ -71,10 +87,16 @@ export default function Stats({token}){
   //if (loading) return <div className={styles.center}>Loading stats...</div>
   if (error) return <div className={styles.center}>{error}</div>
 
-
+ if (!userInfo) {
+    return (
+      <div className={styles.bar}>
+        Loading statistics...
+      </div>
+    )
+  }
 
 return (
-<<<<<<< HEAD
+
      <div className={styles.container} style={{ backgroundImage: `url(${background})` }}>
      <h1>Your Statistics</h1>
     <div>
@@ -110,6 +132,42 @@ return (
 </div>
     <div>
        {/*here will be how many times youve completed your task in that veiws time frame*/} 
+       <input
+  className={styles.search}
+  placeholder="Search habits..."
+  value={search}
+  onChange={e => setSearch(e.target.value)}
+/>
+
+{search && (
+  <ul className={styles.dropdown}>
+    {filteredHabits.map(h => (
+      <li
+        key={h._id}
+        className={styles.dropdownItem}
+        onClick={() => { setSelectedHabit(h); setSearch('') }}
+      >
+        {h.title}
+      </li>
+    ))}
+  </ul>
+)}
+
+{/* stats for selected habit */}
+{selectedHabit && habitStats && (
+  <div>
+    <h3>{habitStats.title}</h3>
+    <p>Started: {new Date(habitStats.startedAt).toLocaleDateString()}</p>
+    <p>Total completions: {habitStats.alltime}</p>
+    <p>Current streak: {habitStats.currentStreak} days</p>
+    <p>
+      Completions this {view}:{' '}
+      {view === 'week'  && habitStats.week}
+      {view === 'month' && habitStats.month}
+      {view === 'year'  && habitStats.year}
+    </p>
+  </div>
+)}
     </div>
      </div>
   )
