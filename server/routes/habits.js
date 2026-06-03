@@ -3,6 +3,12 @@ const router = express.Router();
 const Habit = require("../models/Habit").model; // Adjust path as needed
 const User = require("../models/User");
 
+const POINTS_ASSIGNMENT = {
+  "daily": 10,
+  "weekly": 70,
+  "monthly": 100,
+};
+
 
 // POST /api/habits - create a new habit
 router.post("/", async (req, res) => {
@@ -15,8 +21,7 @@ router.post("/", async (req, res) => {
     }
 
     // reward must be 10, 15, or 20 — simple, medium, hard
-    const validRewards = [10, 15, 20];
-    const pointValue = validRewards.includes(reward) ? reward : 10;
+    const pointValue = POINTS_ASSIGNMENT[frequency] || reward || 10;
 
     const habit = new Habit({
       title,
