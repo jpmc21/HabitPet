@@ -127,3 +127,56 @@
     color: #333;
 
 }
+.section {
+    width: 100%;
+    max-width: 640px;
+    background: rgba(255, 255, 255, 0.88);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+}
+
+.sectionTitle {
+    font-size: 20px;
+    color: #333333;
+    margin-bottom: 14px;
+}
+
+.cardRow {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.cardItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff7f0;
+    border-radius: 8px;
+    padding: 10px 14px;
+}
+
+.cardLabel {
+    font-size: 15px;
+    color: #666;
+}
+
+.cardValue {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333333;
+}
+
+.habitCard {
+    background: #fff7f0;
+    border-radius: 8px;
+    padding: 14px;
+    margin-top: 8px;
+}
+
+.label {
+    font-size: 15px;
+    color: #333333;
+    margin: 6px 0;
+}

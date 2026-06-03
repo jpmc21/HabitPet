@@ -105,80 +105,84 @@ if (habits.length > 0) {
   mostCompleted = sorted[0]
   leastCompleted = sorted[sorted.length - 1]
 }
+const totalCompletions = habits.reduce((sum, h) => sum + (h.completions?.length || 0), 0)
 
 return (
 
      <div className={styles.container} style={{ backgroundImage: `url(${background})` }}>
-     <h1>Your Statistics</h1>
-    <div>
-    <h2> overview</h2>
-    </div>
-    <div className={styles.bar}>
-      <div className={styles.item}>
-        <span>Best streak: {userInfo.bestStreak} days</span>
-      </div>
-      <div className={styles.item}>
-        <span>Points: {userInfo.points}</span>
-      </div>
-      <div className={styles.item}>
-        <span>most completed task: {mostCompleted ? mostCompleted.title : 'N/a'} </span>
-      </div>
-    <div className={styles.item}>
-        <span>least completed task: {leastCompleted ? leastCompleted.title : 'N/a'} </span>
+     <h1 className={styles.title}>Your Statistics</h1>
+
+    <div className={styles.section}>
+      <h2 className={styles.sectionTitle}>Overview</h2>
+      <div className={styles.cardRow}>
+        <div className={styles.cardItem}>
+          <span className={styles.cardLabel}>Best Streak</span>
+          <span className={styles.cardValue}>{userInfo.bestStreak} days</span>
+        </div>
+        <div className={styles.cardItem}>
+          <span className={styles.cardLabel}>All Habits Completed Ever</span>
+          <span className={styles.cardValue}>{totalCompletions}</span>
+        </div>
+        <div className={styles.cardItem}>
+          <span className={styles.cardLabel}>Most Completed Task</span>
+          <span className={styles.cardValue}>{mostCompleted ? mostCompleted.title : 'N/A'}</span>
+        </div>
+        <div className={styles.cardItem}>
+          <span className={styles.cardLabel}>Least Completed Task</span>
+          <span className={styles.cardValue}>{leastCompleted ? leastCompleted.title : 'N/A'}</span>
+        </div>
       </div>
     </div>
     {/* here is where it is for individual habit where it toggles between week month and year to show how many times youve completed it  */}
-        <h3> individual stat</h3>
-        
- <div >
-        <button className={view ==='week' ? styles.toggleActive : styles.toggleBtn}
-            onClick={() => setView('week')}
-        >Week</button>
-        <button className={view === 'month' ? styles.toggleActive : styles.toggleBtn}
-            onClick={() => setView('month')}
-        >Month</button>
-        <button className={view === 'year' ? styles.toggleActive : styles.toggleBtn}
-            onClick={() => setView('year')}
-        >Year</button>
-</div>
-    <div>
-       {/*here will be how many times youve completed your task in that veiws time frame*/} 
-       <input
-  className={styles.search}
-  placeholder="Search habits..."
-  value={search}
-  onChange={e => setSearch(e.target.value)}
-/>
+       
+    <div className={styles.section}>
+      <h2 className={styles.sectionTitle}>Individual Habit</h2>
 
-{search && (
-  <ul className={styles.dropdown}>
-    {filteredHabits.map(h => (
-      <li
-        key={h._id}
-        className={styles.dropdownItem}
-        onClick={() => { setSelectedHabit(h); setSearch('') }}
-      >{h.title}
-      </li>
-    ))}
-  </ul>
-)}
+      <div className={styles.toggle}>
+        <button className={view === 'week'  ? styles.toggleActive : styles.toggleBtn} onClick={() => setView('week')}>Week</button>
+        <button className={view === 'month' ? styles.toggleActive : styles.toggleBtn} onClick={() => setView('month')}>Month</button>
+        <button className={view === 'year'  ? styles.toggleActive : styles.toggleBtn} onClick={() => setView('year')}>Year</button>
+      </div>
 
-{/* stats for selected habit */}
-{selectedHabit && habitStats && (
-  <div>
-    <h3>{habitStats.title}</h3>
-    <p>Started: {new Date(habitStats.startedAt).toLocaleDateString()}</p>
-    <p>Total completions: {habitStats.totalCompletions}</p>
-    <p>Current streak: {habitStats.currentStreak} days</p>
-    <p>
-      Completions this {view}:{' '}
-      {view === 'week'  && habitStats.week}
-      {view === 'month' && habitStats.month}
-      {view === 'year'  && habitStats.year}
-    </p>
-  </div>
-)}
+      <input
+        className={styles.search}
+        placeholder="Search habits..."
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+      />
+
+      {search && (
+        <ul className={styles.dropdown}>
+          {filteredHabits.map(h => (
+            <li
+              key={h._id}
+              className={styles.dropdownItem}
+              onClick={() => { setSelectedHabit(h); setSearch('') }}
+            >
+              {h.title}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {selectedHabit && habitStats ? (
+        <div className={styles.habitCard}>
+          <p className={styles.habitTitle}>{habitStats.title}</p>
+          <p className={styles.label}>Started: {new Date(habitStats.startedAt).toLocaleDateString()}</p>
+          <p className={styles.label}>Total completions: {habitStats.totalCompletions}</p>
+          <p className={styles.label}>Current streak: {habitStats.currentStreak} days</p>
+          <p className={styles.label}>
+            Completions this {view}:{' '}
+            {view === 'week'  && habitStats.week}
+            {view === 'month' && habitStats.month}
+            {view === 'year'  && habitStats.year}
+          </p>
+        </div>
+      ) : (
+        <p className={styles.empty}>Search and select a habit to see its stats.</p>
+      )}
     </div>
-     </div>
+  </div>
+    
   )
 }
