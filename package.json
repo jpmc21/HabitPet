@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "node ./scripts/checkenv.js && node ./scripts/genport.js && react-scripts start",
-    "build": "npm check && react-scripts build",
+    "build": "npm run check && react-scripts build",
     "test": "npx playwright test",
     "eject": "react-scripts eject",
     "frontend": "npm run start",
