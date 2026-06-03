@@ -175,6 +175,53 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+router.get("/:id/stats", async (req, res) => {
+  try {
+    const habit = await Habit.findOne({
+      _id: req.params.id,
+      userId: req.userId
+    });
+
+    if (!habit) return res.status(404).json({ error: "Habit not found" });
+
+    const now = new Date();
+
+    // week: last 7 days
+    const weekAgo = new Date(now);
+    weekAgo.setDate(now.getDate() - 7);
+
+    // month: last 30 days
+    const monthAgo = new Date(now);
+    monthAgo.setDate(now.getDate() - 30);
+
+    // year: last 365 days
+    const yearAgo = new Date(now);
+    yearAgo.setFullYear(now.getFullYear() - 1);
+
+    const completionsInWeek  = habit.completions.filter(d => new Date(d) >= weekAgo).length;
+    const completionsInMonth = habit.completions.filter(d => new Date(d) >= monthAgo).length;
+    const completionsInYear  = habit.completions.filter(d => new Date(d) >= yearAgo).length;
+
+    res.json({
+      success: true,
+      data: {
+        title: habit.title,
+        startedAt: habit.startedAt,
+        totalCompletions: habit.completions.length,
+        currentStreak: habit.streak,
+        week:  completionsInWeek,
+        month: completionsInMonth,
+        year:  completionsInYear,
+        alltime: habit.completions.length
+      }
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch habit stats" });
+  }
+});
+
 // POST /api/habits/:id/complete - mark a habit as completed today
 router.post("/:id/complete", async (req, res) => {
   try {
@@ -260,7 +307,6 @@ router.post("/:id/undo", async (req, res) => {
     if (!habit) {
       return res.status(404).json({ error: "Habit not found" });
     }
-
     // cant undo if not completed today
     if (!checkIfCompletedToday(habit)) {
       return res.status(400).json({ error: "not completed today" });
