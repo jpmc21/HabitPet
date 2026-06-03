@@ -4,6 +4,8 @@ import styles from "./InfoBar.module.css"
 
 export default function InfoBar({ token, hasOutdatedData, setHasOutdatedData }) {
   const [userInfo, setUserInfo] = useState(null)
+  const [editingName, setEditingName] = useState(false)
+  const [petNameInput, setPetNameInput] = useState('')
 
 
   useEffect(() => {
@@ -31,6 +33,24 @@ export default function InfoBar({ token, hasOutdatedData, setHasOutdatedData }) 
     }
   }, [token, hasOutdatedData, setHasOutdatedData])
 
+  //name change
+  async function handleNameSave() {
+  if (petNameInput.trim() === '') return
+  try {
+    await fetch(`${API_URL}/api/user/pet/name`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ name: petNameInput })
+    })
+    setUserInfo(prev => ({ ...prev, petName: petNameInput }))
+    setEditingName(false)
+  } catch (err) {
+    console.log('failed to save pet name', err)
+  }
+}
 
   if (!userInfo) {
     return (
@@ -67,10 +87,22 @@ export default function InfoBar({ token, hasOutdatedData, setHasOutdatedData }) 
         <span>Best streak: {userInfo.bestStreak} days</span>
       </div>
 
-      <div className={styles.item}>
-        <span>🐱</span>
-        <span>Pet: {petName}</span>
-      </div>
+      <div className={styles.item} onClick={() => { setEditingName(true); setPetNameInput(userInfo.petName || '') }}>
+  <span>🐱</span>
+  {editingName ? (
+    <input
+      autoFocus
+      value={petNameInput}
+      onChange={e => setPetNameInput(e.target.value)}
+      onBlur={handleNameSave}
+      onKeyDown={e => e.key === 'Enter' && handleNameSave()}
+      onClick={e => e.stopPropagation()}
+      style={{ fontSize: '14px', borderRadius: '6px', border: '1px solid #f4a261', padding: '2px 6px', width: '100px' }}
+    />
+  ) : (
+    <span>Pet: {userInfo.petName || 'Your Pet'}</span>
+  )}
+</div>
     </div>
   )
 }
