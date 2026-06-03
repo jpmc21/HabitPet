@@ -17,7 +17,7 @@
 
 .habitItem {
     display: grid;
-    grid-template-columns: 90px 80px 1fr 80px;
+    grid-template-columns: 90px 80px 1fr 80px 70px;
     align-items: center;
     gap: 8px;
     margin-bottom: 12px;
@@ -126,6 +126,13 @@
     padding: 8px 12px;
     border-radius: 12px;
     overflow-wrap: anywhere;
+}
+
+.habitReward {
+    justify-self: center;
+    font-size: 22px;
+    color: #3b3028;
+    font-weight: 700;
 }
 
 @media (max-width: 600px) {

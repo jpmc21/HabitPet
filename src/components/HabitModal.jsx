@@ -49,7 +49,7 @@ export default function HabitModal({
 
         <div style={styles.buttonRow}>
           <div style={styles.buttonRow}>
-            <button style={styles.saveButton} data-testid="habit-modal-save-btn" onClick={onSave}>
+            <button style={styles.saveButton} data-testid="habit-modal-save-btn" onClick={(onSave)}>
               Save
             </button>
 
@@ -90,7 +90,6 @@ const styles = {
     minWidth: "420px",
     boxShadow: "0 8px 24px rgba(0, 0, 0, 0.18)",
     zIndex: 1001,
-
   },
 
   modalHeader: {
@@ -109,7 +108,34 @@ const styles = {
     fontSize: "20px",
     outline: "none",
     textAlign: "center",
+  },
 
+  textarea: {
+    width: "100%",
+    boxSizing: "border-box",
+    padding: "16px 20px",
+    border: "2px solid #e6b98f",
+    borderRadius: "18px",
+    fontSize: "18px",
+    outline: "none",
+    resize: "vertical",
+    minHeight: "120px",
+    fontFamily: "inherit",
+    color: "black",
+    backgroundColor: "white",
+  },
+
+  select: {
+    width: "100%",
+    boxSizing: "border-box",
+    padding: "14px 20px",
+    border: "2px solid #e6b98f",
+    borderRadius: "999px",
+    fontSize: "18px",
+    outline: "none",
+    backgroundColor: "white",
+    color: "black",
+    cursor: "pointer",
   },
 
   buttonRow: {
@@ -140,5 +166,4 @@ const styles = {
     cursor: "pointer",
     boxShadow: "0 2px 8px rgba(90, 60, 30, 0.10)",
   },
-
 };

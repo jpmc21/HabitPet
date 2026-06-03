@@ -162,9 +162,10 @@ router.put("/:id", async (req, res) => {
     // Update fields
     if (title) habit.title = title;
     if (description !== undefined) habit.description = description;
-    if (frequency) habit.frequency = frequency;
-    if (reward) habit.reward = reward;
-
+    if (frequency !== undefined){ 
+      habit.frequency = frequency;
+      habit.reward = POINTS_ASSIGNMENT[frequency] || 10;
+    }
     await habit.save();
 
     res.json({

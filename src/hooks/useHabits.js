@@ -58,14 +58,14 @@ export function useHabits(dataChanged) {
         try {
             const token = localStorage.getItem('token');
 
-            await axios.put(`${API_URL}/api/habits/${habitToEdit._id}`,
+            const response = await axios.put(`${API_URL}/api/habits/${habitToEdit._id}`,
                 habitToSend,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
             setHabits((prev) =>
                 prev.map((habit, i) =>
-                    i === index ? { ...habit, ...habitToSend } : habit
+                    i === index ? response.data.data : habit
                 )
             );
             dataChanged();

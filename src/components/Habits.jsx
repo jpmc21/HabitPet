@@ -51,7 +51,7 @@ export default function Habits({ dataChanged }) {
         setIsModalOpen(false);
     }
 
-    const handleSaveHabit = () => {
+    const handleSaveHabit = (habit) => {
         if (modalHabit.title.trim() === "") return;
 
         if (modalMode === "add") {
@@ -60,7 +60,7 @@ export default function Habits({ dataChanged }) {
             editHabit(editingIndex, modalHabit);
         }
 
-        closeModal();
+       closeModal();
     }
 
     const toggleDescription = (index) => {
@@ -112,6 +112,10 @@ export default function Habits({ dataChanged }) {
                             className={`${styles.habitText} ${habit.isCompletedToday ? styles.completed : ""}`}
                         >
                             {habit.title}
+                        </span>
+
+                        <span className={styles.habitReward}>
+                            {habit.reward}
                         </span>
 
                         <button
