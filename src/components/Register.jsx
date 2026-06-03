@@ -2,6 +2,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import { API_URL } from '../globals'
 import styles from "./Register.module.css"
+import background from '../assets/background.png'
 import { toast } from 'react-toastify';
 
 
@@ -58,7 +59,8 @@ export default function Register({ onRegister, switchToLogin }) {
   }
 
   return (
-    <div className={styles.container} data-testid="register-container">
+
+    <div className={styles.container} style={{ backgroundImage: `url(${background})` }} data-testid="register-container">
       <h2 className={styles.title}>HabitPet 🐱</h2>
       <h3 className={styles.subtitle}>Create Account</h3>
 

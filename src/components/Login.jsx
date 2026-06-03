@@ -55,7 +55,7 @@ export default function Login({ onLogin, switchToRegister }) {
   // used AI to help with this layout/style part
   return (
     <div className={styles.container} style={{ backgroundImage: `url(${background})` }} data-testid="login-container">
-      <img src={teenHappy} alt="habitpet" style={{ width: '100px', marginBottom: '8px' }} />
+      <img src={teenHappy} alt="habitpet" style={{ width: '150px', marginBottom: '8px' }} />
       <h2 className={styles.title}>HabitPet</h2>
       <h3 className={styles.subtitle}>Login</h3>
 
