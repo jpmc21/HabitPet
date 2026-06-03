@@ -3,8 +3,8 @@
 // exp to level, simple if else
 function getLevel(exp) {
   if (exp >= 300) return 3  // adult
-  if (exp >= 150) return 2  // teen  
-  if (exp >= 50) return 1   // baby
+  if (exp >= 200) return 2  // teen  
+  if (exp >= 100) return 1   // baby
   return 0  // egg
 }
 

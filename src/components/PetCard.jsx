@@ -21,15 +21,15 @@ import styles from "./PetCard.module.css"
 // change level and mood here to test different images
 function getExpPercentage(exp){
   if (exp >= 300) return 100;
-  if (exp >= 150) return ((exp - 150) / 150) * 100;
-  if (exp >= 50) return ((exp - 50) / 100) * 100;
-  return (exp / 50) * 100;
+  if (exp >= 200) return ((exp - 200) / 100) * 100;
+  if (exp >= 100) return ((exp - 100) / 100) * 100;
+  return (exp / 100) * 100;
 }
 function getExpText(exp){
   if (exp >= 300) return 'MAX';
-  if (exp >= 150) return `${exp - 150}/150`;
-  if (exp >= 50) return `${exp - 50}/100`;
-  return `${exp}/50`;
+  if (exp >= 200) return `${exp - 200}/100`;
+  if (exp >= 100) return `${exp - 100}/100`;
+  return `${exp}/100`;
 }
 function getPetImage(level, mood) {
 if (level === 0) return egg;
