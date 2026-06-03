@@ -23,7 +23,7 @@ app.use("/api/user", require("./routes/user"));
 if (process.env.NODE_ENV === "test") {
   app.use("/api/testing", require("./routes/testing"));
 }
-//app.use("/api/pets", require("./routes/pet")); 
+app.use("/api/pets", require("./routes/pet")); 
 //app.use("/api/leaderboard", require("./routes/leaderboard"));
 
 // Start the Server

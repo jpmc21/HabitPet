@@ -3,6 +3,8 @@ const router = express.Router();
 const Habit = require("../models/Habit").model; // Adjust path as needed
 const User = require("../models/User");
 
+// needed this for the decay stuff
+const { applyDecay } = require('../utils/petUtils')
 
 // POST /api/habits - create a new habit
 router.post("/", async (req, res) => {
@@ -210,6 +212,9 @@ router.post("/:id/complete", async (req, res) => {
 
     user.points += habit.reward;
 
+    // pet gets exp when u complete a habit
+    user.pet.exp += 15
+
     await user.save();
     await habit.save();
 
@@ -242,6 +247,51 @@ function checkIfCompletedToday(habit) {
   return lastCompleted.getTime() === today.getTime();
 }
 
+// undo habit for today
+router.post("/:id/undo", async (req, res) => {
+  try {
+    const habit = await Habit.findOne({
+      _id: req.params.id,
+      userId: req.userId
+    });
+
+    const user = await User.findById(req.userId);
+
+    if (!habit) {
+      return res.status(404).json({ error: "Habit not found" });
+    }
+
+    // cant undo if not completed today
+    if (!checkIfCompletedToday(habit)) {
+      return res.status(400).json({ error: "not completed today" });
+    }
+
+    // rollback everything
+    habit.lastCompletedAt = null;
+    habit.streak = Math.max(0, habit.streak - 1);
+    habit.exp = Math.max(0, habit.exp - habit.reward);
+    user.points = Math.max(0, user.points - habit.reward);
+    // take away exp if u undo the habit
+    user.pet.exp = Math.max(0, user.pet.exp - 15)
+
+    await habit.save();
+    await user.save();
+
+    res.json({
+      success: true,
+      message: "undone",
+      data: {
+        streak: habit.streak,
+        exp: habit.exp,
+        reward: habit.reward
+      }
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to undo habit" });
+  }
+});
 
 module.exports = router;
 

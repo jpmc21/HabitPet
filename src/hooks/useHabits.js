@@ -89,29 +89,36 @@ export function useHabits(dataChanged) {
 
     async function toggleHabit(index) {
         const habitToToggle = habits[index];
-
-        if (habitToToggle.completed || habitToToggle.isCompletedToday) {
-            return;
-        }
+        const token = localStorage.getItem('token');
+        const alreadyDone = habitToToggle.isCompletedToday || false;
 
         try {
-            const token = localStorage.getItem('token');
-            await axios.post(`${API_URL}/api/habits/${habitToToggle._id}/complete`,
-                {},
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
-
-            setHabits((prev) =>
-                prev.map((habit, i) =>
-                    i === index ? { ...habit, completed: true, isCompletedToday: true } : habit
-                )
-            );
+            if (!alreadyDone) {
+                // mark as done
+                await axios.post(`${API_URL}/api/habits/${habitToToggle._id}/complete`, 
+                    {}, 
+                    { headers: { Authorization: `Bearer ${token}` } }
+                );
+                setHabits(prev =>
+                    prev.map((h, i) => i === index ? { ...h, isCompletedToday: true } : h)
+                );
+            } else {
+                // undo
+                await axios.post(`${API_URL}/api/habits/${habitToToggle._id}/undo`, 
+                    {}, 
+                    { headers: { Authorization: `Bearer ${token}` }
+                });
+                setHabits(prev =>
+                    prev.map((h, i) => i === index ? { ...h, isCompletedToday: false } : h)
+                );
+            }
             dataChanged();
         } catch (error) {
             console.error("Error toggling habit:", error);
-            toast.error("Failed to complete habit. Please try again.");
+            toast.error("Failed to update habit. Please try again.");
         }
     }
+    
 
     return {
         habits,
