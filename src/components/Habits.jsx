@@ -34,7 +34,7 @@ export default function Habits({ dataChanged }) {
 
     const openEditModal = (index) => {
         setModalMode("edit");
-       
+
         setModalHabit({
             title: habits[index].title || "",
             description: habits[index].description || "",
@@ -60,20 +60,20 @@ export default function Habits({ dataChanged }) {
             editHabit(editingIndex, modalHabit);
         }
 
-       closeModal();
+        closeModal();
     }
 
     const toggleDescription = (index) => {
-    setOpenDescription((prevIndex) =>
-        prevIndex === index ? null : index
-    );
-};
+        setOpenDescription((prevIndex) =>
+            prevIndex === index ? null : index
+        );
+    };
 
     return (
         <div className={styles.container} style={{ backgroundImage: `url(${background})` }}>
             <h1>My Habits</h1>
 
-            <button className={styles.addButton} onClick={openAddModal}>
+            <button data-testid="add-habit-btn" className={styles.addButton} onClick={openAddModal}>
                 Add Habit
             </button>
 
@@ -94,6 +94,7 @@ export default function Habits({ dataChanged }) {
                             type="button"
                             onClick={() => toggleDescription(index)}
                             className={styles.descriptionToggle}
+                            data-testid={`description-toggle-btn-${index}`}
                         >
                             {openDescription === index ? "Hide" : "Details"}
                         </button>
@@ -105,16 +106,16 @@ export default function Habits({ dataChanged }) {
                         >
                             {habit.isCompletedToday ? "Undo" : "Done"}
                         </button>
-                    
+
                         <span
-                            data-testid={`habit-text-${index}`}
+                            data-testid={`habit-title-${index}`}
                             onClick={() => !habit.isCompletedToday && openEditModal(index)}
                             className={`${styles.habitText} ${habit.isCompletedToday ? styles.completed : ""}`}
                         >
                             {habit.title}
                         </span>
 
-                        <span className={styles.habitReward}>
+                        <span className={styles.habitReward} data-testid={`habit-reward-${index}`}>
                             {habit.reward}
                         </span>
 
@@ -126,8 +127,8 @@ export default function Habits({ dataChanged }) {
                             Delete
                         </button>
                         {openDescription === index && (
-                            <div className={styles.habitDescription}>
-                            {habit.description || "No description added."}
+                            <div className={styles.habitDescription} data-testid={`habit-description-${index}`}>
+                                {habit.description || "No description added."}
                             </div>
                         )}
                     </li>

@@ -109,9 +109,9 @@ function App() {
         <InfoBar token={token} hasOutdatedData={hasOutdatedData} setHasOutdatedData={setHasOutdatedData} />
         <header className="App-header">
           <div className="tabs">
-            <button onClick={() => setTab('habits')} className={tab === 'habits' ? 'tabActive' : 'tab'}>Habits</button>
-            <button onClick={() => setTab('pet')} className={tab === 'pet' ? 'tabActive' : 'tab'}>Pet</button>
-            <button onClick={() => setTab('stats')} className={tab === 'stats' ? 'tabActive' : 'tab'}>Stats</button>
+            <button data-testid="habits-tab" onClick={() => setTab('habits')} className={tab === 'habits' ? 'tabActive' : 'tab'}>Habits</button>
+            <button data-testid="pet-tab" onClick={() => setTab('pet')} className={tab === 'pet' ? 'tabActive' : 'tab'}>Pet</button>
+            <button data-testid="stats-tab" onClick={() => setTab('stats')} className={tab === 'stats' ? 'tabActive' : 'tab'}>Stats</button>
           </div>
 
 

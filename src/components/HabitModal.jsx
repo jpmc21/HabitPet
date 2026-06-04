@@ -27,6 +27,7 @@ export default function HabitModal({
           placeholder="Enter a habit"
           value={habit.title}
           onChange={(e) => updateHabitField("title", e.target.value)}
+          data-testid="habit-modal-title-input"
         />
 
         <textarea
@@ -34,18 +35,20 @@ export default function HabitModal({
           placeholder="Enter Description"
           value={habit.description}
           onChange={(e) => updateHabitField("description", e.target.value)}
+          data-testid="habit-modal-description-input"
         />
 
         <select
           style={styles.select}
           value={habit.frequency}
           onChange={(e) => updateHabitField("frequency", e.target.value)}
+          data-testid="habit-modal-frequency-select"
         >
           <option value="daily">Daily</option>
           <option value="weekly">Weekly</option>
           <option value="monthly">Monthly</option>
 
-        </select>  
+        </select>
 
         <div style={styles.buttonRow}>
           <div style={styles.buttonRow}>

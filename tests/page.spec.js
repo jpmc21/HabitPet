@@ -38,6 +38,13 @@ async function TryLoginUser(page, username, password) {
   await loginBtn.click();
 }
 
+async function LoginTestUser(page) {
+  await GoToRegister(page);
+  await TryRegisterNewUser(page, TEST_USERNAME, TEST_PASSWORD);
+  await TryLoginUser(page, TEST_USERNAME, TEST_PASSWORD);
+  await expect(page.getByTestId('app-container')).toBeVisible();
+}
+
 const TEST_USERNAME = `testuser_${Date.now()}`;
 const TEST_PASSWORD = 'testpassword';
 
@@ -52,9 +59,6 @@ test.describe('Authentication', () => {
   });
   test('can register a new account', async ({ page }) => {
     await page.goto('');
-
-    // testuser + timestamp to ensure unique username each test run
-    // TODO: How to clean up test users, or seperate it into a new mongodb cluster
 
     // 1. Go to home page, should see login
     await GoToRegister(page);
@@ -95,5 +99,48 @@ test.describe('Authentication', () => {
     // 3. Expect login to fail with error message
     await expect(page.getByTestId('register-container')).toBeVisible();
     await expect(page.getByTestId('register-error')).toHaveText('Password must be at least 6 characters');
+  })
+});
+
+
+test.describe("Habits", () => {
+  test.afterEach(async ({ request }) => {
+    const response = await request.delete(`${process.env.API_URI}api/testing/cleanup-user`, {
+      data: { username: TEST_USERNAME }
+    });
+
+    expect(response.status()).not.toBe(500);
+    expect(response.status()).not.toBe(501);
+  });
+  test('can add a new habit', async ({ page }) => {
+    await page.goto('');
+    await LoginTestUser(page);
+
+    const habitsTab = page.getByTestId('habits-tab');
+    await habitsTab.click();
+
+    const addHabitBtn = page.getByTestId('add-habit-btn');
+    await addHabitBtn.click();
+
+    const titleInput = page.getByTestId('habit-modal-title-input');
+    const descriptionInput = page.getByTestId('habit-modal-description-input');
+    const frequencySelect = page.getByTestId('habit-modal-frequency-select');
+    const saveBtn = page.getByTestId('habit-modal-save-btn');
+
+    await titleInput.fill('Test Habit');
+    await descriptionInput.fill('This is a test habit');
+    await frequencySelect.selectOption('weekly');
+    await saveBtn.click();
+
+    const habitTitle = page.getByTestId('habit-title-0');
+    const habitDescription = page.getByTestId('habit-description-0');
+    const habitReward = page.getByTestId('habit-reward-0');
+
+    await expect(habitTitle).toHaveText('Test Habit');
+    await expect(habitReward).toHaveText('70');
+
+    const descriptionToggleBtn = page.getByTestId('description-toggle-btn-0');
+    await descriptionToggleBtn.click();
+    await expect(habitDescription).toHaveText('This is a test habit');
   })
 });
