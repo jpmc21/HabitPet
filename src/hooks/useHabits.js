@@ -120,8 +120,13 @@ export function useHabits(dataChanged) {
                     {}, 
                     { headers: { Authorization: `Bearer ${token}` }
                 });
+
+                 const updated = await axios.get(`${API_URL}/api/habits/${habitToToggle._id}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
                 setHabits(prev =>
-                    prev.map((h, i) => i === index ? { ...h, isCompletedToday: false } : h)
+                    prev.map((h, i) => i === index ? { ...updated.data.data, isCompletedToday: false } : h)
                 );
             }
             dataChanged();
