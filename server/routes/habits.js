@@ -320,12 +320,22 @@ router.post("/:id/undo", async (req, res) => {
 
     // rollback everything
     habit.lastCompletedAt = null;
+
+    const today = new Date();
+today.setHours(0, 0, 0, 0);
+habit.completions = habit.completions.filter(d => {
+    const cd = new Date(d);
+    cd.setHours(0, 0, 0, 0);
+    return cd.getTime() !== today.getTime();
+});
+
     habit.streak = Math.max(0, habit.streak - 1);
     habit.exp = Math.max(0, habit.exp - habit.reward);
     user.points = Math.max(0, user.points - habit.reward);
     // take away exp if u undo the habit
 user.pet.exp = Math.max(0, user.pet.exp - 15);
 if (user.pet.exp < 0) user.pet.exp = 0;
+  habit.markModified('completions');
     await habit.save();
     await user.save();
 
