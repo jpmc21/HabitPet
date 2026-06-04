@@ -28,12 +28,33 @@ router.get("/profile", async (req, res) => {
       username: user.username,
       points: user.points,
       petLevel: user.pet.level,
-      bestStreak: bestStreak
+      bestStreak: bestStreak,
+      petName: user.pet.name
     });
 
   } catch (err) {
     res.status(500).json({ message: "server error" });
   }
 });
+
+// this is to update pet name from infobar
+router.patch("/pet/name", async (req, res) => {
+  try {
+    const { name } = req.body
+    if (!name || name.trim() === '') {
+      return res.status(400).json({ message: "Name cannot be empty" })
+    }
+
+    const user = await User.findById(req.userId)
+    if (!user) return res.status(404).json({ message: "User not found" })
+
+    user.pet.name = name.trim()
+    await user.save()
+
+    res.json({ success: true, petName: user.pet.name })
+  } catch (err) {
+    res.status(500).json({ message: "server error" })
+  }
+})
 
 module.exports = router;

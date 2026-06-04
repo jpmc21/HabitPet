@@ -23,11 +23,16 @@ app.use("/api/user", require("./routes/user"));
 if (process.env.NODE_ENV === "test") {
   app.use("/api/testing", require("./routes/testing"));
 }
-app.use("/api/pets", require("./routes/pet")); 
+app.use("/api/pets", require("./routes/pet"));
 //app.use("/api/leaderboard", require("./routes/leaderboard"));
 
-// Start the Server
-const PORT = process.env.SERVER_PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+
+if (process.env.NODE_ENV !== "production") {
+  // Start the Server
+  const PORT = process.env.SERVER_PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
+
+module.exports = app; // Export the app for Vercel serverless deployment

@@ -28,6 +28,7 @@ function App() {
   }
 
 
+  console.log(`verifying api url ${API_URL}`);
   useEffect(() => {
     async function verifyToken() {
       const savedToken = localStorage.getItem('token');

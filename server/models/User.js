@@ -8,6 +8,7 @@ const UserSchema = new mongoose.Schema({
 
   points: { type: Number, default: 0 },
   pet: {
+    name: {type: String ,default: 'insert name'},
     fullness: { type: Number, default: 100 },
     exp: { type: Number, default: 0 },
     // no need to store mood/level anymore, we calculate them
