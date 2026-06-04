@@ -108,7 +108,7 @@ export default function Habits({ dataChanged }) {
                     
                         <span
                             data-testid={`habit-text-${index}`}
-                            onClick={() => openEditModal(index)}
+                            onClick={() => !habit.isCompletedToday && openEditModal(index)}
                             className={`${styles.habitText} ${habit.isCompletedToday ? styles.completed : ""}`}
                         >
                             {habit.title}
