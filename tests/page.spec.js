@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test('has title', async ({ page }) => {
   // Expect a title "to contain" a substring.
-  await page.goto('/');
+  await page.goto('');
   // await expect(page).toHaveTitle(/HabitPet/);
 });
 
@@ -51,7 +51,7 @@ test.describe('Authentication', () => {
     expect(response.status()).not.toBe(501);
   });
   test('can register a new account', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('');
 
     // testuser + timestamp to ensure unique username each test run
     // TODO: How to clean up test users, or seperate it into a new mongodb cluster
@@ -70,7 +70,7 @@ test.describe('Authentication', () => {
   }
   );
   test('cannot register with existing username', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('');
     const existingname = 'testuser';
 
     // 1. Go to register page
@@ -84,7 +84,7 @@ test.describe('Authentication', () => {
     await expect(page.getByTestId('register-error')).toHaveText('An account with this username already exists.');
   })
   test('cannot register with short password', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('');
 
     // 1. Go to register page
     await GoToRegister(page);

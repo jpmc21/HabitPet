@@ -29,7 +29,8 @@ app.use("/api/pets", require("./routes/pet"));
 
 if (process.env.NODE_ENV !== "production") {
   // Start the Server
-  const PORT = process.env.SERVER_PORT || 5000;
+  // harcoded in ./package.json
+  const PORT = 2000;
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
