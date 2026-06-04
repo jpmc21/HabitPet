@@ -30,3 +30,9 @@ Run both at the same time for full feature set
 ![Class Diagram showing database models](/Assets/Class_diagram.png)
 
 ![Sequence Diagram showing habit completion flow](/Assets/sequence_diagram.png)
+
+## Contributors
+
+Note: Some team members have two GitHub accounts. The following usernames belong to the same contributors:
+- "Millie" and "Lemons422" are both Millie Chen
+- "oonamo" and "Onam Hernandez" are both Onam Hernandez
