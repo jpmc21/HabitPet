@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const User = require("../models/User");
 
 // checks if the user is logged in
 const auth = (req, res, next) => {
@@ -17,7 +16,7 @@ const auth = (req, res, next) => {
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(' ')[1];
 
-  // no token = not logged in, stop here
+// require login
   if (!token) {
     return res.status(401).json({ error: 'Not logged in' });
   }
@@ -31,7 +30,6 @@ const auth = (req, res, next) => {
     req.userId = decoded.userId;
 
     // TODO: Currently async, but could be sync if we just store userId in token and not do a DB lookup here
-    req.user = User.findById(decoded.userId);
 
     next();
 

@@ -20,35 +20,18 @@ function App() {
   // tracks which page to show when not logged in
   const [page, setPage] = useState('login')
   const [tab, setTab] = useState('pet')
-  const [isvalidating, setIsValidating] = useState(true)
+  const [isValidating, setIsValidating] = useState(true)
   const [hasOutdatedData, setHasOutdatedData] = useState(true)
 
   const dataChanged = () => {
     setHasOutdatedData(true);
   }
 
-  // useEffect(() => {
-  //   if (!token) {
-  //     return;
-  //   }
-  //   const securityGaurd = setInterval(() => {
-  //   const currentStorageToken = localStorage.getItem('token');
-  //   if (currentStorageToken !== token) {
-  //     console.log("Token not the same anymroe, booting to login...");
-  //     setToken(null);
-  //     localStorage.removeItem('token');
-  //     setPage('login');
-  //   }
-  // }, 1000);
-  // return() =>{ 
-  //   clearInterval(securityGaurd);
-  // };
-  // }, [token]);
 
   useEffect(() => {
     async function verifyToken() {
-      const savedtoken = localStorage.getItem('token');
-      if (!savedtoken) {
+      const savedToken = localStorage.getItem('token');
+      if (!savedToken) {
         setPage('login');
         setIsValidating(false);
         return;
@@ -60,8 +43,7 @@ function App() {
         setIsValidating(false)
 
 
-      } catch (error) {
-        console.error("Invalid token on load");
+      } catch {
         localStorage.removeItem('token');
         setToken(null);
         setPage('login');
@@ -91,11 +73,11 @@ function App() {
   }
   let view;
 
-  if (isvalidating) {
+  if (isValidating) {
     view = (
       <div className="App">
         <header className="App-header">
-          <h2>Loading Habit...</h2>
+          <h2>Loading HabitPet...</h2>
         </header>
       </div>
     );

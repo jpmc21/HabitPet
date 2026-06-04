@@ -27,7 +27,7 @@ export default function Login({ onLogin, switchToRegister }) {
       // backend sends back a token if login works
       const token = res.data.token
 
-      // used AI to understand localStorage here
+      // used AI, prompt: "how does localStorage work in React"
       // save token in browser
       localStorage.setItem('token', token)
       toast.success("Logged in successfully!");
@@ -52,7 +52,7 @@ export default function Login({ onLogin, switchToRegister }) {
   function handlePasswordChange(e) {
     setPassword(e.target.value)
   }
-  // used AI to help with this layout/style part
+  // used AI, prompt: "how to add background image in React inline style"
   return (
     <div className={styles.container} style={{ backgroundImage: `url(${background})` }} data-testid="login-container">
       <img src={teenHappy} alt="habitpet" style={{ width: '150px', marginBottom: '8px' }} />

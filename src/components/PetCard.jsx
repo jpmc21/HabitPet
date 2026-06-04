@@ -17,8 +17,7 @@ import adult_sad from '../assets/adult_sad.png'
 import background from '../assets/background.png'
 import styles from "./PetCard.module.css"
 
-// fake data until backend is ready
-// change level and mood here to test different images
+// tweak these to test different images
 function getExpPercentage(exp){
   if (exp >= 300) return 100;
   if (exp >= 200) return ((exp - 200) / 100) * 100;
@@ -63,8 +62,8 @@ export default function PetCard({ token }){
     });
     setPet(response.data.pet);
     setPoints(response.data.points);
-  } catch (error) {
-    console.error('Error fetching pet data:', error);
+  }  catch {
+    toast.error('Failed to load pet data.');
   }
   }
   if (token) {
@@ -117,7 +116,7 @@ try {
   setTimeout(() => {
     setPet(prev => ({ ...prev, mood: 'neutral' }))
     }, 60000)
-    } catch (error) {
+    } catch {
       toast.error('Failed to interact with pet. Please try again.');
 }
 }
@@ -164,7 +163,7 @@ return (
       <p className={styles.label}>Mood: {pet.mood}</p>
       <p className={styles.label}>Points: {points}</p>
 
-      {/* Updated to reflect the 15 point cost from the backend */}
+      {/* Feed costs 15 pts */}
       <button className={styles.button} onClick={handleFeed}>
         Feed (15 pts)
       </button>

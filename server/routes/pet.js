@@ -9,7 +9,7 @@ const { getLevel, getMood, applyDecay } = require('../utils/petUtils');
 // GET /api/pet - get the pet info when user logged in
 router.get('/', async (req, res) => {
   try {
-    // use AI, prompt: "how mongoose find by id and only get certain fields"
+    // used AI, prompt: "how mongoose find by id and only get certain fields"
     const user = await User.findById(req.userId);
 
     // added - apply decay so fullness is up to date before we send it
@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
 
     res.json({ pet: petData, points: user.points, username: user.username });
   } catch (err) {
-    // use AI, prompt: "server error return what" - 500 means something broke on our end
+    // used AI, prompt: "server error return what" - 500 means something broke on our end
     res.status(500).json({ error: err.message });
   }
 });
@@ -48,13 +48,13 @@ router.post('/feed', async (req, res) => {
 
     user.points = user.points - 15;
 
-    // add 30 fullness but cap at 100
+    // keep fullness at max 100
     user.pet.fullness = Math.min(100, user.pet.fullness + 30);
 
     // removed - mood update, its calculated now not stored
     // removed - lastFed, replaced with lastDecayAt
 
-    // use AI, prompt:"how save mongoose document" - without this changes dont actually save
+    // used AI, prompt:"how save mongoose document" - without this changes dont actually save
     await user.save();
 
     // changed - calculate level and mood before sending back
