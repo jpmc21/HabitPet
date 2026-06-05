@@ -63,6 +63,10 @@
     margin-bottom: 25px;
 }
 
+.addButton:hover {
+    background: #ee9350;
+}
+
 .descriptionToggle {
     justify-self: start;
     padding: 8px 14px;
@@ -74,6 +78,10 @@
     font-weight: 700;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(90, 60, 30, 0.10);
+}
+
+.descriptionToggle:hover {
+    background: #f0f0f0;
 }
 
 .doneBtn {
@@ -89,6 +97,10 @@
     box-shadow: 0 2px 8px rgba(90, 60, 30, 0.10);
 }
 
+.doneBtn:hover {
+    background: #45a049;
+}
+
 .undoBtn {
     justify-self: center;
     padding: 8px 14px;
@@ -102,6 +114,10 @@
     box-shadow: 0 2px 8px rgba(90, 60, 30, 0.10);
 }
 
+.undoBtn:hover {
+    background: #7e7e7e;
+}
+
 .deleteButton {
     justify-self: end;
     padding: 8px 14px;
@@ -113,6 +129,10 @@
     font-weight: 700;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(90, 60, 30, 0.10);
+}
+
+.deleteButton:hover {
+    background: #f0f0f0;
 }
 
 .habitDescription {

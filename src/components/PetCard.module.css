@@ -80,6 +80,10 @@
     color: white;
 }
 
+.button:hover {
+    background: #ee9350;
+}
+
 
 /*
 AI PROMPT: css make png jiggle
