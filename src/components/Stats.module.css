@@ -34,14 +34,26 @@
     cursor: pointer;
 }
 
+.toggleBtn:hover {
+    background-color: #fdf6f0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(228, 158, 101, 0.2);
+}
+
 .toggleActive {
-     padding: 8px 24px;
+    padding: 8px 24px;
     font-size: 15px;
     border-radius: 8px;
     border: 2px solid #f4a261;
     background: #f4a261;
-    color: white;             
+    color: white;
     cursor: pointer;
+}
+
+.toggleActive:hover {
+    background-color: #ee9350;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(228, 158, 101, 0.2);
 }
 
 .card {
@@ -67,6 +79,12 @@
     border: 1px solid #ccc;
     margin-bottom: 8px;
     box-sizing: border-box;
+}
+
+.search:focus {
+    outline: none;
+    border-color: #f4a261;
+    box-shadow: 0 0 5px rgba(244, 162, 97, 0.5);
 }
 
 .dropdown {
@@ -127,6 +145,7 @@
     color: #333;
 
 }
+
 .section {
     width: 100%;
     max-width: 640px;
