@@ -1,3 +1,4 @@
+
 .container {
     display: flex;
     flex-direction: column;
@@ -79,45 +80,3 @@
     background: #f4a261;
     color: white;
 }
-
-
-/*
-AI PROMPT: css make png jiggle
-[AI PROMPT START]
-*/
-.jigglePng {
-    animation: jiggle 0.4s infinite ease-in-out;
-    transform-origin: center center;
-    /* Keeps the jiggle centered */
-    /* display: inline-block; */
-    /* Required for transforms on inline elements like images */
-}
-
-@keyframes jiggle {
-    0% {
-        transform: rotate(0deg) translate(0, 0);
-    }
-
-    25% {
-        transform: rotate(-2deg) translate(-2px, 1px);
-    }
-
-    50% {
-        transform: rotate(2deg) translate(2px, -1px);
-    }
-
-    75% {
-        transform: rotate(-1deg) translate(1px, -2px);
-    }
-
-    100% {
-        transform: rotate(0deg) translate(0, 0);
-    }
-}
-
-/* [AI PROMPT END] */
-/*
-Reflection:
-The original response used a .jiggle-png class.
-To make sure that it is easy to apply, I renamed it to .jigglePng
-*/
