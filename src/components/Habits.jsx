@@ -5,6 +5,8 @@ import styles from "./Habits.module.css";
 import background from '../assets/background.png'
 
 export default function Habits({ dataChanged }) {
+    //Gets habit data and habit related functions from the hook useHabits
+    //Allows us to add, delete, edit, and toggle habits
     const {
         habits,
         addHabit,
@@ -13,18 +15,32 @@ export default function Habits({ dataChanged }) {
         toggleHabit,
     } = useHabits(dataChanged);
 
+    //creates a defualt empty habit object
+    //so when you go to add one its empty, or it resets it after you close the modal
     const emptyHabit = {
         title: "",
         description: "",
         frequency: "daily"
     };
 
+    //Controls if a modal is visible
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    //Stores the hbait currently being created or edited inside the modal
     const [modalHabit, setModalHabit] = useState(emptyHabit);
+
+    //Checks if the modal is used to edit or add a new habit
     const [modalMode, setModalMode] = useState("add");
+
+    //Stores the index of the habit being edited
+    //It is null if your adding a new habit
     const [editingIndex, setEditingIndex] = useState(null);
+
+    //Stores which habit description is currently being open
+    //Its null if no description is open
     const [openDescription, setOpenDescription] = useState(null);
 
+    //Opens a blank modal in add mode
     const openAddModal = () => {
         setModalMode("add");
         setModalHabit(emptyHabit);
@@ -32,9 +48,11 @@ export default function Habits({ dataChanged }) {
         setIsModalOpen(true);
     }
 
+    //Opens the modal in edit mode and displays the selected habit's data
     const openEditModal = (index) => {
         setModalMode("edit");
 
+        //Copys the habits values into modalHabit
         setModalHabit({
             title: habits[index].title || "",
             description: habits[index].description || "",
@@ -45,13 +63,17 @@ export default function Habits({ dataChanged }) {
         setIsModalOpen(true);
     }
 
+    //Closes the modal and resets the editing state
     const closeModal = () => {
         setModalHabit(emptyHabit);
         setEditingIndex(null);
         setIsModalOpen(false);
     }
 
-    const handleSaveHabit = (habit) => {
+    //Saves the habit from the modal
+    //If the modal was in add mode it creates a new habit
+    //If the modal was in edit mode it updates the changes to the habit
+    const handleSaveHabit = () => {
         if (modalHabit.title.trim() === "") return;
 
         if (modalMode === "add") {
@@ -63,6 +85,7 @@ export default function Habits({ dataChanged }) {
         closeModal();
     }
 
+    //Opens or closes the description for a habit
     const toggleDescription = (index) => {
         setOpenDescription((prevIndex) =>
             prevIndex === index ? null : index
@@ -73,10 +96,12 @@ export default function Habits({ dataChanged }) {
         <div className={styles.container} style={{ backgroundImage: `url(${background})` }}>
             <h1>My Habits</h1>
 
+            {/* Button to open the modal to add a new habit */}
             <button data-testid="add-habit-btn" className={styles.addButton} onClick={openAddModal}>
                 Add Habit
             </button>
 
+            {/* Calls HabitModal to display the modal when isModalOpen is true*/}
             {isModalOpen && (
                 <HabitModal
                     mode={modalMode}
@@ -87,9 +112,12 @@ export default function Habits({ dataChanged }) {
                 />
             )}
 
+            {/* Displays the habits */}
             <ul className={styles.habitList}>
                 {habits.map((habit, index) => (
                     <li className={styles.habitItem} key={habit._id || index}>
+
+                        {/* Button to display or hide the description */}
                         <button
                             type="button"
                             onClick={() => toggleDescription(index)}
@@ -99,6 +127,7 @@ export default function Habits({ dataChanged }) {
                             {openDescription === index ? "Hide" : "Details"}
                         </button>
 
+                        {/* Button to mark the habits as done or to undo it*/}
                         <button
                             data-testid={`toggle-btn-${index}`}
                             onClick={() => toggleHabit(index)}
@@ -107,6 +136,9 @@ export default function Habits({ dataChanged }) {
                             {habit.isCompletedToday ? "Undo" : "Done"}
                         </button>
 
+                        {/* If the habit is not completed, you can click the title to edit it 
+                            It will open the modal in edit mode.
+                            This feature is disabled if you mark the habit as done */}
                         <span
                             data-testid={`habit-title-${index}`}
                             onClick={() => !habit.isCompletedToday && openEditModal(index)}
@@ -115,10 +147,12 @@ export default function Habits({ dataChanged }) {
                             {habit.title}
                         </span>
 
+                        {/* Displays the habit reward */}
                         <span className={styles.habitReward} data-testid={`habit-reward-${index}`}>
                             {habit.reward}
                         </span>
 
+                        {/* Button to delete the selected habit */}
                         <button
                             data-testid={`delete-btn-${index}`}
                             onClick={() => deleteHabit(index)}
@@ -126,6 +160,8 @@ export default function Habits({ dataChanged }) {
                         >
                             Delete
                         </button>
+
+                        {/* Displays the description when the habits details are open */}
                         {openDescription === index && (
                             <div className={styles.habitDescription} data-testid={`habit-description-${index}`}>
                                 {habit.description || "No description added."}
