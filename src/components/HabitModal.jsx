@@ -2,11 +2,13 @@ export default function HabitModal({
   mode,
   habit,
   setHabit,
-  setText,
   onSave,
   onCancel,
 
 }) {
+
+  //Updates a specific field inside the habit object
+  //Only changes the one field, keeps the other fields the same
   function updateHabitField(field, value) {
     setHabit((prev) => ({
       ...prev,
@@ -21,6 +23,7 @@ export default function HabitModal({
           {mode === "edit" ? "Edit Habit" : "Add Habit"}
         </h2>
 
+        {/*Input for the habit title*/}
         <input
           style={styles.input}
           type="text"
@@ -29,6 +32,7 @@ export default function HabitModal({
           onChange={(e) => updateHabitField("title", e.target.value)}
         />
 
+        {/*Text area for the habit description*/}
         <textarea
           style={styles.textarea}
           placeholder="Enter Description"
@@ -36,6 +40,7 @@ export default function HabitModal({
           onChange={(e) => updateHabitField("description", e.target.value)}
         />
 
+        {/*Creates a dropdown menue for selecting how often the hait should be completed*/}
         <select
           style={styles.select}
           value={habit.frequency}
@@ -47,6 +52,7 @@ export default function HabitModal({
 
         </select>  
 
+        {/*Buttons for saving or canceling the modal*/}
         <div style={styles.buttonRow}>
           <div style={styles.buttonRow}>
             <button style={styles.saveButton} data-testid="habit-modal-save-btn" onClick={(onSave)}>
@@ -59,7 +65,6 @@ export default function HabitModal({
           </div>
         </div>
       </div>
-      ;
     </div>
   );
 }
