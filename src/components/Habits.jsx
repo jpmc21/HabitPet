@@ -86,11 +86,16 @@ export default function Habits({ dataChanged }) {
     }
 
     //Opens or closes the description for a habit
+    //GenAI prompt: Can you create a react function that toggles open a description box
+    //GenAI start
     const toggleDescription = (index) => {
     setOpenDescription((prevIndex) =>
         prevIndex === index ? null : index
     );
-};
+    };
+    //GenAI end
+    //GenAI reflection: Aafter reviewing the code it mainly fulfills the task I needed it to do. 
+    // I changed some of the parameters
 
     return (
         <div className={styles.container} style={{ backgroundImage: `url(${background})` }}>
@@ -147,7 +152,9 @@ export default function Habits({ dataChanged }) {
                         </span>
 
                         {/* Displays the habit reward */}
-                        <span className={styles.habitReward}>
+                        <span 
+                            className={styles.habitReward}
+                        >
                             {habit.reward}
                         </span>
 
