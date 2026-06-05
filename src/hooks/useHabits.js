@@ -3,6 +3,7 @@ import axios from "axios";
 import { API_URL } from "../globals";
 import { toast } from "react-toastify";
 
+//Hooks to hands habit data and habit actions
 export function useHabits(dataChanged) {
     const [habits, setHabits] = useState([]);
 
@@ -28,6 +29,7 @@ export function useHabits(dataChanged) {
         fetchHabits();
     }, []);
 
+    //Deletes a habit based on its index in the habits array
     async function deleteHabit(index) {
         const habitToDelete = habits[index];
         try {
@@ -44,6 +46,9 @@ export function useHabits(dataChanged) {
         }
     }
 
+    //Edits an existing habit
+    //The index tells us which habit is being edited
+    //updatedHabit contains the changes to the title, description, and frequency 
     async function editHabit(index, updatedHabit) {
         const habitToEdit = habits[index];
 
@@ -75,6 +80,7 @@ export function useHabits(dataChanged) {
         }
     }
 
+    //Adds a new habit
     async function addHabit(newHabit) {
         if (!newHabit.title || newHabit.title.trim() === "") return;
 
@@ -99,6 +105,7 @@ export function useHabits(dataChanged) {
         }
     }
 
+    //Toggles the habit from Done or undoes it if it was already done
     async function toggleHabit(index) {
         const habitToToggle = habits[index];
         const token = localStorage.getItem('token');
@@ -136,7 +143,7 @@ export function useHabits(dataChanged) {
         }
     }
     
-
+    //Returns the habits array and the fucntions that the component can use
     return {
         habits,
         deleteHabit,
