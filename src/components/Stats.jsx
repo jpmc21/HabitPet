@@ -104,16 +104,18 @@ export default function Stats({ token }) {
   let mostCompleted = null
   let leastCompleted = null
 
-  if (habits.length > 0) {
-    const sorted = [...habits].sort((a, b) =>
-      (b.completions?.length || 0) - (a.completions?.length || 0)
-    )
-    mostCompleted = sorted[0]
-    leastCompleted = sorted[sorted.length - 1]
-  }
-  const totalCompletions = habits.reduce((sum, h) => sum + (h.completions?.length || 0), 0)
 
-  return (
+if (habits.length > 0) {
+  const sorted = [...habits].sort((a, b) => 
+    (b.completions?.length || 0) - (a.completions?.length || 0)
+  )
+  mostCompleted = sorted[0]
+  leastCompleted = sorted[sorted.length - 1]
+}
+const totalCompletions = habits.reduce((sum, h) => sum + (h.completions?.length || 0), 0)
+// [AI use] Preveious commit had all following lines and logic, i asked it to implement the css file into the front end to match style
+//[AI use] reflection: all of the code and form was done so i believe it is fair to use this prompt to do the styling, commit before "adding css styles" has my code form 
+return (
 
     <div className={styles.container} style={{ backgroundImage: `url(${background})` }}>
       <h1 className={styles.title}>Your Statistics</h1>
@@ -141,6 +143,7 @@ export default function Stats({ token }) {
       </div>
       {/* here is where it is for individual habit where it toggles between week month and year to show how many times youve completed it  */}
 
+
       <div className={styles.section}>
         <h2 className={styles.sectionTitle}>Individual Habit</h2>
 
@@ -148,6 +151,7 @@ export default function Stats({ token }) {
           <button className={view === 'week' ? styles.toggleActive : styles.toggleBtn} onClick={() => setView('week')}>Week</button>
           <button className={view === 'month' ? styles.toggleActive : styles.toggleBtn} onClick={() => setView('month')}>Month</button>
           <button className={view === 'year' ? styles.toggleActive : styles.toggleBtn} onClick={() => setView('year')}>Year</button>
+
         </div>
 
         <input
@@ -177,19 +181,6 @@ export default function Stats({ token }) {
           </div>
         ))}
 
-        {/* {search && (
-          <ul className={styles.dropdown}>
-            {filteredHabits.map(h => (
-              <li
-                key={h._id}
-                className={styles.dropdownItem}
-                onClick={() => { setSelectedHabit(h); setSearch('') }}
-              >
-                {h.title}
-              </li>
-            ))}
-          </ul>
-        )} */}
 
         {search === '' && habitStats && !selectedHabit && habitStats.map((stat) => (
           <div className={styles.habitCard}>
@@ -205,23 +196,6 @@ export default function Stats({ token }) {
             </p>
           </div>
         ))}
-
-        {/* {selectedHabit && habitStats ? (
-          <div className={styles.habitCard}>
-            <p className={styles.habitTitle}>{habitStats.title}</p>
-            <p className={styles.label}>Started: {new Date(habitStats.startedAt).toLocaleDateString()}</p>
-            <p className={styles.label}>Total completions: {habitStats.totalCompletions}</p>
-            <p className={styles.label}>Current streak: {habitStats.currentStreak} days</p>
-            <p className={styles.label}>
-              Completions this {view}:{' '}
-              {view === 'week' && habitStats.week}
-              {view === 'month' && habitStats.month}
-              {view === 'year' && habitStats.year}
-            </p>
-          </div>
-        ) : (
-          <p className={styles.empty}>Search and select a habit to see its stats.</p>
-        )} */}
       </div>
     </div>
 
