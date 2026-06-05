@@ -106,7 +106,8 @@ if (habits.length > 0) {
   leastCompleted = sorted[sorted.length - 1]
 }
 const totalCompletions = habits.reduce((sum, h) => sum + (h.completions?.length || 0), 0)
-
+// [AI use] Preveious commit had all following lines and logic, i asked it to implement the css file into the front end to match style
+//[AI use] reflection: all of the code and form was done so i believe it is fair to use this prompt to do the styling, commit before "adding css styles" has my code form 
 return (
 
      <div className={styles.container} style={{ backgroundImage: `url(${background})` }}>
@@ -139,18 +140,18 @@ return (
       <h2 className={styles.sectionTitle}>Individual Habit</h2>
 
       <div className={styles.toggle}>
-        <button className={view === 'week'  ? styles.toggleActive : styles.toggleBtn} onClick={() => setView('week')}>Week</button>
-        <button className={view === 'month' ? styles.toggleActive : styles.toggleBtn} onClick={() => setView('month')}>Month</button>
-        <button className={view === 'year'  ? styles.toggleActive : styles.toggleBtn} onClick={() => setView('year')}>Year</button>
-      </div>
 
+
+        <button className={view === 'week'  ? styles.toggleActive : styles.toggleBtn} onClick={() => setView('week')}>Daily</button>
+        <button className={view === 'month' ? styles.toggleActive : styles.toggleBtn} onClick={() => setView('month')}>Weekly</button>
+        <button className={view === 'year'  ? styles.toggleActive : styles.toggleBtn} onClick={() => setView('year')}>Monthly</button>
+      </div>
       <input
         className={styles.search}
         placeholder="Search habits..."
         value={search}
         onChange={e => setSearch(e.target.value)}
       />
-
       {search && (
         <ul className={styles.dropdown}>
           {filteredHabits.map(h => (
