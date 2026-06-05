@@ -102,6 +102,47 @@ test.describe('Authentication', () => {
   })
 });
 
+const FREQ_POINTS = {
+  daily: 10,
+  weekly: 70,
+  monthly: 100
+};
+
+async function CreateTask(page, title, description, frequency) {
+  await LoginTestUser(page);
+
+  const habitsTab = page.getByTestId('habits-tab');
+  await habitsTab.click();
+
+  const addHabitBtn = page.getByTestId('add-habit-btn');
+  await addHabitBtn.click();
+
+  const titleInput = page.getByTestId('habit-modal-title-input');
+  const descriptionInput = page.getByTestId('habit-modal-description-input');
+  const frequencySelect = page.getByTestId('habit-modal-frequency-select');
+  const saveBtn = page.getByTestId('habit-modal-save-btn');
+
+  await titleInput.fill(title);
+  await descriptionInput.fill(description);
+  await frequencySelect.selectOption(frequency);
+  await saveBtn.click();
+
+  const habitTitle = page.getByTestId('habit-title-0');
+  const habitDescription = page.getByTestId('habit-description-0');
+  const habitReward = page.getByTestId('habit-reward-0');
+  const descriptionToggleBtn = page.getByTestId('description-toggle-btn-0');
+
+  await expect(habitTitle).toHaveText(title);
+  await expect(habitReward).toHaveText(FREQ_POINTS[frequency].toString());
+
+  return {
+    habitTitle,
+    habitDescription,
+    habitReward,
+    descriptionToggleBtn
+  }
+}
+
 
 test.describe("Habits", () => {
   test.afterEach(async ({ request }) => {
@@ -112,35 +153,28 @@ test.describe("Habits", () => {
     expect(response.status()).not.toBe(500);
     expect(response.status()).not.toBe(501);
   });
-  test('can add a new habit', async ({ page }) => {
+  test('can add and delete a new habit', async ({ page }) => {
     await page.goto('');
-    await LoginTestUser(page);
-
-    const habitsTab = page.getByTestId('habits-tab');
-    await habitsTab.click();
-
-    const addHabitBtn = page.getByTestId('add-habit-btn');
-    await addHabitBtn.click();
-
-    const titleInput = page.getByTestId('habit-modal-title-input');
-    const descriptionInput = page.getByTestId('habit-modal-description-input');
-    const frequencySelect = page.getByTestId('habit-modal-frequency-select');
-    const saveBtn = page.getByTestId('habit-modal-save-btn');
-
-    await titleInput.fill('Test Habit');
-    await descriptionInput.fill('This is a test habit');
-    await frequencySelect.selectOption('weekly');
-    await saveBtn.click();
-
-    const habitTitle = page.getByTestId('habit-title-0');
-    const habitDescription = page.getByTestId('habit-description-0');
-    const habitReward = page.getByTestId('habit-reward-0');
-
-    await expect(habitTitle).toHaveText('Test Habit');
-    await expect(habitReward).toHaveText('70');
-
-    const descriptionToggleBtn = page.getByTestId('description-toggle-btn-0');
+    const { habitTitle, habitDescription, descriptionToggleBtn } = await CreateTask(page, 'Test Habit', 'This is a test habit', 'weekly');
     await descriptionToggleBtn.click();
     await expect(habitDescription).toHaveText('This is a test habit');
+
+    const deleteBtn = page.getByTestId('delete-btn-0');
+    await deleteBtn.click();
+    await expect(habitTitle).not.toBeVisible();
   })
+  test('can mark habit as done', async ({ page }) => {
+    await page.goto('');
+    const { habitTitle, habitDescription, descriptionToggleBtn } = await CreateTask(page, 'Test Habit', 'This is a test habit', 'weekly');
+    await descriptionToggleBtn.click();
+    await expect(habitDescription).toHaveText('This is a test habit');
+
+    const toggleBtn = page.getByTestId('toggle-btn-0');
+    await toggleBtn.click();
+    await expect(habitTitle).toHaveClass(/completed/);
+
+    const deleteBtn = page.getByTestId('delete-btn-0');
+    await deleteBtn.click();
+    await expect(habitTitle).not.toBeVisible();
+  });
 });
