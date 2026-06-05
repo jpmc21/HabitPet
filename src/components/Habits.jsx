@@ -25,7 +25,7 @@ export default function Habits({ dataChanged }) {
 
     //Controls if a modal is visible
     const [isModalOpen, setIsModalOpen] = useState(false);
-    
+
     //Stores the hbait currently being created or edited inside the modal
     const [modalHabit, setModalHabit] = useState(emptyHabit);
 
@@ -51,7 +51,7 @@ export default function Habits({ dataChanged }) {
     //Opens the modal in edit mode and displays the selected habit's data
     const openEditModal = (index) => {
         setModalMode("edit");
-       
+
         //Copys the habits values into modalHabit
         setModalHabit({
             title: habits[index].title || "",
@@ -82,22 +82,22 @@ export default function Habits({ dataChanged }) {
             editHabit(editingIndex, modalHabit);
         }
 
-       closeModal();
+        closeModal();
     }
 
     //Opens or closes the description for a habit
     const toggleDescription = (index) => {
-    setOpenDescription((prevIndex) =>
-        prevIndex === index ? null : index
-    );
-};
+        setOpenDescription((prevIndex) =>
+            prevIndex === index ? null : index
+        );
+    };
 
     return (
         <div className={styles.container} style={{ backgroundImage: `url(${background})` }}>
             <h1>My Habits</h1>
 
             {/* Button to open the modal to add a new habit */}
-            <button className={styles.addButton} onClick={openAddModal}>
+            <button data-testid="add-habit-btn" className={styles.addButton} onClick={openAddModal}>
                 Add Habit
             </button>
 
@@ -116,12 +116,13 @@ export default function Habits({ dataChanged }) {
             <ul className={styles.habitList}>
                 {habits.map((habit, index) => (
                     <li className={styles.habitItem} key={habit._id || index}>
-                        
+
                         {/* Button to display or hide the description */}
                         <button
                             type="button"
                             onClick={() => toggleDescription(index)}
                             className={styles.descriptionToggle}
+                            data-testid={`description-toggle-btn-${index}`}
                         >
                             {openDescription === index ? "Hide" : "Details"}
                         </button>
@@ -134,12 +135,12 @@ export default function Habits({ dataChanged }) {
                         >
                             {habit.isCompletedToday ? "Undo" : "Done"}
                         </button>
-                    
+
                         {/* If the habit is not completed, you can click the title to edit it 
                             It will open the modal in edit mode.
                             This feature is disabled if you mark the habit as done */}
                         <span
-                            data-testid={`habit-text-${index}`}
+                            data-testid={`habit-title-${index}`}
                             onClick={() => !habit.isCompletedToday && openEditModal(index)}
                             className={`${styles.habitText} ${habit.isCompletedToday ? styles.completed : ""}`}
                         >
@@ -147,7 +148,7 @@ export default function Habits({ dataChanged }) {
                         </span>
 
                         {/* Displays the habit reward */}
-                        <span className={styles.habitReward}>
+                        <span className={styles.habitReward} data-testid={`habit-reward-${index}`}>
                             {habit.reward}
                         </span>
 
@@ -162,8 +163,8 @@ export default function Habits({ dataChanged }) {
 
                         {/* Displays the description when the habits details are open */}
                         {openDescription === index && (
-                            <div className={styles.habitDescription}>
-                            {habit.description || "No description added."}
+                            <div className={styles.habitDescription} data-testid={`habit-description-${index}`}>
+                                {habit.description || "No description added."}
                             </div>
                         )}
                     </li>
