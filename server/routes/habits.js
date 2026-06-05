@@ -50,6 +50,68 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get("/stats", async (req, res) => {
+  try {
+    const { id } = req.query;
+
+    // start with just getting this user's habits
+    let query = { userId: req.userId };
+
+    let habits;
+    if (id) {
+      habits = await Habit.findOne({ _id: req.params.id, userId: req.userId });
+    } else {
+      habits = await Habit.find(query).sort({ startedAt: -1 });
+    }
+
+    // const habit = await Habit.findOne({
+    //   _id: req.params.id,
+    //   userId: req.userId
+    // });
+
+    if (!habits) return res.status(404).json({ error: "Habit not found" });
+
+    const now = new Date();
+
+    // week: last 7 days
+    const weekAgo = new Date(now);
+    weekAgo.setDate(now.getDate() - 7);
+
+    // month: last 30 days
+    const monthAgo = new Date(now);
+    monthAgo.setDate(now.getDate() - 30);
+
+    // year: last 365 days
+    const yearAgo = new Date(now);
+    yearAgo.setFullYear(now.getFullYear() - 1);
+
+    const output = [];
+    for (let habit of habits) {
+      const completionsInWeek = habit.completions.filter(d => new Date(d) >= weekAgo).length;
+      const completionsInMonth = habit.completions.filter(d => new Date(d) >= monthAgo).length;
+      const completionsInYear = habit.completions.filter(d => new Date(d) >= yearAgo).length;
+      output.push({
+        title: habit.title,
+        startedAt: habit.startedAt,
+        totalCompletions: habit.completions.length,
+        currentStreak: habit.streak,
+        week: completionsInWeek,
+        month: completionsInMonth,
+        year: completionsInYear,
+        alltime: habit.completions.length
+      });
+    }
+
+    res.json({
+      success: true,
+      data: output
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch habit stats" });
+  }
+});
+
 
 
 // delete a habit 
@@ -164,7 +226,7 @@ router.put("/:id", async (req, res) => {
     // Update fields
     if (title) habit.title = title;
     if (description !== undefined) habit.description = description;
-    if (frequency !== undefined){ 
+    if (frequency !== undefined) {
       habit.frequency = frequency;
       habit.reward = POINTS_ASSIGNMENT[frequency] || 10;
     }
@@ -181,52 +243,6 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.get("/:id/stats", async (req, res) => {
-  try {
-    const habit = await Habit.findOne({
-      _id: req.params.id,
-      userId: req.userId
-    });
-
-    if (!habit) return res.status(404).json({ error: "Habit not found" });
-
-    const now = new Date();
-
-    // week: last 7 days
-    const weekAgo = new Date(now);
-    weekAgo.setDate(now.getDate() - 7);
-
-    // month: last 30 days
-    const monthAgo = new Date(now);
-    monthAgo.setDate(now.getDate() - 30);
-
-    // year: last 365 days
-    const yearAgo = new Date(now);
-    yearAgo.setFullYear(now.getFullYear() - 1);
-
-    const completionsInWeek  = habit.completions.filter(d => new Date(d) >= weekAgo).length;
-    const completionsInMonth = habit.completions.filter(d => new Date(d) >= monthAgo).length;
-    const completionsInYear  = habit.completions.filter(d => new Date(d) >= yearAgo).length;
-
-    res.json({
-      success: true,
-      data: {
-        title: habit.title,
-        startedAt: habit.startedAt,
-        totalCompletions: habit.completions.length,
-        currentStreak: habit.streak,
-        week:  completionsInWeek,
-        month: completionsInMonth,
-        year:  completionsInYear,
-        alltime: habit.completions.length
-      }
-    });
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to fetch habit stats" });
-  }
-});
 
 // POST /api/habits/:id/complete - mark a habit as completed today
 router.post("/:id/complete", async (req, res) => {
@@ -322,20 +338,20 @@ router.post("/:id/undo", async (req, res) => {
     habit.lastCompletedAt = null;
 
     const today = new Date();
-today.setHours(0, 0, 0, 0);
-habit.completions = habit.completions.filter(d => {
-    const cd = new Date(d);
-    cd.setHours(0, 0, 0, 0);
-    return cd.getTime() !== today.getTime();
-});
+    today.setHours(0, 0, 0, 0);
+    habit.completions = habit.completions.filter(d => {
+      const cd = new Date(d);
+      cd.setHours(0, 0, 0, 0);
+      return cd.getTime() !== today.getTime();
+    });
 
     habit.streak = Math.max(0, habit.streak - 1);
     habit.exp = Math.max(0, habit.exp - habit.reward);
     user.points = Math.max(0, user.points - habit.reward);
     // take away exp if u undo the habit
-user.pet.exp = Math.max(0, user.pet.exp - 15);
-if (user.pet.exp < 0) user.pet.exp = 0;
-  habit.markModified('completions');
+    user.pet.exp = Math.max(0, user.pet.exp - 15);
+    if (user.pet.exp < 0) user.pet.exp = 0;
+    habit.markModified('completions');
     await habit.save();
     await user.save();
 
