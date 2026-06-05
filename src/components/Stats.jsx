@@ -15,6 +15,8 @@ export default function Stats({token}){
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
     const [habits, setHabits] = useState([])
+    const [frequencyFilter, setFrequencyFilter] = useState('all') //filtered search
+
     
     
  const headers = { Authorization: `Bearer ${token}` }
@@ -80,10 +82,6 @@ useEffect(() => {
     }
   }
 
-  const filteredHabits = habits.filter(h =>
-    h.title.toLowerCase().includes(search.toLowerCase())
-  )
-
   //if (loading) return <div className={styles.center}>Loading stats...</div>
   if (error) return <div className={styles.center}>{error}</div>
 
@@ -94,6 +92,16 @@ useEffect(() => {
       </div>
     )
   }
+
+
+   //const filteredHabits = habits.filter(h =>
+   // h.title.toLowerCase().includes(search.toLowerCase())
+ // )
+  //filter
+  const filteredHabits = habits.filter( h=> {const searched = h.title.toLowerCase().includes(search.toLowerCase())
+    const filteredList = frequencyFilter === 'all' || h.frequency === frequencyFilter
+    return  searched && filteredList
+  })
 
 let mostCompleted = null
 let leastCompleted = null
@@ -142,9 +150,9 @@ return (
       <div className={styles.toggle}>
 
 
-        <button className={view === 'week'  ? styles.toggleActive : styles.toggleBtn} onClick={() => setView('week')}>Daily</button>
-        <button className={view === 'month' ? styles.toggleActive : styles.toggleBtn} onClick={() => setView('month')}>Weekly</button>
-        <button className={view === 'year'  ? styles.toggleActive : styles.toggleBtn} onClick={() => setView('year')}>Monthly</button>
+        <button className={frequencyFilter=== 'daily'  ? styles.toggleActive : styles.toggleBtn} onClick={() => setFrequencyFilter('daily')}>Daily</button>
+        <button className={frequencyFilter === 'weekly' ? styles.toggleActive : styles.toggleBtn} onClick={() => setFrequencyFilter('weekly')}>Weekly</button>
+        <button className={frequencyFilter === 'monthly'  ? styles.toggleActive : styles.toggleBtn} onClick={() => setFrequencyFilter('monthly')}>Monthly</button>
       </div>
       <input
         className={styles.search}
@@ -172,12 +180,10 @@ return (
           <p className={styles.label}>Started: {new Date(habitStats.startedAt).toLocaleDateString()}</p>
           <p className={styles.label}>Total completions: {habitStats.totalCompletions}</p>
           <p className={styles.label}>Current streak: {habitStats.currentStreak} days</p>
-          <p className={styles.label}>
-            Completions this {view}:{' '}
-            {view === 'week'  && habitStats.week}
-            {view === 'month' && habitStats.month}
-            {view === 'year'  && habitStats.year}
-          </p>
+          <p className={styles.label}>Completions this week: {habitStats.week}</p>
+          <p className={styles.label}>Completions this month: {habitStats.month}</p>
+          <p className={styles.label}>Completions this year: {habitStats.year}</p>
+          
         </div>
       ) : (
         <p className={styles.empty}>Search and select a habit to see its stats.</p>
