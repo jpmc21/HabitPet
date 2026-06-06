@@ -68,3 +68,6 @@ the forementioned [environment](#required-environment)
 Note: Some team members have two names for commits. The following usernames belong to the same contributors:
 - "Millie" and "Lemons422" are both Millie Chen
 - "oonamo" and "Onam Hernandez" are both Onam Hernandez
+
+## AI Usage Additional Note
+We used AI to generate 10 pet images used in this project. We are noting this here because the images are included as part of the app.
