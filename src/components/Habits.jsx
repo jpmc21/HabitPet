@@ -94,7 +94,7 @@ export default function Habits({ dataChanged }) {
     );
     };
     //GenAI end
-    //GenAI reflection: Aafter reviewing the code it mainly fulfills the task I needed it to do. 
+    //GenAI reflection: After reviewing the code it mainly fulfills the task I needed it to do. 
     // I changed some of the parameters
 
     return (
