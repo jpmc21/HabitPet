@@ -1,13 +1,14 @@
 import { test, expect } from '@playwright/test';
+/* eslint-disable testing-library/prefer-screen-queries */
 
+// sanity check
 test('has title', async ({ page }) => {
-  // Expect a title "to contain" a substring.
   await page.goto('');
   // await expect(page).toHaveTitle(/HabitPet/);
 });
 
 // On non-fail state, guarantee's to go to the register page
-async function GoToRegister(page) {
+async function goToRegister(page) {
   await expect(page.getByTestId('login-container')).toBeVisible();
   const registerLink = page.getByTestId('register-link');
 
@@ -15,7 +16,7 @@ async function GoToRegister(page) {
   await expect(page.getByTestId('register-container')).toBeVisible();
 }
 
-async function TryRegisterNewUser(page, username, password) {
+async function tryRegisterNewUser(page, username, password) {
   await expect(page.getByTestId('register-container')).toBeVisible();
 
   const registerInput = page.getByTestId('username-input');
@@ -27,7 +28,7 @@ async function TryRegisterNewUser(page, username, password) {
   await registerBtn.click();
 }
 
-async function TryLoginUser(page, username, password) {
+async function tryLoginUser(page, username, password) {
   await expect(page.getByTestId('login-container')).toBeVisible();
 
   const loginInput = page.getByTestId('username-input');
@@ -36,6 +37,13 @@ async function TryLoginUser(page, username, password) {
   await loginInput.fill(username);
   await loginPasswordInput.fill(password);
   await loginBtn.click();
+}
+
+async function loginTestUser(page) {
+  await goToRegister(page);
+  await tryRegisterNewUser(page, TEST_USERNAME, TEST_PASSWORD);
+  await tryLoginUser(page, TEST_USERNAME, TEST_PASSWORD);
+  await expect(page.getByTestId('app-container')).toBeVisible();
 }
 
 const TEST_USERNAME = `testuser_${Date.now()}`;
@@ -53,17 +61,14 @@ test.describe('Authentication', () => {
   test('can register a new account', async ({ page }) => {
     await page.goto('');
 
-    // testuser + timestamp to ensure unique username each test run
-    // TODO: How to clean up test users, or seperate it into a new mongodb cluster
-
     // 1. Go to home page, should see login
-    await GoToRegister(page);
+    await goToRegister(page);
 
     // 2. Create a new account, should go back to login if valid
-    await TryRegisterNewUser(page, TEST_USERNAME, TEST_PASSWORD);
+    await tryRegisterNewUser(page, TEST_USERNAME, TEST_PASSWORD);
 
     // 3. Try logging in with new account, should work
-    await TryLoginUser(page, TEST_USERNAME, TEST_PASSWORD);
+    await tryLoginUser(page, TEST_USERNAME, TEST_PASSWORD);
 
     // 3. Check if login was successful
     await expect(page.getByTestId('app-container')).toBeVisible();
@@ -74,10 +79,10 @@ test.describe('Authentication', () => {
     const existingname = 'testuser';
 
     // 1. Go to register page
-    await GoToRegister(page);
+    await goToRegister(page);
 
     // 2. Attempt to register account with existing username
-    await TryRegisterNewUser(page, existingname, 'testpassword');
+    await tryRegisterNewUser(page, existingname, 'testpassword');
 
     // 3. Expect login to fail with error message
     await expect(page.getByTestId('register-container')).toBeVisible();
@@ -87,13 +92,90 @@ test.describe('Authentication', () => {
     await page.goto('');
 
     // 1. Go to register page
-    await GoToRegister(page);
+    await goToRegister(page);
 
     // 2. Attempt to register account with existing username
-    await TryRegisterNewUser(page, TEST_USERNAME, 'short');
+    await tryRegisterNewUser(page, TEST_USERNAME, 'short');
 
     // 3. Expect login to fail with error message
     await expect(page.getByTestId('register-container')).toBeVisible();
     await expect(page.getByTestId('register-error')).toHaveText('Password must be at least 6 characters');
   })
+});
+
+const FREQ_POINTS = {
+  daily: 10,
+  weekly: 70,
+  monthly: 100
+};
+
+async function createTask(page, title, description, frequency) {
+  await loginTestUser(page);
+
+  const habitsTab = page.getByTestId('habits-tab');
+  await habitsTab.click();
+
+  const addHabitBtn = page.getByTestId('add-habit-btn');
+  await addHabitBtn.click();
+
+  const titleInput = page.getByTestId('habit-modal-title-input');
+  const descriptionInput = page.getByTestId('habit-modal-description-input');
+  const frequencySelect = page.getByTestId('habit-modal-frequency-select');
+  const saveBtn = page.getByTestId('habit-modal-save-btn');
+
+  await titleInput.fill(title);
+  await descriptionInput.fill(description);
+  await frequencySelect.selectOption(frequency);
+  await saveBtn.click();
+
+  const habitTitle = page.getByTestId('habit-title-0');
+  const habitDescription = page.getByTestId('habit-description-0');
+  const habitReward = page.getByTestId('habit-reward-0');
+  const descriptionToggleBtn = page.getByTestId('description-toggle-btn-0');
+
+  await expect(habitTitle).toHaveText(title);
+  await expect(habitReward).toHaveText(FREQ_POINTS[frequency].toString());
+
+  return {
+    habitTitle,
+    habitDescription,
+    habitReward,
+    descriptionToggleBtn
+  }
+}
+
+
+test.describe("Habits", () => {
+  test.afterEach(async ({ request }) => {
+    const response = await request.delete(`${process.env.API_URI}api/testing/cleanup-user`, {
+      data: { username: TEST_USERNAME }
+    });
+
+    expect(response.status()).not.toBe(500);
+    expect(response.status()).not.toBe(501);
+  });
+  test('can add and delete a new habit', async ({ page }) => {
+    await page.goto('');
+    const { habitTitle, habitDescription, descriptionToggleBtn } = await createTask(page, 'Test Habit', 'This is a test habit', 'weekly');
+    await descriptionToggleBtn.click();
+    await expect(habitDescription).toHaveText('This is a test habit');
+
+    const deleteBtn = page.getByTestId('delete-btn-0');
+    await deleteBtn.click();
+    await expect(habitTitle).not.toBeVisible();
+  })
+  test('can mark habit as done', async ({ page }) => {
+    await page.goto('');
+    const { habitTitle, habitDescription, descriptionToggleBtn } = await createTask(page, 'Test Habit', 'This is a test habit', 'weekly');
+    await descriptionToggleBtn.click();
+    await expect(habitDescription).toHaveText('This is a test habit');
+
+    const toggleBtn = page.getByTestId('toggle-btn-0');
+    await toggleBtn.click();
+    await expect(habitTitle).toHaveClass(/completed/);
+
+    const deleteBtn = page.getByTestId('delete-btn-0');
+    await deleteBtn.click();
+    await expect(habitTitle).not.toBeVisible();
+  });
 });

@@ -38,7 +38,7 @@
 }
 
 /* logout button */
-.App-header > button {
+.App-header>button {
   margin-top: 8px;
   padding: 7px 16px;
   border: none;
@@ -51,7 +51,7 @@
   box-shadow: 0 3px 10px rgba(90, 60, 30, 0.12);
 }
 
-.App-header > button:hover {
+.App-header>button:hover {
   background-color: #ffe4d1;
 }
 
@@ -68,7 +68,7 @@
 }
 
 /* add habit button */
-.App-header input + button {
+.App-header input+button {
   padding: 11px 20px;
   border: 2px solid #e6b98f;
   border-left: none;
@@ -80,7 +80,7 @@
   cursor: pointer;
 }
 
-.App-header input + button:hover {
+.App-header input+button:hover {
   background-color: #ee9350;
 }
 
@@ -113,6 +113,23 @@
   background: #f4a261;
   color: white;
   cursor: pointer;
+}
+
+.tab:hover {
+  /* A very light wash of your orange color */
+  background-color: #fdf6f0;
+  /* Moves the button up by 2 pixels */
+  transform: translateY(-2px);
+  /* Adds a soft shadow underneath to emphasize the lift */
+  box-shadow: 0 4px 8px rgba(228, 158, 101, 0.2);
+}
+
+.tabActive:hover {
+  background-color: #ee9350;
+  /* Moves the button up by 2 pixels */
+  transform: translateY(-2px);
+  /* Adds a soft shadow underneath to emphasize the lift */
+  box-shadow: 0 4px 8px rgba(228, 158, 101, 0.2);
 }
 
 @keyframes App-logo-spin {

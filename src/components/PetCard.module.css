@@ -80,3 +80,38 @@
     background: #f4a261;
     color: white;
 }
+
+.button:hover {
+    background: #ee9350;
+}
+
+
+/* [GenAI Use] Prompt: "how do i make a png image jiggle using css keyframes animation" */
+/* [GenAI Use] LLM Response Start */
+.jigglePng {
+    animation: jiggle 0.4s infinite ease-in-out;
+    transform-origin: center center;
+    /* Keeps the jiggle centered */
+    /* display: inline-block; */
+    /* Required for transforms on inline elements like images */
+}
+
+@keyframes jiggle {
+    0% {
+        transform: rotate(0deg) translate(0, 0);
+    }
+    25% {
+        transform: rotate(-2deg) translate(-2px, 1px);
+    }
+    50% {
+        transform: rotate(2deg) translate(2px, -1px);
+    }
+    75% {
+        transform: rotate(-1deg) translate(1px, -2px);
+    }
+    100% {
+        transform: rotate(0deg) translate(0, 0);
+    }
+}
+/* [GenAI Use] LLM Response End */
+/* [GenAI Use] Reflection: the AI used .jiggle-png but i renamed it to .jigglePng to match how we name classes in our css modules. kept the animation values small so the pet wiggles a little but not too crazy */

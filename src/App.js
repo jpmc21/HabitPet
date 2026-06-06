@@ -14,8 +14,11 @@ import './App.css'
 
 function App() {
   // check if user was already logged in before
-  // used AI, prompt: "how to get item from localStorage in react"
+  // [GenAI Use] Prompt: "In React, how do I read a saved JWT token from localStorage on app load to restore login state?"
+  // [GenAI Use] LLM Response Start
   const [token, setToken] = useState(localStorage.getItem('token'))
+  // [GenAI Use] LLM Response End
+  // [GenAI Use] Reflection: getItem returns null if nothing saved, useState treats null as falsy so login page shows up correctly. this way user stays logged in after refresh
 
   // tracks which page to show when not logged in
   const [page, setPage] = useState('login')
@@ -28,7 +31,6 @@ function App() {
   }
 
 
-  console.log(`verifying api url ${API_URL}`);
   useEffect(() => {
     async function verifyToken() {
       const savedToken = localStorage.getItem('token');
@@ -109,9 +111,9 @@ function App() {
         <InfoBar token={token} hasOutdatedData={hasOutdatedData} setHasOutdatedData={setHasOutdatedData} />
         <header className="App-header">
           <div className="tabs">
-            <button onClick={() => setTab('habits')} className={tab === 'habits' ? 'tabActive' : 'tab'}>Habits</button>
-            <button onClick={() => setTab('pet')} className={tab === 'pet' ? 'tabActive' : 'tab'}>Pet</button>
-            <button onClick={() => setTab('stats')} className={tab === 'stats' ? 'tabActive' : 'tab'}>Stats</button>
+            <button data-testid="habits-tab" onClick={() => setTab('habits')} className={tab === 'habits' ? 'tabActive' : 'tab'}>Habits</button>
+            <button data-testid="pet-tab" onClick={() => setTab('pet')} className={tab === 'pet' ? 'tabActive' : 'tab'}>Pet</button>
+            <button data-testid="stats-tab" onClick={() => setTab('stats')} className={tab === 'stats' ? 'tabActive' : 'tab'}>Stats</button>
           </div>
 
 

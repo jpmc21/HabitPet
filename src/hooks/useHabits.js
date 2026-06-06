@@ -1,3 +1,38 @@
+/*
+[GenAI Use] Prompt: "How do I use axios with async/await inside a React useEffect to fetch data using
+ a JWT token from localStorage?"
+    [GenAI Use] LLM Response Start
+    Absolutely! In React, the callback function passed to `useEffect` cannot be directly asynchronous. 
+    To use `async/await` with Axios, you must define an async function inside the effect and then immediately
+    call it. 
+    Additionally, you can pass your JWT token in the Axios request headers. Here is a standard example:
+    
+    useEffect(() => {
+      async function fetchData() {
+        try {
+          const token = localStorage.getItem('token');
+          if (!token) return; // Exit early if no token is found
+    
+          const response = await axios.get('https://api.example.com/data', {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          setData(response.data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+      fetchData();
+    }, []);
+    [GenAI Use] LLM Response End
+[GenAI Use] Reflection: I was confused on how to implement the useEffect(),
+ I did previously ask it to go over useEffect and what it does and how it works,
+but still wanted to see a example of it being used with async, and learned that
+you cannot directly have useEffect as async directly. I adapted this template
+specifically for my 'fetchHabits' function, obviously changing the API_URL and
+'dataChanged' trigger. After learning exactly how it works, I used this same
+architectural pattern of using try/catch, token retrieval. to manually write
+the rest (deleteHabit, editHabit,addHabit, and toggleHabit)
+*/
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { API_URL } from "../globals";

@@ -30,6 +30,7 @@ export default function HabitModal({
           placeholder="Enter a habit"
           value={habit.title}
           onChange={(e) => updateHabitField("title", e.target.value)}
+          data-testid="habit-modal-title-input"
         />
 
         {/*Text area for the habit description*/}
@@ -38,6 +39,7 @@ export default function HabitModal({
           placeholder="Enter Description"
           value={habit.description}
           onChange={(e) => updateHabitField("description", e.target.value)}
+          data-testid="habit-modal-description-input"
         />
 
         {/*Creates a dropdown menue for selecting how often the hait should be completed*/}
@@ -45,12 +47,13 @@ export default function HabitModal({
           style={styles.select}
           value={habit.frequency}
           onChange={(e) => updateHabitField("frequency", e.target.value)}
+          data-testid="habit-modal-frequency-select"
         >
           <option value="daily">Daily</option>
           <option value="weekly">Weekly</option>
           <option value="monthly">Monthly</option>
 
-        </select>  
+        </select>
 
         {/*Buttons for saving or canceling the modal*/}
         <div style={styles.buttonRow}>
