@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+/* eslint-disable testing-library/prefer-screen-queries */
 
 // sanity check
 test('has title', async ({ page }) => {
@@ -7,7 +8,7 @@ test('has title', async ({ page }) => {
 });
 
 // On non-fail state, guarantee's to go to the register page
-async function GoToRegister(page) {
+async function goToRegister(page) {
   await expect(page.getByTestId('login-container')).toBeVisible();
   const registerLink = page.getByTestId('register-link');
 
@@ -15,7 +16,7 @@ async function GoToRegister(page) {
   await expect(page.getByTestId('register-container')).toBeVisible();
 }
 
-async function TryRegisterNewUser(page, username, password) {
+async function tryRegisterNewUser(page, username, password) {
   await expect(page.getByTestId('register-container')).toBeVisible();
 
   const registerInput = page.getByTestId('username-input');
@@ -27,7 +28,7 @@ async function TryRegisterNewUser(page, username, password) {
   await registerBtn.click();
 }
 
-async function TryLoginUser(page, username, password) {
+async function tryLoginUser(page, username, password) {
   await expect(page.getByTestId('login-container')).toBeVisible();
 
   const loginInput = page.getByTestId('username-input');
@@ -38,10 +39,10 @@ async function TryLoginUser(page, username, password) {
   await loginBtn.click();
 }
 
-async function LoginTestUser(page) {
-  await GoToRegister(page);
-  await TryRegisterNewUser(page, TEST_USERNAME, TEST_PASSWORD);
-  await TryLoginUser(page, TEST_USERNAME, TEST_PASSWORD);
+async function loginTestUser(page) {
+  await goToRegister(page);
+  await tryRegisterNewUser(page, TEST_USERNAME, TEST_PASSWORD);
+  await tryLoginUser(page, TEST_USERNAME, TEST_PASSWORD);
   await expect(page.getByTestId('app-container')).toBeVisible();
 }
 
@@ -61,13 +62,13 @@ test.describe('Authentication', () => {
     await page.goto('');
 
     // 1. Go to home page, should see login
-    await GoToRegister(page);
+    await goToRegister(page);
 
     // 2. Create a new account, should go back to login if valid
-    await TryRegisterNewUser(page, TEST_USERNAME, TEST_PASSWORD);
+    await tryRegisterNewUser(page, TEST_USERNAME, TEST_PASSWORD);
 
     // 3. Try logging in with new account, should work
-    await TryLoginUser(page, TEST_USERNAME, TEST_PASSWORD);
+    await tryLoginUser(page, TEST_USERNAME, TEST_PASSWORD);
 
     // 3. Check if login was successful
     await expect(page.getByTestId('app-container')).toBeVisible();
@@ -78,10 +79,10 @@ test.describe('Authentication', () => {
     const existingname = 'testuser';
 
     // 1. Go to register page
-    await GoToRegister(page);
+    await goToRegister(page);
 
     // 2. Attempt to register account with existing username
-    await TryRegisterNewUser(page, existingname, 'testpassword');
+    await tryRegisterNewUser(page, existingname, 'testpassword');
 
     // 3. Expect login to fail with error message
     await expect(page.getByTestId('register-container')).toBeVisible();
@@ -91,10 +92,10 @@ test.describe('Authentication', () => {
     await page.goto('');
 
     // 1. Go to register page
-    await GoToRegister(page);
+    await goToRegister(page);
 
     // 2. Attempt to register account with existing username
-    await TryRegisterNewUser(page, TEST_USERNAME, 'short');
+    await tryRegisterNewUser(page, TEST_USERNAME, 'short');
 
     // 3. Expect login to fail with error message
     await expect(page.getByTestId('register-container')).toBeVisible();
@@ -108,8 +109,8 @@ const FREQ_POINTS = {
   monthly: 100
 };
 
-async function CreateTask(page, title, description, frequency) {
-  await LoginTestUser(page);
+async function createTask(page, title, description, frequency) {
+  await loginTestUser(page);
 
   const habitsTab = page.getByTestId('habits-tab');
   await habitsTab.click();
@@ -155,7 +156,7 @@ test.describe("Habits", () => {
   });
   test('can add and delete a new habit', async ({ page }) => {
     await page.goto('');
-    const { habitTitle, habitDescription, descriptionToggleBtn } = await CreateTask(page, 'Test Habit', 'This is a test habit', 'weekly');
+    const { habitTitle, habitDescription, descriptionToggleBtn } = await createTask(page, 'Test Habit', 'This is a test habit', 'weekly');
     await descriptionToggleBtn.click();
     await expect(habitDescription).toHaveText('This is a test habit');
 
@@ -165,7 +166,7 @@ test.describe("Habits", () => {
   })
   test('can mark habit as done', async ({ page }) => {
     await page.goto('');
-    const { habitTitle, habitDescription, descriptionToggleBtn } = await CreateTask(page, 'Test Habit', 'This is a test habit', 'weekly');
+    const { habitTitle, habitDescription, descriptionToggleBtn } = await createTask(page, 'Test Habit', 'This is a test habit', 'weekly');
     await descriptionToggleBtn.click();
     await expect(habitDescription).toHaveText('This is a test habit');
 
