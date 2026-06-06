@@ -72,6 +72,12 @@ export default function HabitModal({
   );
 }
 
+
+//[GenAI Use] prompt: can you generate me css for a modal with title box, description box, and a drop down select menu. 
+// The select menu has 3 areas, daily, monthly, weekly. I also have a save and cancel button. menu
+
+//GenAI response start:
+
 const styles = {
   modalOverlay: {
     position: "fixed",
@@ -175,3 +181,7 @@ const styles = {
     boxShadow: "0 2px 8px rgba(90, 60, 30, 0.10)",
   },
 };
+
+//GenAI response end
+//GenAI use Reflection: After examining and then testing the code I believe it is correct and mostly fulfils what I need. 
+//I changed some of the colors and headers to match my code.
