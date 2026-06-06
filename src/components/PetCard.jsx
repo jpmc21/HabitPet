@@ -91,7 +91,7 @@ export default function PetCard({ token }) {
         setPet(prev => {
           let newMood = 'sad';
           if (prev.fullness > 60) newMood = 'happy';
-          else if (prev.fullness > 30) newMood = 'neutral';
+          else if (prev.fullness >= 30) newMood = 'neutral';
           return { ...prev, mood: newMood };
         });
       }, 60000);
@@ -119,7 +119,15 @@ export default function PetCard({ token }) {
         setJiggle(false)
       }, 2000)
       setTimeout(() => {
-        setPet(prev => ({ ...prev, mood: 'neutral' }))
+        setPet(prev => {
+          if (!prev) return prev
+
+          let newMood = 'sad'
+          if (prev.fullness > 60) newMood = 'happy'
+          else if (prev.fullness >= 30) newMood = 'neutral'
+
+          return { ...prev, mood: newMood }
+        })
       }, 60000)
     } catch {
       toast.error('Failed to interact with pet. Please try again.');
