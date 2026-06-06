@@ -14,8 +14,11 @@ import './App.css'
 
 function App() {
   // check if user was already logged in before
-  // used AI, prompt: "how to get item from localStorage in react"
+  // [GenAI Use] Prompt: "In React, how do I read a saved JWT token from localStorage on app load to restore login state?"
+  // [GenAI Use] LLM Response Start
   const [token, setToken] = useState(localStorage.getItem('token'))
+  // [GenAI Use] LLM Response End
+  // [GenAI Use] Reflection: getItem returns null if nothing saved, useState treats null as falsy so login page shows up correctly. this way user stays logged in after refresh
 
   // tracks which page to show when not logged in
   const [page, setPage] = useState('login')
@@ -28,7 +31,6 @@ function App() {
   }
 
 
-  console.log(`verifying api url ${API_URL}`);
   useEffect(() => {
     async function verifyToken() {
       const savedToken = localStorage.getItem('token');

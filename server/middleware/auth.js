@@ -22,13 +22,15 @@ const auth = (req, res, next) => {
   }
 
   // check if the token is real and not expired
-  // used AI, prompt: "how to verify jwt token in express"
+  // [GenAI Use] Prompt: "In an Express middleware, how do I verify a JWT token and attach the userId to the request so the next route can use it?"
   try {
+    // [GenAI Use] LLM Response Start
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.userId = decoded.userId;
+    // [GenAI Use] LLM Response End
+    // [GenAI Use] Reflection: jwt.verify throws if the token is expired or fake, so one catch handles both cases. I only grab userId from decoded because that's all our routes actually need
 
     // save userId so the next route can use it
-    req.userId = decoded.userId;
-
     // TODO: Currently async, but could be sync if we just store userId in token and not do a DB lookup here
 
     next();

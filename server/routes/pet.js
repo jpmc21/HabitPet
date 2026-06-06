@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-// used AI to figure out how to import these
 const User = require('../models/User');
 // added this - need getLevel getMood applyDecay for the pet system
 const { getLevel, getMood, applyDecay } = require('../utils/petUtils');
@@ -9,8 +8,11 @@ const { getLevel, getMood, applyDecay } = require('../utils/petUtils');
 // GET /api/pet - get the pet info when user logged in
 router.get('/', async (req, res) => {
   try {
-    // used AI, prompt: "how mongoose find by id and only get certain fields"
+    // [GenAI Use] Prompt: "In a Node/Express app with Mongoose, how do I find a document by its id?"
+    // [GenAI Use] LLM Response Start
     const user = await User.findById(req.userId);
+    // [GenAI Use] LLM Response End
+    // [GenAI Use] Reflection: findById is shorthand for findOne({_id: id}). don't filter fields here because we need the whole user object to update and save later
 
     // added - apply decay so fullness is up to date before we send it
     user.pet.fullness = applyDecay(user.pet.fullness, user.pet.lastDecayAt);
@@ -27,7 +29,7 @@ router.get('/', async (req, res) => {
 
     res.json({ pet: petData, points: user.points, username: user.username });
   } catch (err) {
-    // used AI, prompt: "server error return what" - 500 means something broke on our end
+    // 500 means something broke on our end
     res.status(500).json({ error: err.message });
   }
 });
@@ -54,8 +56,11 @@ router.post('/feed', async (req, res) => {
     // removed - mood update, its calculated now not stored
     // removed - lastFed, replaced with lastDecayAt
 
-    // used AI, prompt:"how save mongoose document" - without this changes dont actually save
+    // [GenAI Use] Prompt: "After modifying a Mongoose document in Express, how do I persist the changes to MongoDB?"
+    // [GenAI Use] LLM Response Start
     await user.save();
+    // [GenAI Use] LLM Response End
+    // [GenAI Use] Reflection: without .save() changes only exist in memory and don't actually go to the db. await makes sure save finishes before we send the response back
 
     // changed - calculate level and mood before sending back
     const petData = {

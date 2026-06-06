@@ -27,11 +27,14 @@ export default function Register({ onRegister, switchToLogin }) {
 
     try {
       // post the new account to the backend
-      // used AI, prompt: "how to post with axios in react"
+      // [GenAI Use] Prompt: "How do I send a POST request with axios in a React form and wait for the response before moving on?"
+      // [GenAI Use] LLM Response Start
       await axios.post(`${API_URL}/api/auth/register`, {
         username: username,
         password: password,
       })
+      // [GenAI Use] LLM Response End
+      // [GenAI Use] Reflection: axios.post takes url first then data object. await so we wait for register to finish before switching pages. also figured out err.response.data is where backend error messages live
       toast.success("Account created successfully! Please log in.");
 
       // if it worked, go back to login page
